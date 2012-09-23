@@ -84,7 +84,7 @@ window['picoModal'] = (function(document) {
             },
 
             // Returns the width of this element
-            width: function () {
+            getWidth: function () {
                 return elem.clientWidth;
             },
 
@@ -162,7 +162,7 @@ window['picoModal'] = (function(document) {
             })
             .html(options.content );
 
-        var width = options.width || elem.width();
+        var width = options.width || elem.getWidth();
 
         elem
             .stylize({
