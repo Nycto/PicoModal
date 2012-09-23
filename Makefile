@@ -26,3 +26,6 @@ all:
 		--data-urlencode "js_code@${TEMP_FILE}" \
 		http://closure-compiler.appspot.com/compile \
 		> ${BUILD_FILE}
+	@echo "Generated ${BUILD_FILE}"
+	@echo -n "Minified byte count: "
+	@wc -c ${BUILD_FILE} | cut -d" " -f1
