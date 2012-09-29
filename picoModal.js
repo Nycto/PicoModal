@@ -179,9 +179,9 @@ window['picoModal'] = (function(document) {
 
         shadow.onClick(close);
 
-        var close;
+        var closeButton;
         if ( options.closeButton ) {
-            close = elem.child()
+            closeButton = elem.child()
                 .html("&#xD7;")
                 .clazz("pico-close")
                 .stylize({
@@ -203,7 +203,7 @@ window['picoModal'] = (function(document) {
 
         return {
             modalElem: elem.elem,
-            closeElem: close.elem,
+            closeElem: closeButton.elem,
             overlayElem: shadow.elem,
             close: close,
             onClose: closeCallbacks.watch
