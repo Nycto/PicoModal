@@ -24,44 +24,52 @@ Example Code
 If all you want to do is display a modal, it's as easy as
 this: ([Run this code](http://jsfiddle.net/w6Dgs))
 
-    picoModal("Ah, the pitter patter of tiny feet in huge combat boots.");
+```javascript
+  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.");
+```
 
 For more control over the behaviour of the modal, you can pass in a
 settings object: ([Run this code](http://jsfiddle.net/KKNj3))
 
-    picoModal({
-        content: "Ah, the pitter patter of tiny feet in huge combat boots.",
-        closeButton: true,
-        overlayStyles: {
-            backgroundColor: "#169",
-            opacity: 0.75
-        }
-    });
+```javascript
+  picoModal({
+      content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+      closeButton: true,
+      overlayStyles: {
+          backgroundColor: "#169",
+          opacity: 0.75
+      }
+  });
+```
 
 A full list of settings is documented below.
 
 If you need to be able to programatically close the modal you can do it like
-this: ([Run thiscode](http://jsfiddle.net/xygWq))
+this: ([Run this code](http://jsfiddle.net/xygWq))
 
-    var modal = picoModal(
-        "<p>Ah, the pitter patter of tiny feet in huge combat boots.<p>"
-        + "<p><a href='#' class='dismiss'>Dismiss</a></p>"
-    );
-
-    document.getElementsByClassName("dismiss")[0].onclick = function () {
-        modal.close();
-    };
+```javascript
+  var modal = picoModal(
+      "<p>Ah, the pitter patter of tiny feet in huge combat boots.<p>"
+      + "<p><a href='#' class='dismiss'>Dismiss</a></p>"
+  );
+  
+  document.getElementsByClassName("dismiss")[0].onclick = function () {
+      modal.close();
+  };
+```
 
 You can also attach an event to fire when the modal is closed:
-([Run thiscode](http://jsfiddle.net/eW6CQ))
+([Run this code](http://jsfiddle.net/eW6CQ))
 
-    var modal = picoModal(
-        "Ah, the pitter patter of tiny feet in huge combat boots."
-    );
-
-    modal.onClose(function () {
-        alert("Closed");
-    });
+```javascript
+  var modal = picoModal(
+      "Ah, the pitter patter of tiny feet in huge combat boots."
+  );
+  
+  modal.onClose(function () {
+      alert("Closed");
+  });
+```
 
 Settings
 --------
