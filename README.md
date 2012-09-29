@@ -6,7 +6,7 @@ A small, self-contained JavaScript modal library
 Features
 --------
 
-* Small: At just over 1.2kb, its small and easily embeddable
+* Small: At just over 1.6kb, its small and easily embeddable
 * No Library Dependencies: PicoModal does not depend on any JS libraries,
   so you can use it in places where you don't have access to one.
 * Self-contained: No extra CSS or images required
