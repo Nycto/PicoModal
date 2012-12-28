@@ -389,6 +389,13 @@
         return iface;
     }
 
-    window.picoModal = picoModal;
+    if ( typeof window.define === "function" && window.define.amd ) {
+        window.define(function () {
+            return picoModal;
+        });
+    }
+    else {
+        window.picoModal = picoModal;
+    }
 
 }(window, document));
