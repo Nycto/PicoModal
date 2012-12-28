@@ -211,7 +211,7 @@
     };
 
     if(typeof define === "function" && define.amd) {
-        define("picomodal", [], function () {
+        define(function () {
             return picoModal;
         });
     } else {
