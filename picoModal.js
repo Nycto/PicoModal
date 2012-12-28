@@ -23,7 +23,7 @@
 /**
  * A self-contained modal library
  */
-window['picoModal'] = (function(document) {
+(function(window, document) {
 
     // Generates observable objects that can be watched and triggered
     var observable = function() {
@@ -139,7 +139,7 @@ window['picoModal'] = (function(document) {
     };
 
     // A function for easily displaying a modal with the given content
-    return function(options) {
+    var picoModal = function(options) {
 
         if ( typeof options === "string" )
             options = { content: options, closeButton: true };
@@ -210,5 +210,13 @@ window['picoModal'] = (function(document) {
         };
     };
 
-}(document));
+    if(typeof define === "function" && define.amd) {
+        define(function () {
+            return picoModal;
+        });
+    } else {
+        window["picoModal"] = picoModal;
+    }
+
+}(window, document));
 
