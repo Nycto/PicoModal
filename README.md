@@ -22,14 +22,14 @@ Example Code
 ------------
 
 If all you want to do is display a modal, it's as easy as
-this: ([Run this code](http://jsfiddle.net/w6Dgs))
+this: ([Run this code](http://jsfiddle.net/z2t9e/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.");
 ```
 
 For more control over the behaviour of the modal, you can pass in a
-settings object: ([Run this code](http://jsfiddle.net/KKNj3))
+settings object: ([Run this code](http://jsfiddle.net/NpSPf/))
 
 ```javascript
   picoModal({
@@ -45,7 +45,7 @@ settings object: ([Run this code](http://jsfiddle.net/KKNj3))
 A full list of settings is documented below.
 
 If you need to be able to programatically close the modal you can do it like
-this: ([Run this code](http://jsfiddle.net/xygWq))
+this: ([Run this code](http://jsfiddle.net/8pPTD/))
 
 ```javascript
   var modal = picoModal(
@@ -59,7 +59,7 @@ this: ([Run this code](http://jsfiddle.net/xygWq))
 ```
 
 You can also attach an event to fire when the modal is closed:
-([Run this code](http://jsfiddle.net/eW6CQ))
+([Run this code](http://jsfiddle.net/TM95X/))
 
 ```javascript
   var modal = picoModal(
