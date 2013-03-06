@@ -23,7 +23,8 @@
 /**
  * A self-contained modal library
  */
-window['picoModal'] = (function(document) {
+window.picoModal = (function(document) {
+    "use strict";
 
     // Generates observable objects that can be watched and triggered
     var observable = function() {
@@ -59,8 +60,10 @@ window['picoModal'] = (function(document) {
             stylize: function(styles) {
                 styles = styles || {};
 
-                if ( typeof styles.opacity != "undefined" )
-                    styles.filter = "alpha(opacity=" + (styles.opacity * 100) + ")";
+                if ( typeof styles.opacity !== "undefined" ) {
+                    styles.filter =
+                        "alpha(opacity=" + (styles.opacity * 100) + ")";
+                }
 
                 for (var prop in styles) {
                     if (styles.hasOwnProperty(prop)) {
@@ -90,10 +93,13 @@ window['picoModal'] = (function(document) {
 
             // Adds a click handler to this element
             onClick: function(callback) {
-                if (elem.attachEvent)
+                if (elem.attachEvent) {
                     elem.attachEvent('onclick', callback);
-                else
+                }
+                else {
                     elem.addEventListener('click', callback);
+                }
+
                 return iface;
             },
 
@@ -141,8 +147,9 @@ window['picoModal'] = (function(document) {
     // A function for easily displaying a modal with the given content
     return function(options) {
 
-        if ( typeof options === "string" )
+        if ( typeof options === "string" ) {
             options = { content: options, closeButton: true };
+        }
 
         var shadow = overlay( options.overlayStyles );
 
