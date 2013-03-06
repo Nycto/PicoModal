@@ -210,7 +210,7 @@ window.picoModal = (function(document) {
 
         return {
             modalElem: elem.elem,
-            closeElem: closeButton.elem,
+            closeElem: closeButton ? closeButton.elem : null,
             overlayElem: shadow.elem,
             close: close,
             onClose: closeCallbacks.watch

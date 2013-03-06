@@ -52,7 +52,7 @@ this: ([Run this code](http://jsfiddle.net/8pPTD/))
       "<p>Ah, the pitter patter of tiny feet in huge combat boots.<p>"
       + "<p><a href='#' class='dismiss'>Dismiss</a></p>"
   );
-  
+
   document.getElementsByClassName("dismiss")[0].onclick = function () {
       modal.close();
   };
@@ -65,9 +65,20 @@ You can also attach an event to fire when the modal is closed:
   var modal = picoModal(
       "Ah, the pitter patter of tiny feet in huge combat boots."
   );
-  
+
   modal.onClose(function () {
       alert("Closed");
+  });
+```
+
+To disable the close button, and instead just rely on someone clicking
+outside of the modal, you can do this:
+([Run this code](http://jsfiddle.net/dwhcX/))
+
+```javascript
+  picoModal({
+      content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+      closeButton: false
   });
 ```
 
