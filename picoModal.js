@@ -148,7 +148,11 @@ window.picoModal = (function(document) {
     return function(options) {
 
         if ( typeof options === "string" ) {
-            options = { content: options, closeButton: true };
+            options = {
+              content: options,
+              closeButton: true,
+              shadowClose: true
+            };
         }
 
         var shadow = overlay( options.overlayStyles );
@@ -184,7 +188,12 @@ window.picoModal = (function(document) {
             elem.destroy();
         };
 
-        shadow.onClick(close);
+        if (
+            typeof options.shadowClose === "undefined" ||
+            options.shadowClose
+        ) {
+            shadow.onClick(close);
+        }
 
         var closeButton;
         if ( options.closeButton ) {

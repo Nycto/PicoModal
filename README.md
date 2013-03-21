@@ -82,6 +82,16 @@ outside of the modal, you can do this:
   });
 ```
 
+Or, to disable closing when someone clicks outside of the modal, you can
+do this: ([Run this code](http://jsfiddle.net/R3hJN/))
+
+```javascript
+  picoModal({
+      content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+      shadowClose: false
+  });
+```
+
 Settings
 --------
 
@@ -90,6 +100,7 @@ The following settings are available:
 * __content__: The data to display to the user
 * __width__: The forced width of the modal
 * __closeButton__: Boolean whether to display the close button
+* __shadowClose__: Boolean whether a click on the shadow should close the modal
 * __overlayStyles__: A hash of additional CSS properties to apply to the
   overlay behind the modal
 * __modalStyles__: A hash of additional CSS properties to apply to the
