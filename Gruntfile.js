@@ -1,24 +1,17 @@
-/*global module:false*/
 module.exports = function(grunt) {
-
-    grunt.loadNpmTasks('grunt-string-replace');
 
     // Project configuration.
     grunt.initConfig({
-        pkg: '<json:package.json>',
-        lint: {
-            files: ['grunt.js', 'lib/**/*.js']
+        pkg: grunt.file.readJSON('package.json'),
+
+        jshint: {
+            files: ['Gruntfile.js', 'src/**/*.js']
         },
-        concat: {
-            dist: {
-                src: ['<file_strip_banner:lib/picoModal.js>'],
-                dest: 'dist/picoModal.concat.js'
-            }
-        },
+
         "string-replace": {
-            dist: {
-                src: [ '<config:concat.dist.dest>' ],
-                dest: 'dist/picoModal.replaced.js',
+            build: {
+                src: [ 'src/picoModal.js' ],
+                dest: 'build/picoModal.replaced.js',
                 options: {
                     replacements: [
                         { pattern: /\bwatch\b/g, replacement: "w" },
@@ -35,21 +28,29 @@ module.exports = function(grunt) {
                 }
             }
         },
-        min: {
-            dist: {
-                src: ['<config:string-replace.dist.dest>'],
-                dest: 'dist/picoModal.min.js'
+
+        uglify: {
+            build: {
+                src: 'build/picoModal.replaced.js',
+                dest: 'build/picoModal.min.js'
             }
         },
+
         watch: {
-            files: '<config:lint.files>',
-            tasks: 'lint'
-        },
-        jshint: {},
-        uglify: {}
+            files: ['<%= jshint.files %>'],
+            tasks: ['jshint']
+        }
+
     });
 
-    // Default task.
-    grunt.registerTask('default', 'lint concat string-replace min');
+    // Plugins
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-string-replace');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
+
+    // Default task(s).
+    grunt.registerTask('default', ['jshint', 'string-replace', 'uglify']);
 
 };
