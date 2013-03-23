@@ -148,11 +148,18 @@ window.picoModal = (function(document) {
     return function(options) {
 
         if ( typeof options === "string" ) {
-            options = {
-              content: options,
-              closeButton: true,
-              shadowClose: true
-            };
+            options = { content: options };
+        }
+
+        // Returns a named option if it has been explicitly defined. Otherwise,
+        // it returns the given default value
+        function getOption ( opt, defaultValue ) {
+            if ( typeof options[opt] === "undefined" ) {
+                return defaultValue;
+            }
+            else {
+                return options[opt];
+            }
         }
 
         var shadow = overlay( options.overlayStyles );
@@ -173,14 +180,14 @@ window.picoModal = (function(document) {
             })
             .html(options.content );
 
-        var width = options.width || elem.getWidth();
+        var width = getOption('width', elem.getWidth());
 
         elem
             .stylize({
                 width: width + "px",
                 margin: "0 0 0 " + (-(width / 2) + "px")
             })
-            .stylize( options.modalStyles );
+            .stylize( getOption('modalStyles') );
 
         var close = function () {
             closeCallbacks.trigger();
@@ -188,15 +195,12 @@ window.picoModal = (function(document) {
             elem.destroy();
         };
 
-        if (
-            typeof options.shadowClose === "undefined" ||
-            options.shadowClose
-        ) {
+        if ( getOption('shadowClose', true) ) {
             shadow.onClick(close);
         }
 
         var closeButton;
-        if ( options.closeButton ) {
+        if ( getOption('closeButton', true) ) {
             closeButton = elem.child()
                 .html("&#xD7;")
                 .clazz("pico-close")
@@ -213,7 +217,7 @@ window.picoModal = (function(document) {
                     lineHeight: "15px",
                     background: "#CCC"
                 })
-                .stylize( options.closeStyles )
+                .stylize( getOption('closeStyles') )
                 .onClick(close);
         }
 

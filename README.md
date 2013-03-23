@@ -29,12 +29,11 @@ this: ([Run this code](http://jsfiddle.net/z2t9e/))
 ```
 
 For more control over the behaviour of the modal, you can pass in a
-settings object: ([Run this code](http://jsfiddle.net/NpSPf/))
+settings object: ([Run this code](http://jsfiddle.net/BqHeY/))
 
 ```javascript
   picoModal({
       content: "Ah, the pitter patter of tiny feet in huge combat boots.",
-      closeButton: true,
       overlayStyles: {
           backgroundColor: "#169",
           opacity: 0.75
