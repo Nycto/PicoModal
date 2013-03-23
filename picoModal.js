@@ -195,7 +195,7 @@ window.picoModal = (function(document) {
             elem.destroy();
         };
 
-        if ( getOption('shadowClose', true) ) {
+        if ( getOption('overlayClose', true) ) {
             shadow.onClick(close);
         }
 
