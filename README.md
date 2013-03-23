@@ -1,4 +1,4 @@
-PicoModal
+PicoModal [![Build Status](https://secure.travis-ci.org/Nycto/PicoModal.png?branch=master)](http://travis-ci.org/Nycto/PicoModal)
 =========
 
 A small, self-contained JavaScript modal library
