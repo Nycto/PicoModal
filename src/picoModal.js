@@ -201,24 +201,32 @@ window.picoModal = (function(window, document) {
 
         var closeButton;
         if ( getOption('closeButton', true) ) {
-            closeButton = elem.child()
-                .html("&#xD7;")
-                .clazz("pico-close")
-                .stylize({
-                    borderRadius: "2px",
-                    cursor: "pointer",
-                    height: "15px",
-                    width: "15px",
-                    position: "absolute",
-                    top: "5px",
-                    right: "5px",
-                    fontSize: "16px",
-                    textAlign: "center",
-                    lineHeight: "15px",
-                    background: "#CCC"
-                })
-                .stylize( getOption('closeStyles') )
-                .onClick(close);
+            if ( getOption('closeButtonCustom', true) ) {
+                closeButton = elem.child()
+                    .html( getOption('closeButtonCustom') )
+                    .clazz("pico-close")
+                    .stylize( getOption('closeStyles') )
+                    .onClick(close);
+            } else {
+                closeButton = elem.child()
+                    .html("&#xD7;")
+                    .clazz("pico-close")
+                    .stylize({
+                        borderRadius: "2px",
+                        cursor: "pointer",
+                        height: "15px",
+                        width: "15px",
+                        position: "absolute",
+                        top: "5px",
+                        right: "5px",
+                        fontSize: "16px",
+                        textAlign: "center",
+                        lineHeight: "15px",
+                        background: "#CCC"
+                    })
+                    .stylize( getOption('closeStyles') )
+                    .onClick(close);
+            }
         }
 
         return {

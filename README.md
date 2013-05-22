@@ -91,6 +91,15 @@ do this: ([Run this code](http://jsfiddle.net/WkG3d/))
   });
 ```
 
+Or, to add a custom close button do this:
+
+```javascript
+  picoModal({
+      content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+      closeButtonCustom: "<span>Close Modal</span>"
+  });
+```
+
 Settings
 --------
 
@@ -99,6 +108,7 @@ The following settings are available:
 * __content__: The data to display to the user
 * __width__: The forced width of the modal
 * __closeButton__: Boolean whether to display the close button
+* __closeButtonCustom__: Custom data for close button (use __overlayStyles__ to apply CSS)
 * __overlayClose__: Boolean whether a click on the shadow should close the modal
 * __overlayStyles__: A hash of additional CSS properties to apply to the
   overlay behind the modal
