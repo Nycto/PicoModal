@@ -199,7 +199,7 @@ window.picoModal = (function(window, document) {
         var closeButton;
         if ( getOption('closeButton', true) ) {
             closeButton = elem.child()
-                .html("&#xD7;")
+                .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
                 .stylize( getOption('closeStyles', {
                     borderRadius: "2px",
