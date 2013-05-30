@@ -115,7 +115,7 @@ window.picoModal = (function(window, document) {
     };
 
     // An interface for generating the grey-out effect
-    var overlay = function(styles) {
+    var overlay = function( getOption ) {
 
         // The registered on click events
         var clickCallbacks = observable();
@@ -130,11 +130,12 @@ window.picoModal = (function(window, document) {
                 left: "0px",
                 height: "100%",
                 width: "100%",
-                opacity: 0.5,
-                zIndex: 10000,
-                background: "#000"
+                zIndex: 10000
             })
-            .stylize(styles)
+            .stylize( getOption('overlayStyles', {
+                opacity: 0.5,
+                background: "#000"
+            }) )
             .onClick(clickCallbacks.trigger);
 
         return {
@@ -154,15 +155,10 @@ window.picoModal = (function(window, document) {
         // Returns a named option if it has been explicitly defined. Otherwise,
         // it returns the given default value
         function getOption ( opt, defaultValue ) {
-            if ( typeof options[opt] === "undefined" ) {
-                return defaultValue;
-            }
-            else {
-                return options[opt];
-            }
+            return options[opt] === void(0) ? defaultValue : options[opt];
         }
 
-        var shadow = overlay( options.overlayStyles );
+        var shadow = overlay( getOption );
 
         var closeCallbacks = observable();
 
@@ -173,12 +169,9 @@ window.picoModal = (function(window, document) {
                 position: 'fixed',
                 zIndex: 10001,
                 left: "50%",
-                top: "50px",
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "5px"
+                top: "50px"
             })
-            .html(options.content );
+            .html(options.content);
 
         var width = getOption('width', elem.getWidth());
 
@@ -187,7 +180,11 @@ window.picoModal = (function(window, document) {
                 width: width + "px",
                 margin: "0 0 0 " + (-(width / 2) + "px")
             })
-            .stylize( getOption('modalStyles') );
+            .stylize( getOption('modalStyles', {
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "5px"
+            }) );
 
         var close = function () {
             closeCallbacks.trigger();
@@ -204,7 +201,7 @@ window.picoModal = (function(window, document) {
             closeButton = elem.child()
                 .html("&#xD7;")
                 .clazz("pico-close")
-                .stylize({
+                .stylize( getOption('closeStyles', {
                     borderRadius: "2px",
                     cursor: "pointer",
                     height: "15px",
@@ -216,8 +213,7 @@ window.picoModal = (function(window, document) {
                     textAlign: "center",
                     lineHeight: "15px",
                     background: "#CCC"
-                })
-                .stylize( getOption('closeStyles') )
+                }) )
                 .onClick(close);
         }
 
