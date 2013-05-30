@@ -5,7 +5,21 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js']
+            files: ['src/**/*.js'],
+            options: {
+                forin:true,
+                noarg:true,
+                noempty:true,
+                eqeqeq:true,
+                bitwise:true,
+                strict:true,
+                undef:true,
+                unused:true,
+                curly:true,
+                browser:true,
+                indent:4,
+                maxerr:50
+            }
         },
 
         "string-replace": {
