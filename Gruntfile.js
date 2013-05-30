@@ -1,24 +1,32 @@
+/* global module: false */
 module.exports = function(grunt) {
+    "use strict";
 
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
         jshint: {
-            files: ['src/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
-                forin:true,
-                noarg:true,
-                noempty:true,
-                eqeqeq:true,
-                bitwise:true,
-                strict:true,
-                undef:true,
-                unused:true,
-                curly:true,
-                browser:true,
-                indent:4,
-                maxerr:50
+                bitwise: true,
+                camelcase: true,
+                curly: true,
+                eqeqeq: true,
+                forin: true,
+                immed: true,
+                indent: 4,
+                latedef: true,
+                newcap: true,
+                noarg: true,
+                nonew: true,
+                noempty: true,
+                undef: true,
+                unused: true,
+                strict: true,
+                trailing: true,
+                maxlen: 80,
+                browser: true
             }
         },
 
