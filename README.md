@@ -18,6 +18,12 @@ Browser Support
 
 IE7+, Chrome, FireFox, Safari and Opera
 
+Download
+--------
+
+The latest version of PicoModal is available here:
+[Download](https://github.com/Nycto/PicoModal/tree/release/release)
+
 Example Code
 ------------
 
