@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         uglify: {
             build: {
                 src: 'build/picoModal.replaced.js',
-                dest: 'build/picoModal.min.js'
+                dest: 'build/picoModal-<%= pkg.version %>.min.js'
             }
         },
 
