@@ -13,19 +13,19 @@ Features
 * Simple: The interface is easy to use
 * Customizable: Its easy to apply your own styling
 
-Browser Support
----------------
-
-IE7+, Chrome, FireFox, Safari and Opera
-
 Download
 --------
 
 The latest version of PicoModal is available here:
 [Download](https://github.com/Nycto/PicoModal/tree/release/release)
 
-Example Code
-------------
+Browser Support
+---------------
+
+IE7+, Chrome, FireFox, Safari and Opera
+
+Basic Example
+-------------
 
 If all you want to do is display a modal, it's as easy as
 this: ([Run this code](http://jsfiddle.net/z2t9e/))
@@ -48,6 +48,9 @@ settings object: ([Run this code](http://jsfiddle.net/BqHeY/))
 ```
 
 A full list of settings is documented below.
+
+More Examples
+-------------
 
 If you need to be able to programatically close the modal you can do it like
 this: ([Run this code](http://jsfiddle.net/8pPTD/))
@@ -97,7 +100,7 @@ do this: ([Run this code](http://jsfiddle.net/WkG3d/))
   });
 ```
 
-To generate custom close button do this:
+To use custom HTML for the close button, do this:
 ([Run this code](http://jsfiddle.net/emSBr/))
 
 ```javascript
@@ -127,8 +130,7 @@ The following settings are available:
   overlay behind the modal
 * __modalStyles__: A hash of additional CSS properties to apply to the
   modal element
-* __closeStyles__: A hash of additional CSS properties to apply to the
-  close button element
+
 
 Return Object Properties
 ------------------------
