@@ -1,6 +1,4 @@
 /**
- * Copyright (c) 2012 James Frasca
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -23,11 +21,13 @@
 /**
  * A self-contained modal library
  */
-window.picoModal = (function(window, document) {
+(function(window, document) {
     "use strict";
 
-    // Generates observable objects that can be watched and triggered
-    var observable = function() {
+    /**
+     * Generates observable objects that can be watched and triggered
+     */
+    function observable() {
         var callbacks = [];
         return {
             watch: function(callback) {
@@ -39,10 +39,12 @@ window.picoModal = (function(window, document) {
                 }
             }
         };
-    };
+    }
 
-    // A small interface for creating and managing a dom element
-    var make = function( parent ) {
+    /**
+     * A small interface for creating and managing a dom element
+     */
+    function make( parent ) {
 
         var elem = document.createElement('div');
         (parent || document.body).appendChild(elem);
@@ -51,12 +53,12 @@ window.picoModal = (function(window, document) {
 
             elem: elem,
 
-            // Creates a child of this node
+            /** Creates a child of this node */
             child: function () {
                 return make(elem);
             },
 
-            // Applies a set of styles to an element
+            /** Applies a set of styles to an element */
             stylize: function(styles) {
                 styles = styles || {};
 
@@ -74,24 +76,24 @@ window.picoModal = (function(window, document) {
                 return iface;
             },
 
-            // Adds a class name
+            /** Adds a class name */
             clazz: function (clazz) {
                 elem.className += clazz;
                 return iface;
             },
 
-            // Sets the HTML
+            /** Sets the HTML */
             html: function (content) {
                 elem.innerHTML = content;
                 return iface;
             },
 
-            // Returns the width of this element
+            /** Returns the width of this element */
             getWidth: function () {
                 return elem.clientWidth;
             },
 
-            // Adds a click handler to this element
+            /** Adds a click handler to this element */
             onClick: function(callback) {
                 if (elem.attachEvent) {
                     elem.attachEvent('onclick', callback);
@@ -99,11 +101,10 @@ window.picoModal = (function(window, document) {
                 else {
                     elem.addEventListener('click', callback);
                 }
-
                 return iface;
             },
 
-            // Removes this element from the DOM
+            /** Removes this element from the DOM */
             destroy: function() {
                 document.body.removeChild(elem);
                 return iface;
@@ -112,10 +113,12 @@ window.picoModal = (function(window, document) {
         };
 
         return iface;
-    };
+    }
 
-    // An interface for generating the grey-out effect
-    var overlay = function( getOption ) {
+    /**
+     * Generates the grey-out effect
+     */
+    function overlay( getOption ) {
 
         // The registered on click events
         var clickCallbacks = observable();
@@ -143,10 +146,13 @@ window.picoModal = (function(window, document) {
             destroy: elem.destroy,
             onClick: clickCallbacks.watch
         };
-    };
+    }
 
-    // A function for easily displaying a modal with the given content
-    return function(options) {
+
+    /**
+     * A function for easily displaying a modal with the given content
+     */
+    window.picoModal = function picoModal(options) {
 
         if ( typeof options === "string" ) {
             options = { content: options };
