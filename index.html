@@ -5,10 +5,33 @@
         <script src="src/picoModal.js"></script>
     </head>
     <body>
+        <p><a href="#" id="createFromString">Simple Create</a></p>
+        <p><a href="#" id="createFromNode">Create From DOM Node</a></p>
+
+        <div style="display: none">
+            <div id="contentFromNode">
+                This content was pulled from a dom node
+            </div>
+        </div>
+
         <script>
-            picoModal(
-                "Ah, the pitter patter of tiny feet in huge combat boots."
-            );
+            function onClick(id, action) {
+                document.getElementById(id)
+                    .addEventListener("click", function(e) {
+                        e.preventDefault();
+                        action()
+                    });
+            }
+
+            onClick("createFromString", function() {
+                picoModal(
+                    "Ah, the pitter patter of tiny feet in huge combat boots."
+                );
+            });
+
+            onClick("createFromNode", function() {
+                picoModal( document.getElementById("contentFromNode") );
+            });
         </script>
     </body>
 </html>

@@ -25,6 +25,27 @@
     "use strict";
 
     /**
+     * Returns whether a value is a dom node
+     */
+    function isNode(value) {
+        if ( typeof Node === "object" ) {
+            return value instanceof Node;
+        }
+        else {
+            return value &&
+                typeof value === "object" &&
+                typeof value.nodeType === "number";
+        }
+    }
+
+    /**
+     * Returns whether a value is a string
+     */
+    function isString(value) {
+        return typeof value === "string";
+    }
+
+    /**
      * Generates observable objects that can be watched and triggered
      */
     function observable() {
@@ -84,7 +105,12 @@
 
             /** Sets the HTML */
             html: function (content) {
-                elem.innerHTML = content;
+                if ( isNode(content) ) {
+                    elem.appendChild( content );
+                }
+                else {
+                    elem.innerHTML = content;
+                }
                 return iface;
             },
 
@@ -154,7 +180,7 @@
      */
     window.picoModal = function picoModal(options) {
 
-        if ( typeof options === "string" ) {
+        if ( isString(options) || isNode(options) ) {
             options = { content: options };
         }
 
