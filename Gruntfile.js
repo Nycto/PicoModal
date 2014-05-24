@@ -61,8 +61,16 @@ module.exports = function(grunt) {
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint']
-        }
+        },
 
+        connect: {
+            server: {
+                options: {
+                    port: 8080,
+                    base: '.'
+                }
+            }
+        }
     });
 
     // Plugins
@@ -70,9 +78,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     // Default task(s).
     grunt.registerTask('default', ['jshint', 'string-replace', 'uglify']);
 
+    grunt.registerTask('dev', ['default', 'connect', 'watch']);
 };
