@@ -75,94 +75,89 @@
     /**
      * A small interface for creating and managing a dom element
      */
-    function make( parent ) {
-
-        var elem = document.createElement('div');
-        (parent || document.body).appendChild(elem);
-
-        var iface = {
-
-            elem: elem,
-
-            /** Creates a child of this node */
-            child: function () {
-                return make(elem);
-            },
-
-            /** Applies a set of styles to an element */
-            stylize: function(styles) {
-                styles = styles || {};
-
-                if ( typeof styles.opacity !== "undefined" ) {
-                    styles.filter =
-                        "alpha(opacity=" + (styles.opacity * 100) + ")";
-                }
-
-                for (var prop in styles) {
-                    if (styles.hasOwnProperty(prop)) {
-                        elem.style[prop] = styles[prop];
-                    }
-                }
-
-                return iface;
-            },
-
-            /** Adds a class name */
-            clazz: function (clazz) {
-                elem.className += clazz;
-                return iface;
-            },
-
-            /** Sets the HTML */
-            html: function (content) {
-                if ( isNode(content) ) {
-                    elem.appendChild( content );
-                }
-                else {
-                    elem.innerHTML = content;
-                }
-                return iface;
-            },
-
-            /** Returns the width of this element */
-            getWidth: function () {
-                return elem.clientWidth;
-            },
-
-            /** Adds a click handler to this element */
-            onClick: function(callback) {
-                if (elem.attachEvent) {
-                    elem.attachEvent('onclick', callback);
-                }
-                else {
-                    elem.addEventListener('click', callback);
-                }
-                return iface;
-            },
-
-            /** Removes this element from the DOM */
-            destroy: function() {
-                document.body.removeChild(elem);
-            },
-
-            /** Hides this element */
-            hide: function() {
-                elem.style.display = "none";
-            },
-
-            /** Shows this element */
-            show: function() {
-                elem.style.display = "block";
-            }
-        };
-
-        return iface;
+    function Elem( parent ) {
+        this.elem = document.createElement('div');
+        (parent || document.body).appendChild(this.elem);
     }
+
+    Elem.prototype = {
+
+        /** Creates a child of this node */
+        child: function () {
+            return new Elem(this.elem);
+        },
+
+        /** Applies a set of styles to an element */
+        stylize: function(styles) {
+            styles = styles || {};
+
+            if ( typeof styles.opacity !== "undefined" ) {
+                styles.filter =
+                    "alpha(opacity=" + (styles.opacity * 100) + ")";
+            }
+
+            for (var prop in styles) {
+                if (styles.hasOwnProperty(prop)) {
+                    this.elem.style[prop] = styles[prop];
+                }
+            }
+
+            return this;
+        },
+
+        /** Adds a class name */
+        clazz: function (clazz) {
+            this.elem.className += clazz;
+            return this;
+        },
+
+        /** Sets the HTML */
+        html: function (content) {
+            if ( isNode(content) ) {
+                this.elem.appendChild( content );
+            }
+            else {
+                this.elem.innerHTML = content;
+            }
+            return this;
+        },
+
+        /** Returns the width of this element */
+        getWidth: function () {
+            return this.elem.clientWidth;
+        },
+
+        /** Adds a click handler to this element */
+        onClick: function(callback) {
+            if (this.elem.attachEvent) {
+                this.elem.attachEvent('onclick', callback);
+            }
+            else {
+                this.elem.addEventListener('click', callback);
+            }
+            return this;
+        },
+
+        /** Removes this element from the DOM */
+        destroy: function() {
+            document.body.removeChild(this.elem);
+        },
+
+        /** Hides this element */
+        hide: function() {
+            this.elem.style.display = "none";
+        },
+
+        /** Shows this element */
+        show: function() {
+            this.elem.style.display = "block";
+        }
+    };
 
 
     /** Generates the grey-out effect */
     function buildOverlay( getOption, close ) {
-        return make()
+        return new Elem()
             .clazz("pico-overlay")
             .stylize({
                 display: "block",
@@ -182,7 +177,7 @@
 
     /** Builds the content of a modal */
     function buildModal( getOption ) {
-        var elem = make()
+        var elem = new Elem()
             .clazz("pico-content")
             .stylize({
                 display: 'block',
