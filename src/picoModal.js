@@ -24,9 +24,7 @@
 (function(window, document) {
     "use strict";
 
-    /**
-     * Returns whether a value is a dom node
-     */
+    /** Returns whether a value is a dom node */
     function isNode(value) {
         if ( typeof Node === "object" ) {
             return value instanceof Node;
@@ -38,11 +36,22 @@
         }
     }
 
-    /**
-     * Returns whether a value is a string
-     */
+    /** Returns whether a value is a string */
     function isString(value) {
         return typeof value === "string";
+    }
+
+    /** Memoizes the result of another method */
+    function memoize( callback ) {
+        var notCalled = true;
+        var result;
+        return function () {
+            if ( notCalled ) {
+                result = callback.apply(this, arguments);
+                notCalled = false;
+            }
+            return result;
+        };
     }
 
     /**
@@ -54,13 +63,14 @@
             watch: function(callback) {
                 callbacks.push(callback);
             },
-            trigger: function() {
+            trigger: function( modal ) {
                 for (var i = 0; i < callbacks.length; i++) {
-                    window.setTimeout(callbacks[i], 1);
+                    window.setTimeout(callbacks[i].bind(window, modal), 1);
                 }
             }
         };
     }
+
 
     /**
      * A small interface for creating and managing a dom element
@@ -133,24 +143,26 @@
             /** Removes this element from the DOM */
             destroy: function() {
                 document.body.removeChild(elem);
-                return iface;
-            }
+            },
 
+            /** Hides this element */
+            hide: function() {
+                elem.style.display = "none";
+            },
+
+            /** Shows this element */
+            show: function() {
+                elem.style.display = "block";
+            }
         };
 
         return iface;
     }
 
-    /**
-     * Generates the grey-out effect
-     */
-    function overlay( getOption ) {
 
-        // The registered on click events
-        var clickCallbacks = observable();
-
-        // The overlay element
-        var elem = make()
+    /** Generates the grey-out effect */
+    function buildOverlay( getOption, close ) {
+        return make()
             .clazz("pico-overlay")
             .stylize({
                 display: "block",
@@ -161,39 +173,15 @@
                 width: "100%",
                 zIndex: 10000
             })
-            .stylize( getOption('overlayStyles', {
+            .stylize(getOption('overlayStyles', {
                 opacity: 0.5,
                 background: "#000"
-            }) )
-            .onClick(clickCallbacks.trigger);
-
-        return {
-            elem: elem.elem,
-            destroy: elem.destroy,
-            onClick: clickCallbacks.watch
-        };
+            }))
+            .onClick( getOption('overlayClose', true) ? close : function(){} );
     }
 
-
-    /**
-     * A function for easily displaying a modal with the given content
-     */
-    window.picoModal = function picoModal(options) {
-
-        if ( isString(options) || isNode(options) ) {
-            options = { content: options };
-        }
-
-        // Returns a named option if it has been explicitly defined. Otherwise,
-        // it returns the given default value
-        function getOption ( opt, defaultValue ) {
-            return options[opt] === void(0) ? defaultValue : options[opt];
-        }
-
-        var shadow = overlay( getOption );
-
-        var closeCallbacks = observable();
-
+    /** Builds the content of a modal */
+    function buildModal( getOption ) {
         var elem = make()
             .clazz("pico-content")
             .stylize({
@@ -203,7 +191,7 @@
                 left: "50%",
                 top: "50px"
             })
-            .html(options.content);
+            .html( getOption('content') );
 
         var width = getOption('width', elem.getWidth());
 
@@ -218,19 +206,13 @@
                 borderRadius: "5px"
             }) );
 
-        var close = function () {
-            closeCallbacks.trigger();
-            shadow.destroy();
-            elem.destroy();
-        };
+        return elem;
+    }
 
-        if ( getOption('overlayClose', true) ) {
-            shadow.onClick(close);
-        }
-
-        var closeButton;
+    /** Builds the close button */
+    function buildClose ( elem, getOption, close ) {
         if ( getOption('closeButton', true) ) {
-            closeButton = elem.child()
+            return elem().child()
                 .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
                 .stylize( getOption('closeStyles', {
@@ -248,15 +230,106 @@
                 }) )
                 .onClick(close);
         }
+    }
 
-        return {
-            modalElem: elem.elem,
-            closeElem: closeButton ? closeButton.elem : null,
-            overlayElem: shadow.elem,
-            close: close,
-            onClose: closeCallbacks.watch
+    /** Builds a method that calls a method and returns an element */
+    function buildElemAccessor( builder ) {
+        return function () {
+            return builder().elem;
         };
-    };
+    }
+
+
+    /**
+     * Displays a modal
+     */
+    function picoModal(options) {
+
+        if ( isString(options) || isNode(options) ) {
+            options = { content: options };
+        }
+
+        var afterShowEvent = observable();
+        var afterCloseEvent = observable();
+        var afterCreateEvent = observable();
+
+        /**
+         * Returns a named option if it has been explicitly defined. Otherwise,
+         * it returns the given default value
+         */
+        function getOption ( opt, defaultValue ) {
+            return options[opt] === void(0) ? defaultValue : options[opt];
+        }
+
+        /** Hides this modal */
+        function close () {
+            shadowElem().hide();
+            modalElem().hide();
+            afterCloseEvent.trigger(iface);
+        }
+
+        /** Wraps a method so it returns the modal interface */
+        function returnIface ( callback ) {
+            return function () {
+                callback.apply(this, arguments);
+                return this;
+            };
+        }
+
+        var modalElem = memoize(function() {
+            var elem = buildModal(getOption);
+            afterCreateEvent.trigger(iface);
+            return elem;
+        });
+
+        var shadowElem = memoize(buildOverlay.bind(window, getOption, close));
+
+        var closeElem = memoize(
+            buildClose.bind(window, modalElem, getOption, close));
+
+        var iface = {
+
+            /** Returns the wrapping modal element */
+            modalElem: buildElemAccessor(modalElem),
+
+            /** Returns the close button element */
+            closeElem: buildElemAccessor(closeElem),
+
+            /** Returns the overlay element */
+            overalElem: buildElemAccessor(shadowElem),
+
+            /** Shows this modal */
+            show: function () {
+                shadowElem().show();
+                closeElem();
+                modalElem().show();
+                afterShowEvent.trigger(iface);
+                return this;
+            },
+
+            /** Hides this modal */
+            close: returnIface(close),
+
+            /** Destroys this modal */
+            destroy: function () {
+                modalElem = modalElem().destroy();
+                shadowElem = shadowElem().destroy();
+                closeElem = undefined;
+            },
+
+            /** Executes after the DOM nodes are created */
+            afterCreate: returnIface(afterCreateEvent.watch),
+
+            /** Executes a callback after this modal is shown */
+            afterShow: returnIface(afterShowEvent.watch),
+
+            /** Executes a callback after this modal is closed */
+            afterClose: returnIface(afterCloseEvent.watch)
+        };
+
+        return iface;
+    }
+
+    window.picoModal = picoModal;
 
 }(window, document));
-
