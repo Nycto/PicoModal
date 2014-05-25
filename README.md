@@ -6,12 +6,12 @@ A small, self-contained JavaScript modal library
 Features
 --------
 
-* Small: At just over 1.1kb minified & gzipped, its small and easily embeddable
+* Small: At just over 1.3kb minified & gzipped, its small and easily embeddable
 * No Library Dependencies: PicoModal does not depend on any JS libraries,
   so you can use it in places where you don't have access to one.
 * Self-contained: No extra CSS or images required
 * Simple: The interface is easy to use
-* Customizable: Its easy to apply your own styling
+* Customizable: Its easy to apply your own styling and behaviors
 
 Download
 --------
@@ -27,15 +27,14 @@ IE9+, Chrome, FireFox and Safari
 Basic Example
 -------------
 
-If all you want to do is display a modal, it's as easy as
-this:
+If all you want to do is display a modal, it's as easy as this:
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.").show();
 ```
 
-For more control over the behaviour of the modal, you can pass in a
-settings object:
+For more control over the behaviour of the modal, you can pass in a settings
+object:
 
 ```javascript
   picoModal({
@@ -69,7 +68,7 @@ You can also attach an event to fire when the modal is closed:
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
-      .onClose(function () { alert("Closed"); })
+      .afterClose(function () { alert("Closed"); })
       .show();
 ```
 
@@ -107,10 +106,76 @@ To use custom HTML for the close button, do this:
   }).show();
 ```
 
+Events
+------
+
+There are a few events you can hook into for watching and sometimes monitoring
+the behavior of a modal. The events are:
+
+* afterCreate: Triggered when the DOM Nodes for a modal are created
+* beforeShow: Triggered before a modal is shown. Allows for cancellation
+* afterShow: Triggered after a modal is shown
+* beforeClose: Triggered before a modal is closed. Allows for cancellation
+* afterClose: triggered after a modal is closed
+
+These exist as methods on the PicoModal instance. You can use them like this:
+
+```javascript
+  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
+      .afterClose(function (modal) {
+          alert("Modal Closed: " + modal.modalElem().innerText);
+      })
+      .show();
+```
+
+The first argument passed to the callback is the PicoModal instance for the
+specific modal.
+
+For two of the events, beforeShow and beforeClose, there is a second argument
+passed that lets you cancel the behavior in question. For example:
+
+```javascript
+  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
+      .beforeShow(function (modal, event) {
+          if ( !confirm("Are you sure you want to open this modal?") ) {
+              event.preventDefault();
+          }
+      })
+      .show();
+```
+
+Animation
+---------
+
+PicoModal doesn't have any built in animations, but you can use the event
+system to add some of your own. For example, the following snippet adds a fade
+in and out using jQuery:
+
+```javascript
+  picoModal({
+      content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+      overlayStyles: function ( styles ) { styles.opacity = 0; },
+      modalStyles: function ( styles ) { styles.opacity = 0; }
+  })
+  .afterShow(function(modal){
+      $(modal.overlayElem()).animate({opacity: .5});
+      $(modal.modalElem()).animate({opacity: 1});
+  })
+  .beforeClose(function(modal, event) {
+      event.preventDefault();
+      $(modal.overlayElem()).add(modal.modalElem())
+          .animate(
+              { opacity: 0 },
+              { complete: modal.forceClose }
+          );
+  })
+  .show();
+```
+
 Settings
 --------
 
-The following settings are available:
+The following settings are available when creating a modal:
 
 * __content__: The data to display to the user
 * __width__: The forced width of the modal
@@ -123,17 +188,32 @@ The following settings are available:
 * __modalStyles__: A hash of additional CSS properties to apply to the
   modal element
 
+If a method is passed as an argument for any of the settings, it will be
+called. The first argument passed in is the default value for that setting. This
+makes it easy to modify the defaults instead of having to totally define your
+own, like so:
 
-Return Object Properties
-------------------------
+```javascript
+  picoModal({
+      content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+      overlayStyles: function (styles) {
+          styles.opacity = 0.1;
+          return styles;
+      }
+  }).show();
+```
 
-The following methods are available on the object returned by picoModal:
+Modal Instance API
+------------------
+
+The following methods are available on the object returned by `picoModal`:
 
 * __modalElem__: Returns the modal DOM Node
 * __closeElem__: Returns the close button DOM Node
 * __overlayElem__: Returns the overlay DOM Node
 * __show__: Displays the modal
 * __close__: Hides the modal
+* __forceClose__: Hides the modal without calling the beforeClose events
 * __destroy__: Detaches all DOM Nodes and unhooks this modal
 * __afterCreate__: Registers a callback to invoke when the modal is created
 * __beforeShow__: Registers a callback to invoke before the modal is shown
