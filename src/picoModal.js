@@ -291,7 +291,7 @@
             closeElem: buildElemAccessor(closeElem),
 
             /** Returns the overlay element */
-            overalElem: buildElemAccessor(shadowElem),
+            overlayElem: buildElemAccessor(shadowElem),
 
             /** Shows this modal */
             show: function () {
