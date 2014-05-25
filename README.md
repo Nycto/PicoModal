@@ -6,7 +6,7 @@ A small, self-contained JavaScript modal library
 Features
 --------
 
-* Small: At just over 1.6kb, its small and easily embeddable
+* Small: At just over 1.1kb minified & gzipped, its small and easily embeddable
 * No Library Dependencies: PicoModal does not depend on any JS libraries,
   so you can use it in places where you don't have access to one.
 * Self-contained: No extra CSS or images required
@@ -22,20 +22,20 @@ The latest version of PicoModal is available here:
 Browser Support
 ---------------
 
-IE7+, Chrome, FireFox, Safari and Opera
+IE9+, Chrome, FireFox and Safari
 
 Basic Example
 -------------
 
 If all you want to do is display a modal, it's as easy as
-this: ([Run this code](http://jsfiddle.net/z2t9e/))
+this:
 
 ```javascript
-  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.");
+  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.").show();
 ```
 
 For more control over the behaviour of the modal, you can pass in a
-settings object: ([Run this code](http://jsfiddle.net/BqHeY/))
+settings object:
 
 ```javascript
   picoModal({
@@ -44,7 +44,7 @@ settings object: ([Run this code](http://jsfiddle.net/BqHeY/))
           backgroundColor: "#169",
           opacity: 0.75
       }
-  });
+  }).show();
 ```
 
 A full list of settings is documented below.
@@ -53,55 +53,47 @@ More Examples
 -------------
 
 If you need to be able to programatically close the modal you can do it like
-this: ([Run this code](http://jsfiddle.net/8pPTD/))
+this:
 
 ```javascript
-  var modal = picoModal(
+  picoModal(
       "<p>Ah, the pitter patter of tiny feet in huge combat boots.<p>"
       + "<p><a href='#' class='dismiss'>Dismiss</a></p>"
-  );
-
-  document.getElementsByClassName("dismiss")[0].onclick = function () {
-      modal.close();
-  };
+  ).afterCreate(function(modal){
+      modal.modalElem().getElementsByClassName("dismiss")[0]
+          .addEventListener('click', modal.close);
+  }).show();
 ```
 
 You can also attach an event to fire when the modal is closed:
-([Run this code](http://jsfiddle.net/TM95X/))
 
 ```javascript
-  var modal = picoModal(
-      "Ah, the pitter patter of tiny feet in huge combat boots."
-  );
-
-  modal.onClose(function () {
-      alert("Closed");
-  });
+  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
+      .onClose(function () { alert("Closed"); })
+      .show();
 ```
 
 To disable the close button, and instead just rely on someone clicking
 outside of the modal, you can do this:
-([Run this code](http://jsfiddle.net/dwhcX/))
 
 ```javascript
   picoModal({
       content: "Ah, the pitter patter of tiny feet in huge combat boots.",
       closeButton: false
-  });
+  }).show();
 ```
 
 Or, to disable closing when someone clicks outside of the modal, you can
-do this: ([Run this code](http://jsfiddle.net/WkG3d/))
+do this:
 
 ```javascript
   picoModal({
       content: "Ah, the pitter patter of tiny feet in huge combat boots.",
       overlayClose: false
-  });
+  }).show();
 ```
 
 To use custom HTML for the close button, do this:
-([Run this code](http://jsfiddle.net/emSBr/))
 
 ```javascript
   picoModal({
@@ -112,7 +104,7 @@ To use custom HTML for the close button, do this:
           background: "#eee", padding: "5px 10px", cursor: "pointer",
           borderRadius: "5px", border: "1px solid #ccc"
       }
-  });
+  }).show();
 ```
 
 Settings
@@ -135,14 +127,17 @@ The following settings are available:
 Return Object Properties
 ------------------------
 
-The following properties are available on the object returned by picoModal:
+The following methods are available on the object returned by picoModal:
 
-* __modalElem__: A reference to the modal DOM element
-* __closeElem__: A reference to the close DOM element
-* __overlayElem__: A reference to the overlay DOM element
-* __close__: A function to close the modal
-* __onClose__: A function that registers a callback to invoke when the
-  modal is closed
+* __modalElem__: Returns the modal DOM Node
+* __closeElem__: Returns the close button DOM Node
+* __overlayElem__: Returns the overlay DOM Node
+* __show__: Displays the modal
+* __close__: Hides the modal
+* __destroy__: Detaches all DOM Nodes and unhooks this modal
+* __afterClose__: Registers a callback to invoke when the modal is closed
+* __afterShow__: Registers a callback to invoke when the modal is shown
+* __afterCreate__: Registers a callback to invoke when the modal is created
 
 License
 -------
