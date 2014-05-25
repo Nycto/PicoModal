@@ -280,7 +280,11 @@
          * it returns the given default value
          */
         function getOption ( opt, defaultValue ) {
-            return options[opt] === void(0) ? defaultValue : options[opt];
+            var value = options[opt];
+            if ( typeof value === "function" ) {
+                value = value( defaultValue );
+            }
+            return value === undefined ? defaultValue : value;
         }
 
         /** Hides this modal */

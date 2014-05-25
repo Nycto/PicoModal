@@ -107,12 +107,11 @@
             buildModal("animate", function() {
                 return picoModal({
                     content: "Ah, the pitter patter of tiny feet in huge combat boots.",
-                    overlayStyles: { opacity: 0, background: "#000" },
-                    modalStyles: {
-                        opacity: 0,
-                        background: "#fff",
-                        padding: "20px",
-                        borderRadius: "4px"
+                    overlayStyles: function ( styles ) {
+                        styles.opacity = 0;
+                    },
+                    modalStyles: function ( styles ) {
+                        styles.opacity = 0;
                     }
                 }).afterShow(function(modal){
                     $(modal.overlayElem()).animate({opacity: .5});
