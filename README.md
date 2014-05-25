@@ -135,9 +135,11 @@ The following methods are available on the object returned by picoModal:
 * __show__: Displays the modal
 * __close__: Hides the modal
 * __destroy__: Detaches all DOM Nodes and unhooks this modal
-* __afterClose__: Registers a callback to invoke when the modal is closed
-* __afterShow__: Registers a callback to invoke when the modal is shown
 * __afterCreate__: Registers a callback to invoke when the modal is created
+* __beforeShow__: Registers a callback to invoke before the modal is shown
+* __afterShow__: Registers a callback to invoke when the modal is shown
+* __beforeClose__: Registers a callback to invoke before the modal is closed
+* __afterClose__: Registers a callback to invoke when the modal is closed
 
 License
 -------

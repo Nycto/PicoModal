@@ -3,6 +3,8 @@
     <head>
         <title>PicoModal Test Page</title>
         <script src="src/picoModal.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
     </head>
     <body>
         <p><a href="#" id="createFromString">Simple Create</a></p>
@@ -11,7 +13,8 @@
         <p><a href="#" id="withoutShadowClose">Without shadow close</a></p>
         <p><a href="#" id="customStyles">Custom Styles</a></p>
         <p><a href="#" id="closeMethod">Close Method</a></p>
-        <p><a href="#" id="closeEvent">Close Event</a></p>
+        <p><a href="#" id="events">Events</a></p>
+        <p><a href="#" id="animate">With Animation</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -76,11 +79,52 @@
                 });
             });
 
-            buildModal("closeEvent", function() {
+            buildModal("events", function() {
                 return picoModal(
                     "Ah, the pitter patter of tiny feet in huge combat boots."
-                ).afterClose(function(modal){
-                    alert(modal.modalElem().innerText);
+                )
+                .afterCreate(function (modal) {
+                    modal.modalElem().innerHTML += "<p>After Create</p>";
+                })
+                .beforeShow(function (modal, event) {
+                    if ( !confirm("Do you want to show this modal?") ) {
+                        event.preventDefault();
+                    }
+                })
+                .afterShow(function (modal) {
+                    modal.modalElem().innerHTML += "<p>After Show</p>";
+                })
+                .beforeClose(function (modal, event) {
+                    if ( !confirm("Do you want to close this modal?") ) {
+                        event.preventDefault();
+                    }
+                })
+                .afterClose(function(modal){
+                    alert("Closed");
+                });
+            });
+
+            buildModal("animate", function() {
+                return picoModal({
+                    content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+                    overlayStyles: { opacity: 0, background: "#000" },
+                    modalStyles: {
+                        opacity: 0,
+                        background: "#fff",
+                        padding: "20px",
+                        borderRadius: "4px"
+                    }
+                }).afterShow(function(modal){
+                    $(modal.overlayElem()).animate({opacity: .5});
+                    $(modal.modalElem()).animate({opacity: 1});
+                }).beforeClose(function(modal, event) {
+                    event.preventDefault();
+                    $(modal.overlayElem())
+                        .add(modal.modalElem())
+                        .animate(
+                            { opacity: 0 },
+                            { complete: modal.forceClose }
+                        );
                 });
             });
 

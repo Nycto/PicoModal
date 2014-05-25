@@ -41,32 +41,27 @@
         return typeof value === "string";
     }
 
-    /** Memoizes the result of another method */
-    function memoize( callback ) {
-        var notCalled = true;
-        var result;
-        return function () {
-            if ( notCalled ) {
-                result = callback.apply(this, arguments);
-                notCalled = false;
-            }
-            return result;
-        };
-    }
-
     /**
      * Generates observable objects that can be watched and triggered
      */
     function observable() {
         var callbacks = [];
         return {
-            watch: function(callback) {
-                callbacks.push(callback);
-            },
+            watch: callbacks.push.bind(callbacks),
             trigger: function( modal ) {
+
+                var unprevented = true;
+                var event = {
+                    preventDefault: function preventDefault () {
+                        unprevented = false;
+                    }
+                };
+
                 for (var i = 0; i < callbacks.length; i++) {
-                    window.setTimeout(callbacks[i].bind(window, modal), 1);
+                    callbacks[i](modal, event);
                 }
+
+                return unprevented;
             }
         };
     }
@@ -207,7 +202,7 @@
     /** Builds the close button */
     function buildClose ( elem, getOption, close ) {
         if ( getOption('closeButton', true) ) {
-            return elem().child()
+            return elem.child()
                 .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
                 .stylize( getOption('closeStyles', {
@@ -244,9 +239,11 @@
             options = { content: options };
         }
 
-        var afterShowEvent = observable();
-        var afterCloseEvent = observable();
         var afterCreateEvent = observable();
+        var beforeShowEvent = observable();
+        var afterShowEvent = observable();
+        var beforeCloseEvent = observable();
+        var afterCloseEvent = observable();
 
         /**
          * Returns a named option if it has been explicitly defined. Otherwise,
@@ -257,30 +254,49 @@
         }
 
         /** Hides this modal */
-        function close () {
+        function forceClose () {
             shadowElem().hide();
             modalElem().hide();
             afterCloseEvent.trigger(iface);
+        }
+
+        /** Gracefully hides this modal */
+        function close () {
+            if ( beforeCloseEvent.trigger(iface) ) {
+                forceClose();
+            }
         }
 
         /** Wraps a method so it returns the modal interface */
         function returnIface ( callback ) {
             return function () {
                 callback.apply(this, arguments);
-                return this;
+                return iface;
             };
         }
 
-        var modalElem = memoize(function() {
-            var elem = buildModal(getOption);
-            afterCreateEvent.trigger(iface);
-            return elem;
-        });
 
-        var shadowElem = memoize(buildOverlay.bind(window, getOption, close));
+        // The constructed dom nodes
+        var built;
 
-        var closeElem = memoize(
-            buildClose.bind(window, modalElem, getOption, close));
+        /** Builds a method that calls a method and returns an element */
+        function build ( name ) {
+            if ( !built ) {
+                var modal = buildModal(getOption);
+                built = {
+                    modal: modal,
+                    overlay: buildOverlay(getOption, close),
+                    close: buildClose(modal, getOption, close)
+                };
+                afterCreateEvent.trigger(iface);
+            }
+            return built[name];
+        }
+
+        var modalElem = build.bind(window, 'modal');
+        var shadowElem = build.bind(window, 'overlay');
+        var closeElem = build.bind(window, 'close');
+
 
         var iface = {
 
@@ -295,15 +311,23 @@
 
             /** Shows this modal */
             show: function () {
-                shadowElem().show();
-                closeElem();
-                modalElem().show();
-                afterShowEvent.trigger(iface);
+                if ( beforeShowEvent.trigger(iface) ) {
+                    shadowElem().show();
+                    closeElem();
+                    modalElem().show();
+                    afterShowEvent.trigger(iface);
+                }
                 return this;
             },
 
             /** Hides this modal */
             close: returnIface(close),
+
+            /**
+             * Force closes this modal. This will not call beforeClose
+             * events and will just immediately hide the modal
+             */
+            forceClose: returnIface(forceClose),
 
             /** Destroys this modal */
             destroy: function () {
@@ -315,8 +339,14 @@
             /** Executes after the DOM nodes are created */
             afterCreate: returnIface(afterCreateEvent.watch),
 
+            /** Executes a callback before this modal is closed */
+            beforeShow: returnIface(beforeShowEvent.watch),
+
             /** Executes a callback after this modal is shown */
             afterShow: returnIface(afterShowEvent.watch),
+
+            /** Executes a callback before this modal is closed */
+            beforeClose: returnIface(beforeCloseEvent.watch),
 
             /** Executes a callback after this modal is closed */
             afterClose: returnIface(afterCloseEvent.watch)
