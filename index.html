@@ -9,8 +9,7 @@
         <p><a href="#" id="createFromNode">Create From DOM Node</a></p>
         <p><a href="#" id="withoutClose">Without a close button</a></p>
         <p><a href="#" id="withoutShadowClose">Without shadow close</a></p>
-        <p><a href="#" id="overlayStyles">Overlay Styles</a></p>
-        <p><a href="#" id="customClose">Custom Close</a></p>
+        <p><a href="#" id="customStyles">Custom Styles</a></p>
         <p><a href="#" id="closeMethod">Close Method</a></p>
         <p><a href="#" id="closeEvent">Close Event</a></p>
 
@@ -51,18 +50,19 @@
                 overlayClose: false
             });
 
-            buildModal("overlayStyles", {
+            buildModal("customStyles", {
                 content: "Ah, the pitter patter of tiny feet in huge combat boots.",
-                overlayStyles: { backgroundColor: "#169", opacity: 0.75 }
-            });
-
-            buildModal("customClose", {
-                content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+                overlayStyles: { backgroundColor: "#169", opacity: 0.6 },
+                modalStyles: {
+                    padding: "30px",
+                    background: "#fff",
+                    border: "3px solid #169"
+                },
                 closeHtml: "<span>Close</span>",
                 closeStyles: {
-                    position: "absolute", top: "-10px", right: "-10px",
-                    background: "#eee", padding: "5px 10px", cursor: "pointer",
-                    borderRadius: "5px", border: "1px solid #ccc"
+                    position: "absolute", top: "-3px", right: "-3px",
+                    background: "#fff", padding: "4px 8px", cursor: "pointer",
+                    border: "3px solid #169", fontSize: "10pt"
                 }
             });
 
