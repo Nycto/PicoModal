@@ -70,16 +70,24 @@
     /**
      * A small interface for creating and managing a dom element
      */
-    function Elem( parent ) {
-        this.elem = document.createElement('div');
-        (parent || document.body).appendChild(this.elem);
+    function Elem( elem ) {
+        this.elem = elem;
     }
+
+    /**
+     * Creates a new div
+     */
+    Elem.div = function ( parent ) {
+        var elem = document.createElement('div');
+        (parent || document.body).appendChild(elem);
+        return new Elem(elem);
+    };
 
     Elem.prototype = {
 
         /** Creates a child of this node */
         child: function () {
-            return new Elem(this.elem);
+            return Elem.div(this.elem);
         },
 
         /** Applies a set of styles to an element */
@@ -146,13 +154,27 @@
         /** Shows this element */
         show: function() {
             this.elem.style.display = "block";
+        },
+
+        /** Executes a callback on all the ancestors of an element */
+        anyAncestor: function ( predicate ) {
+            var elem = this.elem;
+            while ( elem ) {
+                if ( predicate( new Elem(elem) ) ) {
+                    return true;
+                }
+                else {
+                    elem = elem.parentNode;
+                }
+            }
+            return false;
         }
     };
 
 
     /** Generates the grey-out effect */
     function buildOverlay( getOption, close ) {
-        return new Elem()
+        return Elem.div()
             .clazz("pico-overlay")
             .stylize({
                 display: "block",
@@ -171,8 +193,8 @@
     }
 
     /** Builds the content of a modal */
-    function buildModal( getOption ) {
-        var elem = new Elem()
+    function buildModal( getOption, close ) {
+        var elem = Elem.div()
             .clazz("pico-content")
             .stylize({
                 display: 'block',
@@ -181,7 +203,16 @@
                 left: "50%",
                 top: "50px"
             })
-            .html( getOption('content') );
+            .html( getOption('content') )
+            .onClick(function (event) {
+                var isCloseClick = new Elem(event.target)
+                    .anyAncestor(function (elem) {
+                        return /\bpico-close\b/.test(elem.elem.className);
+                    });
+                if ( isCloseClick ) {
+                    close();
+                }
+            });
 
         var width = getOption('width', elem.getWidth());
 
@@ -200,7 +231,7 @@
     }
 
     /** Builds the close button */
-    function buildClose ( elem, getOption, close ) {
+    function buildClose ( elem, getOption ) {
         if ( getOption('closeButton', true) ) {
             return elem.child()
                 .html( getOption('closeHtml', "&#xD7;") )
@@ -217,8 +248,7 @@
                     textAlign: "center",
                     lineHeight: "15px",
                     background: "#CCC"
-                }) )
-                .onClick(close);
+                }) );
         }
     }
 
@@ -282,11 +312,11 @@
         /** Builds a method that calls a method and returns an element */
         function build ( name ) {
             if ( !built ) {
-                var modal = buildModal(getOption);
+                var modal = buildModal(getOption, close);
                 built = {
                     modal: modal,
                     overlay: buildOverlay(getOption, close),
-                    close: buildClose(modal, getOption, close)
+                    close: buildClose(modal, getOption)
                 };
                 afterCreateEvent.trigger(iface);
             }
