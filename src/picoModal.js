@@ -190,7 +190,11 @@
                 opacity: 0.5,
                 background: "#000"
             }))
-            .onClick( getOption('overlayClose', true) ? close : function(){} );
+            .onClick(function () {
+                if ( getOption('overlayClose', true) ) {
+                    close();
+                }
+            });
     }
 
     /** Builds the content of a modal */
@@ -371,6 +375,15 @@
                 modalElem = modalElem().destroy();
                 shadowElem = shadowElem().destroy();
                 closeElem = undefined;
+            },
+
+            /**
+             * Updates the options for this modal. This will only let you
+             * change options that are re-evaluted regularly, such as
+             * `overlayClose`.
+             */
+            options: function ( opts ) {
+                options = opts;
             },
 
             /** Executes after the DOM nodes are created */

@@ -218,6 +218,8 @@ The following methods are available on the object returned by `picoModal`:
 * __close__: Hides the modal
 * __forceClose__: Hides the modal without calling the beforeClose events
 * __destroy__: Detaches all DOM Nodes and unhooks this modal
+* __options__: Updates the options for this modal. This will only let you
+  change options that are re-evaluted regularly, such as `overlayClose`.
 * __afterCreate__: Registers a callback to invoke when the modal is created
 * __beforeShow__: Registers a callback to invoke before the modal is shown
 * __afterShow__: Registers a callback to invoke when the modal is shown
