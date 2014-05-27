@@ -5,13 +5,40 @@
         <script src="src/picoModal.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
+        <style type="text/css">
+            .customModal {
+                padding: 20px;
+                background: #fff;
+                border-radius: 10px;
+                color: #333;
+                box-shadow: 0 0 8px 0 #000;
+            }
+            .customShadow {
+                background-color: #000;
+                opacity: 0.8;
+            }
+            .customClose {
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                background: black;
+                padding: 2px 6px;
+                cursor: pointer;
+                border: 3px solid white;
+                color: white;
+                border-radius: 50px;
+                box-shadow: 0 0 8px 0 #000;
+            }
+        </style>
     </head>
+
     <body>
         <p><a href="#" id="createFromString">Simple Create</a></p>
         <p><a href="#" id="createFromNode">Create From DOM Node</a></p>
         <p><a href="#" id="withoutClose">Without a close button</a></p>
         <p><a href="#" id="withoutShadowClose">Without shadow close</a></p>
         <p><a href="#" id="customStyles">Custom Styles</a></p>
+        <p><a href="#" id="customClasses">Custom Classes</a></p>
         <p><a href="#" id="closeMethod">Close Method</a></p>
         <p><a href="#" id="events">Events</a></p>
         <p><a href="#" id="animate">With Animation</a></p>
@@ -67,6 +94,14 @@
                     background: "#fff", padding: "4px 8px", cursor: "pointer",
                     border: "3px solid #169", fontSize: "10pt"
                 }
+            });
+
+            buildModal("customClasses", {
+                content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+                overlayStyles: {}, modalStyles: {}, closeStyles: {},
+                overlayClass: "customShadow",
+                modalClass: "customModal",
+                closeClass: "customClose"
             });
 
             buildModal("closeMethod", function() {

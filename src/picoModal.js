@@ -110,7 +110,7 @@
 
         /** Adds a class name */
         clazz: function (clazz) {
-            this.elem.className += clazz;
+            this.elem.className += " " + clazz;
             return this;
         },
 
@@ -176,6 +176,7 @@
     function buildOverlay( getOption, close ) {
         return Elem.div()
             .clazz("pico-overlay")
+            .clazz( getOption("overlayClass", "") )
             .stylize({
                 display: "block",
                 position: "fixed",
@@ -196,6 +197,7 @@
     function buildModal( getOption, close ) {
         var elem = Elem.div()
             .clazz("pico-content")
+            .clazz( getOption("modalClass", "") )
             .stylize({
                 display: 'block',
                 position: 'fixed',
@@ -236,6 +238,7 @@
             return elem.child()
                 .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
+                .clazz( getOption("closeClass") )
                 .stylize( getOption('closeStyles', {
                     borderRadius: "2px",
                     cursor: "pointer",
