@@ -17,7 +17,7 @@ Download
 --------
 
 The latest version of PicoModal is available here:
-[Download](https://github.com/Nycto/PicoModal/tree/release/release)
+[Download](https://github.com/Nycto/PicoModal/releases/download/v2.0.0.Beta.1/picoModal-2.0.0.min.js)
 
 Browser Support
 ---------------
