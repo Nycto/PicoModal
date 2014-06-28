@@ -17,7 +17,7 @@ Download
 --------
 
 The latest version of PicoModal is available here:
-[Download](https://github.com/Nycto/PicoModal/releases/download/v2.0.0.Beta.1/picoModal-2.0.0.min.js)
+[Download](https://github.com/Nycto/PicoModal/releases)
 
 Browser Support
 ---------------
@@ -28,14 +28,14 @@ Basic Example
 -------------
 
 If all you want to do is display a modal, it's as easy as this:
- ([Run this code](http://jsfiddle.net/XP4cM/))
+ ([Run this code](http://jsfiddle.net/w84vk/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.").show();
 ```
 
 For more control over the behaviour of the modal, you can pass in a settings
-object: ([Run this code](http://jsfiddle.net/m2ha8/))
+object: ([Run this code](http://jsfiddle.net/jxLDM/))
 
 ```javascript
   picoModal({
@@ -53,7 +53,7 @@ More Examples
 -------------
 
 If you need to be able to programatically close the modal you can do it like
-this: ([Run this code](http://jsfiddle.net/ua9Wn/))
+this: ([Run this code](http://jsfiddle.net/eMBZL/))
 
 ```javascript
   picoModal(
@@ -66,7 +66,7 @@ this: ([Run this code](http://jsfiddle.net/ua9Wn/))
 ```
 
 You can also attach an event to fire when the modal is closed:
-([Run this code](http://jsfiddle.net/59ksT/))
+([Run this code](http://jsfiddle.net/27a8f/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -76,7 +76,7 @@ You can also attach an event to fire when the modal is closed:
 
 To disable the close button, and instead just rely on someone clicking
 outside of the modal, you can do this:
-([Run this code](http://jsfiddle.net/yj6VE/))
+([Run this code](http://jsfiddle.net/eqyN4/))
 
 ```javascript
   picoModal({
@@ -86,7 +86,7 @@ outside of the modal, you can do this:
 ```
 
 Or, to disable closing when someone clicks outside of the modal, you can
-do this: ([Run this code](http://jsfiddle.net/5kXLp/))
+do this: ([Run this code](http://jsfiddle.net/3g5SX/))
 
 ```javascript
   picoModal({
@@ -96,7 +96,7 @@ do this: ([Run this code](http://jsfiddle.net/5kXLp/))
 ```
 
 To use custom HTML for the close button, do this:
-([Run this code](http://jsfiddle.net/Ss2vG/))
+([Run this code](http://jsfiddle.net/K48mQ/))
 
 ```javascript
   picoModal({
@@ -123,7 +123,7 @@ the behavior of a modal. The events are:
 * afterClose: triggered after a modal is closed
 
 These exist as methods on the PicoModal instance. You can use them like this:
-([Run this code](http://jsfiddle.net/GbcQ4/))
+([Run this code](http://jsfiddle.net/YzLc8/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -138,7 +138,7 @@ specific modal.
 
 For two of the events, beforeShow and beforeClose, there is a second argument
 passed that lets you cancel the behavior in question. For example:
-([Run this code](http://jsfiddle.net/dGr6Z/))
+([Run this code](http://jsfiddle.net/97Bvj/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -155,7 +155,7 @@ Animation
 
 PicoModal doesn't have any built in animations, but you can use the event
 system to add some of your own. For example, the following snippet adds a fade
-in and out using jQuery: ([Run this code](http://jsfiddle.net/pZV9n/))
+in and out using jQuery: ([Run this code](http://jsfiddle.net/2RSSV/))
 
 ```javascript
   picoModal({
@@ -200,7 +200,7 @@ The following settings are available when creating a modal:
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This
 makes it easy to modify the defaults instead of having to totally define your
-own, like so: ([Run this code](http://jsfiddle.net/g6M36/))
+own, like so: ([Run this code](http://jsfiddle.net/p3eTd/))
 
 ```javascript
   picoModal({
