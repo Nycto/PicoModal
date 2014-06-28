@@ -49,11 +49,27 @@ object: ([Run this code](http://jsfiddle.net/jxLDM/))
 
 A full list of settings is documented below.
 
-More Examples
--------------
+Closing a Modal Programatically
+-------------------------------
 
-If you need to be able to programatically close the modal you can do it like
-this: ([Run this code](http://jsfiddle.net/eMBZL/))
+If you want to programatically close the modal you can do it like this:
+([Run this code](http://jsfiddle.net/xEq8v/))
+
+```javascript
+  var modal = picoModal(
+      "<p>Ah, the pitter patter of tiny feet in huge combat boots.<p>"
+      + "<p><a href='#' class='dismiss'>Dismiss</a></p>"
+  ).show();
+
+  document.body.addEventListener('click', function(event) {
+    if( /\bdismiss\b/.test(event.target.className) ) {
+      modal.close();
+    }
+  });
+```
+
+Or you can use a more targetted implementation with the `afterCreate` event:
+([Run this code](http://jsfiddle.net/eMBZL/))
 
 ```javascript
   picoModal(
@@ -73,6 +89,9 @@ You can also attach an event to fire when the modal is closed:
       .afterClose(function () { alert("Closed"); })
       .show();
 ```
+
+Customizing Behavior
+--------------------
 
 To disable the close button, and instead just rely on someone clicking
 outside of the modal, you can do this:
@@ -116,11 +135,11 @@ Events
 There are a few events you can hook into for watching and sometimes monitoring
 the behavior of a modal. The events are:
 
-* afterCreate: Triggered when the DOM Nodes for a modal are created
-* beforeShow: Triggered before a modal is shown. Allows for cancellation
-* afterShow: Triggered after a modal is shown
-* beforeClose: Triggered before a modal is closed. Allows for cancellation
-* afterClose: triggered after a modal is closed
+* `afterCreate`: Triggered when the DOM Nodes for a modal are created
+* `beforeShow`: Triggered before a modal is shown. Allows for cancellation
+* `afterShow`: Triggered after a modal is shown
+* `beforeClose`: Triggered before a modal is closed. Allows for cancellation
+* `afterClose`: triggered after a modal is closed
 
 These exist as methods on the PicoModal instance. You can use them like this:
 ([Run this code](http://jsfiddle.net/YzLc8/))
