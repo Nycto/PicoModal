@@ -42,6 +42,7 @@
         <p><a href="#" id="closeMethod">Close Method</a></p>
         <p><a href="#" id="events">Events</a></p>
         <p><a href="#" id="animate">With Animation</a></p>
+        <p><a href="#" id="destroy">Destroy</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -160,6 +161,12 @@
                             { complete: modal.forceClose }
                         );
                 });
+            });
+
+            buildModal("destroy", function() {
+                return picoModal({
+                    content: "Ah, the pitter patter of tiny feet in huge combat boots."
+                }).afterClose(function(modal){ modal.destroy(); })
             });
 
         </script>
