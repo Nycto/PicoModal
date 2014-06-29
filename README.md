@@ -28,14 +28,14 @@ Basic Example
 -------------
 
 If all you want to do is display a modal, it's as easy as this:
- ([Run this code](http://jsfiddle.net/w84vk/))
+ ([Run this code](http://jsfiddle.net/nnrXD/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.").show();
 ```
 
 For more control over the behaviour of the modal, you can pass in a settings
-object: ([Run this code](http://jsfiddle.net/jxLDM/))
+object: ([Run this code](http://jsfiddle.net/px7LU/))
 
 ```javascript
   picoModal({
@@ -53,7 +53,7 @@ Manually Closing a Modal
 ------------------------
 
 If you want to programatically close the modal you can do it like this:
-([Run this code](http://jsfiddle.net/xEq8v/))
+([Run this code](http://jsfiddle.net/KkV27/))
 
 ```javascript
   var modal = picoModal(
@@ -69,7 +69,7 @@ If you want to programatically close the modal you can do it like this:
 ```
 
 Or you can use a more targetted implementation with the `afterCreate` event:
-([Run this code](http://jsfiddle.net/eMBZL/))
+([Run this code](http://jsfiddle.net/GZb2z/))
 
 ```javascript
   picoModal(
@@ -82,7 +82,7 @@ Or you can use a more targetted implementation with the `afterCreate` event:
 ```
 
 You can also attach an event to fire when the modal is closed:
-([Run this code](http://jsfiddle.net/27a8f/))
+([Run this code](http://jsfiddle.net/Lkx5r/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -95,7 +95,7 @@ Customizing Behavior
 
 To disable the close button, and instead just rely on someone clicking
 outside of the modal, you can do this:
-([Run this code](http://jsfiddle.net/eqyN4/))
+([Run this code](http://jsfiddle.net/WFqz4/))
 
 ```javascript
   picoModal({
@@ -105,7 +105,7 @@ outside of the modal, you can do this:
 ```
 
 Or, to disable closing when someone clicks outside of the modal, you can
-do this: ([Run this code](http://jsfiddle.net/3g5SX/))
+do this: ([Run this code](http://jsfiddle.net/7d53v/))
 
 ```javascript
   picoModal({
@@ -115,7 +115,7 @@ do this: ([Run this code](http://jsfiddle.net/3g5SX/))
 ```
 
 To use custom HTML for the close button, do this:
-([Run this code](http://jsfiddle.net/K48mQ/))
+([Run this code](http://jsfiddle.net/UvcDL/))
 
 ```javascript
   picoModal({
@@ -142,7 +142,7 @@ the behavior of a modal. The events are:
 * `afterClose`: triggered after a modal is closed
 
 These exist as methods on the PicoModal instance. You can use them like this:
-([Run this code](http://jsfiddle.net/YzLc8/))
+([Run this code](http://jsfiddle.net/875Tx/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -157,7 +157,7 @@ specific modal.
 
 For two of the events, beforeShow and beforeClose, there is a second argument
 passed that lets you cancel the behavior in question. For example:
-([Run this code](http://jsfiddle.net/97Bvj/))
+([Run this code](http://jsfiddle.net/m83nW/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -174,7 +174,7 @@ Single Shot Modal
 
 You can use the `afterClose` event and the `destroy` method to create a modal
 that will clean up after itself when it is closed, like this:
-([Run this code](http://jsfiddle.net/97Bvj/))
+([Run this code](http://jsfiddle.net/wxZ56/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
@@ -187,7 +187,7 @@ Animation
 
 PicoModal doesn't have any built in animations, but you can use the event
 system to add some of your own. For example, the following snippet adds a fade
-in and out using jQuery: ([Run this code](http://jsfiddle.net/2RSSV/))
+in and out using jQuery: ([Run this code](http://jsfiddle.net/Sr697/))
 
 ```javascript
   picoModal({
@@ -232,7 +232,7 @@ The following settings are available when creating a modal:
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This
 makes it easy to modify the defaults instead of having to totally define your
-own, like so: ([Run this code](http://jsfiddle.net/p3eTd/))
+own, like so: ([Run this code](http://jsfiddle.net/rptf6/))
 
 ```javascript
   picoModal({
