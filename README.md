@@ -49,8 +49,8 @@ object: ([Run this code](http://jsfiddle.net/jxLDM/))
 
 A full list of settings is documented below.
 
-Closing a Modal Programatically
--------------------------------
+Manually Closing a Modal
+------------------------
 
 If you want to programatically close the modal you can do it like this:
 ([Run this code](http://jsfiddle.net/xEq8v/))
@@ -166,6 +166,19 @@ passed that lets you cancel the behavior in question. For example:
               event.preventDefault();
           }
       })
+      .show();
+```
+
+Single Shot Modal
+-----------------
+
+You can use the `afterClose` event and the `destroy` method to create a modal
+that will clean up after itself when it is closed, like this:
+([Run this code](http://jsfiddle.net/97Bvj/))
+
+```javascript
+  picoModal("Ah, the pitter patter of tiny feet in huge combat boots.")
+      .afterClose(function (modal) { modal.destroy(); })
       .show();
 ```
 
