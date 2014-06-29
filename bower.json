@@ -8,7 +8,8 @@
     "repository": {
         "type": "git",
         "url": "git://github.com/Nycto/PicoModal.git"
-    }
+    },
+    "dependencies": {},
     "description": "A self-contained modal library",
     "main": "src/picoModal.js",
     "keywords": [ "modal" ],

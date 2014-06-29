@@ -1,23 +1,24 @@
 {
-    "name": "PicoModal",
-    "version": "2.0.1",
-    "author": "James Frasca <james@roundeights.com>",
-    "description": "A small, self-contained JavaScript modal library",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Nycto/PicoModal.git"
-    },
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-contrib-jshint": "~0.10.0",
-        "grunt-contrib-uglify": "~0.4.0",
-        "grunt-contrib-watch": "~0.6.1",
-        "grunt-string-replace": "~0.2.2",
-        "grunt-contrib-connect": "~0.7.1"
-    },
-    "scripts": {
-        "test": "grunt --verbose"
-    },
-    "readmeFilename": "README.md"
+  "name": "PicoModal",
+  "version": "2.0.1",
+  "author": "James Frasca <james@roundeights.com>",
+  "description": "A small, self-contained JavaScript modal library",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nycto/PicoModal.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-bower-verify": "^2.0.0",
+    "grunt-contrib-connect": "~0.7.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-string-replace": "~0.2.2"
+  },
+  "scripts": {
+    "test": "grunt --verbose"
+  },
+  "readmeFilename": "README.md"
 }

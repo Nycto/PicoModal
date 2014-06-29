@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 
         watch: {
             files: ['<%= jshint.files %>'],
-            tasks: ['default']
+            tasks: ['jshint', 'uglify']
         },
 
         connect: {
@@ -49,6 +49,10 @@ module.exports = function(grunt) {
                     base: '.'
                 }
             }
+        },
+
+        bowerVerify: {
+            build: {}
         }
     });
 
@@ -57,9 +61,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-bower-verify');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'bowerVerify']);
 
-    grunt.registerTask('dev', ['default', 'connect', 'watch']);
+    grunt.registerTask('dev', ['jshint', 'uglify', 'connect', 'watch']);
 };
