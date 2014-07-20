@@ -156,6 +156,12 @@
             this.elem.style.display = "block";
         },
 
+        /** Sets an attribute on this element */
+        attr: function ( name, value ) {
+            this.elem.setAttribute(name, value);
+            return this;
+        },
+
         /** Executes a callback on all the ancestors of an element */
         anyAncestor: function ( predicate ) {
             var elem = this.elem;
@@ -210,6 +216,7 @@
                 top: "50px"
             })
             .html( getOption('content') )
+            .attr("role", "dialog")
             .onClick(function (event) {
                 var isCloseClick = new Elem(event.target)
                     .anyAncestor(function (elem) {
