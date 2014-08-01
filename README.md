@@ -28,10 +28,21 @@ Basic Example
 -------------
 
 If all you want to do is display a modal, it's as easy as this:
- ([Run this code](http://jsfiddle.net/nnrXD/))
+([Run this code](http://jsfiddle.net/nnrXD/))
 
 ```javascript
   picoModal("Ah, the pitter patter of tiny feet in huge combat boots.").show();
+```
+
+If you plan on showing the same modal multiple times, make sure you keep a
+reference to the instance, like this:
+([Run this code](http://jsfiddle.net/2s95h/))
+
+```javascript
+  var modal = picoModal("Ah, the pitter patter of tiny feet in huge combat boots.");
+  document.getElementById("modal").addEventListener("click", function(){
+      modal.show();
+  });
 ```
 
 For more control over the behaviour of the modal, you can pass in a settings
