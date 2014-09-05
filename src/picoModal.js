@@ -132,12 +132,7 @@
 
         /** Adds a click handler to this element */
         onClick: function(callback) {
-            if (this.elem.attachEvent) {
-                this.elem.attachEvent('onclick', callback);
-            }
-            else {
-                this.elem.addEventListener('click', callback);
-            }
+            this.elem.addEventListener('click', callback);
             return this;
         },
 
