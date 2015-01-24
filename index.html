@@ -108,7 +108,7 @@
             buildModal("closeMethod", function() {
                 return picoModal(
                     "<p>Ah, the pitter patter of tiny feet in huge combat boots.<p>"
-                    + "<p><a href='#' class='dismiss'>Dismiss</a></p>"
+                    + "<p><a href='javascript:void(0)' class='dismiss'>Dismiss</a></p>"
                 ).afterCreate(function(modal){
                     modal.modalElem().getElementsByClassName("dismiss")[0]
                         .addEventListener('click', modal.close);
