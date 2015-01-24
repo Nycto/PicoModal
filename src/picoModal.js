@@ -125,11 +125,6 @@
             return this;
         },
 
-        /** Returns the width of this element */
-        getWidth: function () {
-            return this.elem.clientWidth;
-        },
-
         /** Adds a click handler to this element */
         onClick: function(callback) {
             this.elem.addEventListener('click', callback);
@@ -200,6 +195,11 @@
 
     /** Builds the content of a modal */
     function buildModal( getOption, close ) {
+        var width = getOption('width', 'auto');
+        if ( typeof width === "number" ) {
+            width = "" + width + "px";
+        }
+
         var elem = Elem.div()
             .clazz("pico-content")
             .clazz( getOption("modalClass", "") )
@@ -208,8 +208,19 @@
                 position: 'fixed',
                 zIndex: 10001,
                 left: "50%",
-                top: "50px"
+                top: "50px",
+                width: width,
+                '-ms-transform': 'translateX(-50%)',
+                '-moz-transform': 'translateX(-50%)',
+                '-webkit-transform': 'translateX(-50%)',
+                '-o-transform': 'translateX(-50%)',
+                'transform': 'translateX(-50%)'
             })
+            .stylize(getOption('modalStyles', {
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "5px"
+            }))
             .html( getOption('content') )
             .attr("role", "dialog")
             .onClick(function (event) {
@@ -221,19 +232,6 @@
                     close();
                 }
             });
-
-        var width = getOption('width', elem.getWidth());
-
-        elem
-            .stylize({
-                width: width + "px",
-                margin: "0 0 0 " + (-(width / 2) + "px")
-            })
-            .stylize( getOption('modalStyles', {
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "5px"
-            }) );
 
         return elem;
     }
