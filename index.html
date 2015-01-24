@@ -33,17 +33,17 @@
     </head>
 
     <body>
-        <p><a href="#" id="createFromString">Simple Create</a></p>
-        <p><a href="#" id="createFromNode">Create From DOM Node</a></p>
-        <p><a href="#" id="specificWidth">Specific Width</a></p>
-        <p><a href="#" id="withoutClose">Without a close button</a></p>
-        <p><a href="#" id="withoutShadowClose">Without shadow close</a></p>
-        <p><a href="#" id="customStyles">Custom Styles</a></p>
-        <p><a href="#" id="customClasses">Custom Classes</a></p>
-        <p><a href="#" id="closeMethod">Close Method</a></p>
-        <p><a href="#" id="events">Events</a></p>
-        <p><a href="#" id="animate">With Animation</a></p>
-        <p><a href="#" id="destroy">Destroy</a></p>
+        <p><a href="?createFromString">Simple Create</a></p>
+        <p><a href="?createFromNode">Create From DOM Node</a></p>
+        <p><a href="?specificWidth">Specific Width</a></p>
+        <p><a href="?withoutClose">Without a close button</a></p>
+        <p><a href="?withoutShadowClose">Without shadow close</a></p>
+        <p><a href="?customStyles">Custom Styles</a></p>
+        <p><a href="?customClasses">Custom Classes</a></p>
+        <p><a href="?closeMethod">Close Method</a></p>
+        <p><a href="?events">Events</a></p>
+        <p><a href="?animate">With Animation</a></p>
+        <p><a href="?destroy">Destroy</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -52,18 +52,27 @@
         </div>
 
         <script>
+            var urlQuery = window.location.href.split("?")[1];
             function buildModal(id, options) {
                 var modal;
-                document.getElementById(id)
+                var showModal = function () {
+                    if ( !modal ) {
+                        modal = typeof options === "function" ?
+                            options() :
+                            picoModal(options);
+                    }
+                    modal.show();
+                };
+
+                document.querySelector("[href='?" + id + "']")
                     .addEventListener("click", function(e) {
                         e.preventDefault();
-                        if ( !modal ) {
-                            modal = typeof options === "function" ?
-                                options() :
-                                picoModal(options);
-                        }
-                        modal.show();
+                        showModal();
                     });
+
+                if ( urlQuery === id ) {
+                    showModal();
+                }
             }
 
             buildModal("createFromString",
