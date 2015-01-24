@@ -35,6 +35,7 @@
     <body>
         <p><a href="#" id="createFromString">Simple Create</a></p>
         <p><a href="#" id="createFromNode">Create From DOM Node</a></p>
+        <p><a href="#" id="specificWidth">Specific Width</a></p>
         <p><a href="#" id="withoutClose">Without a close button</a></p>
         <p><a href="#" id="withoutShadowClose">Without shadow close</a></p>
         <p><a href="#" id="customStyles">Custom Styles</a></p>
@@ -70,6 +71,11 @@
 
             buildModal("createFromNode",
                 document.getElementById("contentFromNode"));
+
+            buildModal("specificWidth", {
+                content: "Ah, the pitter patter of tiny feet in huge combat boots.",
+                width: 100
+            });
 
             buildModal("withoutClose", {
                 content: "Ah, the pitter patter of tiny feet in huge combat boots.",
