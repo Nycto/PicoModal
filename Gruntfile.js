@@ -1,4 +1,43 @@
-/* global module: false */
+/* global module: false, require: false, process: false */
+
+// Browsers to test on saucelabs
+var browsers = [
+    {
+        browserName: 'firefox',
+        platform: 'WIN8.1'
+    },
+    {
+        browserName: 'chrome',
+        platform: 'windows 8.1'
+    },
+    {
+        browserName: 'internet explorer',
+        version: '11',
+        platform: 'WIN8.1'
+    },
+    {
+        browserName: 'internet explorer',
+        version: '10',
+        platform: 'WIN8'
+    },
+    {
+        browserName: 'internet explorer',
+        version: '9',
+        platform: 'WIN7'
+    }
+];
+
+// URLs to test on saucelabs
+var urls = [
+    'http://localhost:8080/?createFromString',
+    'http://localhost:8080/?createFromNode',
+    'http://localhost:8080/?specificWidth',
+    'http://localhost:8080/?withoutClose',
+    'http://localhost:8080/?customStyles',
+    'http://localhost:8080/?customClasses',
+    'http://localhost:8080/?animate'
+];
+
 module.exports = function(grunt) {
     "use strict";
 
@@ -7,7 +46,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js', 'task/**/*.js'],
             options: {
                 bitwise: true,
                 camelcase: true,
@@ -56,6 +95,16 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask(
+        'saucelabs-run',
+        require('./task/screenshots.js')(grunt, {
+            name: 'PicoModal',
+            build: process.env.CI_BUILD_NUMBER || Date.now(),
+            urls: urls,
+            browsers: browsers
+        })
+    );
+
     // Plugins
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -67,4 +116,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['jshint', 'uglify', 'bowerVerify']);
 
     grunt.registerTask('dev', ['jshint', 'uglify', 'connect', 'watch']);
+
+    grunt.registerTask('sauce', ['jshint', 'connect', 'saucelabs-run']);
 };
+
