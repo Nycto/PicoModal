@@ -22,7 +22,7 @@
     "wd": "^0.3.11"
   },
   "scripts": {
-    "test": "grunt --verbose"
+    "test": "grunt --verbose sauce"
   },
   "readmeFilename": "README.md"
 }
