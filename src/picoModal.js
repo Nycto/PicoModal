@@ -208,8 +208,17 @@
                 position: 'fixed',
                 zIndex: 10001,
                 left: "50%",
-                top: "50px"
+                top: "50px",
+                '-moz-transform': 'translateX(-50%)',
+                '-webkit-transform': 'translateX(-50%)',
+                '-o-transform': 'translateX(-50%)',
+                'transform': 'translateX(-50%)'
             })
+            .stylize(getOption('modalStyles', {
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "5px"
+            }))
             .html( getOption('content') )
             .attr("role", "dialog")
             .onClick(function (event) {
@@ -221,19 +230,6 @@
                     close();
                 }
             });
-
-        var width = getOption('width', elem.getWidth());
-
-        elem
-            .stylize({
-                width: width + "px",
-                margin: "0 0 0 " + (-(width / 2) + "px")
-            })
-            .stylize( getOption('modalStyles', {
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "5px"
-            }) );
 
         return elem;
     }
