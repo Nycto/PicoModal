@@ -24,6 +24,12 @@ var browsers = [
         browserName: 'internet explorer',
         version: '9',
         platform: 'WIN7'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
+        version: '4.4',
+        deviceName: 'Google Nexus 7 HD Emulator'
     }
 ];
 
