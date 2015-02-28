@@ -1,4 +1,4 @@
-PicoModal [![Build Status](https://secure.travis-ci.org/Nycto/PicoModal.png?branch=master)](http://travis-ci.org/Nycto/PicoModal) [![Bower version](https://badge.fury.io/bo/picoModal.png)](http://badge.fury.io/bo/picoModal)
+PicoModal [![Build Status](https://secure.travis-ci.org/Nycto/PicoModal.png?branch=master)](http://travis-ci.org/Nycto/PicoModal) [![Bower version](https://badge.fury.io/bo/picoModal.png)](http://badge.fury.io/bo/picoModal) [![npm version](https://badge.fury.io/js/picomodal.svg)](https://www.npmjs.com/package/picomodal)
 =========
 
 A small, self-contained JavaScript modal library
