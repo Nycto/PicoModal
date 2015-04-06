@@ -262,6 +262,7 @@ The following methods are available on the object returned by `picoModal`:
 * __closeElem__: Returns the close button DOM Node
 * __overlayElem__: Returns the overlay DOM Node
 * __show__: Displays the modal
+* __buildDom__: Builds the DOM for the modal, but without showing it
 * __close__: Hides the modal
 * __forceClose__: Hides the modal without calling the beforeClose events
 * __destroy__: Detaches all DOM Nodes and unhooks this modal

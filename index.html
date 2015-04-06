@@ -45,6 +45,7 @@
         <p><a href="?events">Events</a></p>
         <p><a href="?animate">With Animation</a></p>
         <p><a href="?destroy">Destroy</a></p>
+        <p><a href="?prebuilt">Pre-built DOM</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -183,6 +184,14 @@
                 return picoModal({
                     content: "Ah, the pitter patter of tiny feet in huge combat boots."
                 }).afterClose(function(modal){ modal.destroy(); })
+            });
+
+            buildModal("prebuilt", function() {
+                var modal = picoModal({
+                    content: "Ah, the pitter patter of tiny feet in huge combat boots."
+                })
+                modal.buildDom();
+                return modal;
             });
 
         </script>

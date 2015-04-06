@@ -174,7 +174,7 @@
             .clazz("pico-overlay")
             .clazz( getOption("overlayClass", "") )
             .stylize({
-                display: "block",
+                display: "none",
                 position: "fixed",
                 top: "0px",
                 left: "0px",
@@ -204,7 +204,7 @@
             .clazz("pico-content")
             .clazz( getOption("modalClass", "") )
             .stylize({
-                display: 'block',
+                display: 'none',
                 position: 'fixed',
                 zIndex: 10001,
                 left: "50%",
@@ -349,6 +349,9 @@
 
             /** Returns the overlay element */
             overlayElem: buildElemAccessor(shadowElem),
+
+            /** Builds the dom without showing the modal */
+            buildDom: returnIface(build),
 
             /** Shows this modal */
             show: function () {
