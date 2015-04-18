@@ -40,8 +40,7 @@ var urls = [
     'http://localhost:8080/?specificWidth',
     'http://localhost:8080/?withoutClose',
     'http://localhost:8080/?customStyles',
-    'http://localhost:8080/?customClasses',
-    'http://localhost:8080/?animate'
+    'http://localhost:8080/?customClasses'
 ];
 
 module.exports = function(grunt) {
