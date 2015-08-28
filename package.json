@@ -8,6 +8,7 @@
     "type": "git",
     "url": "https://github.com/Nycto/PicoModal.git"
   },
+  "main": "src/picoModal.js",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-bower-verify": "^2.0.0",

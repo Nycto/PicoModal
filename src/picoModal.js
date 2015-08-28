@@ -18,10 +18,23 @@
  * SOFTWARE.
  */
 
-/**
- * A self-contained modal library
- */
-(function(window, document) {
+(function (root, factory) {
+    "use strict";
+
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    }
+    else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    }
+    else {
+        root.picoModal = factory();
+    }
+}(this, function () {
+
+    /**
+     * A self-contained modal library
+     */
     "use strict";
 
     /** Returns whether a value is a dom node */
@@ -270,7 +283,7 @@
     /**
      * Displays a modal
      */
-    function picoModal(options) {
+    return function picoModal(options) {
 
         if ( isString(options) || isNode(options) ) {
             options = { content: options };
@@ -406,15 +419,6 @@
         };
 
         return iface;
-    }
+    };
 
-    if ( typeof window.define === "function" && window.define.amd ) {
-        window.define(function () {
-            return picoModal;
-        });
-    }
-    else {
-        window.picoModal = picoModal;
-    }
-
-}(window, document));
+}));
