@@ -146,7 +146,7 @@
 
         /** Removes this element from the DOM */
         destroy: function() {
-            document.body.removeChild(this.elem);
+            (this.elem.parentNode || document.body).removeChild(this.elem);
         },
 
         /** Hides this element */
@@ -182,8 +182,9 @@
 
 
     /** Generates the grey-out effect */
-    function buildOverlay( getOption, close ) {
-        return Elem.div()
+    function buildOverlay( getOption, close ) {        
+        return Elem.div(
+            document.getElementById(getOption("parentNodeId", "")))
             .clazz("pico-overlay")
             .clazz( getOption("overlayClass", "") )
             .stylize({
@@ -213,7 +214,8 @@
             width = "" + width + "px";
         }
 
-        var elem = Elem.div()
+        var elem = Elem.div(
+            document.getElementById(getOption("parentNodeId", "")))
             .clazz("pico-content")
             .clazz( getOption("modalClass", "") )
             .stylize({
