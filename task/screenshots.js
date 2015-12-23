@@ -52,10 +52,16 @@ module.exports = function ( grunt, options ) {
             .timeout(60000, "Timed out trying to create tunnel")
             .then(function () {
                 return withTunnel(tunnel).fin(function () {
+                    var stopping = Q.defer();
+
                     grunt.log.writeln('=> Closing Tunnel'.inverse.bold);
                     tunnel.stop(function () {
                         grunt.log.ok('Tunnel Closed');
+                        stopping.resolve();
                     });
+
+                    return stopping.promise
+                        .timeout(5000, "Timed out trying to close tunnel");
                 });
             });
     }
