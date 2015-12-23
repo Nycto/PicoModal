@@ -10,6 +10,7 @@
   },
   "main": "src/picoModal.js",
   "devDependencies": {
+    "cleankill": "^1.0.2",
     "grunt": "~0.4.1",
     "grunt-bower-verify": "^2.0.0",
     "grunt-contrib-connect": "^0.7.1",
