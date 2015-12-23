@@ -255,7 +255,7 @@
             return elem.child()
                 .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
-                .clazz( getOption("closeClass") )
+                .clazz( getOption("closeClass", "") )
                 .stylize( getOption('closeStyles', {
                     borderRadius: "2px",
                     cursor: "pointer",
