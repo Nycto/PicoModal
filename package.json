@@ -12,15 +12,15 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-bower-verify": "^2.0.0",
-    "grunt-contrib-connect": "~0.7.1",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-connect": "^0.7.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.4.1",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-string-replace": "~0.2.2",
-    "lodash": "^2.4.1",
+    "grunt-string-replace": "^0.2.8",
+    "lodash": "^2.4.2",
     "q": "^1.1.2",
-    "sauce-tunnel": "^2.1.0",
-    "wd": "^0.3.11"
+    "sauce-tunnel": "^2.3.0",
+    "wd": "^0.3.12"
   },
   "scripts": {
     "test": "grunt --verbose sauce"
