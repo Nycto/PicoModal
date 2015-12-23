@@ -91,6 +91,9 @@
      * Creates a new div
      */
     Elem.div = function ( parent ) {
+        if ( typeof parent === "string" ) {
+            parent = document.querySelector(parent);
+        }
         var elem = document.createElement('div');
         (parent || document.body).appendChild(elem);
         return new Elem(elem);
@@ -146,7 +149,7 @@
 
         /** Removes this element from the DOM */
         destroy: function() {
-            document.body.removeChild(this.elem);
+            this.elem.parentNode.removeChild(this.elem);
         },
 
         /** Hides this element */
@@ -183,7 +186,7 @@
 
     /** Generates the grey-out effect */
     function buildOverlay( getOption, close ) {
-        return Elem.div()
+        return Elem.div( getOption("parent") )
             .clazz("pico-overlay")
             .clazz( getOption("overlayClass", "") )
             .stylize({
@@ -213,7 +216,7 @@
             width = "" + width + "px";
         }
 
-        var elem = Elem.div()
+        var elem = Elem.div( getOption("parent") )
             .clazz("pico-content")
             .clazz( getOption("modalClass", "") )
             .stylize({

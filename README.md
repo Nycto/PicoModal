@@ -237,6 +237,9 @@ The following settings are available when creating a modal:
 * __modalClass__: A class to attach to the main modal element
 * __overlayClass__: A class to attach to the overlay element
 * __closeClass__: A class to attach to the close button
+* __parent__: By default, the modal dialog elements are attached to
+  `document.body`. This options allows you to select an alternative parent
+  element by specifying a node or a selector
 
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This

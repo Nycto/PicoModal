@@ -41,7 +41,8 @@ var urls = [
     'http://localhost:8080/?withoutClose',
     'http://localhost:8080/?customStyles',
     'http://localhost:8080/?customClasses',
-    'http://localhost:8080/?prebuilt'
+    'http://localhost:8080/?prebuilt',
+    'http://localhost:8080/?alternateParent'
 ];
 
 module.exports = function(grunt) {
