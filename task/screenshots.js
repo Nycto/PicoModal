@@ -71,13 +71,13 @@ module.exports = function ( grunt, options ) {
 
         // Ensure this tunnel is cleaned up if a process is killed
         require('cleankill').onInterrupt(function (done) {
-            stopTunnel().fin(done);
+            stopTunnel().finally(done);
         });
 
         return defer.promise
             .timeout(60000, "Timed out trying to create tunnel")
             .then(function () {
-                return withTunnel(tunnel).fin(stopTunnel);
+                return withTunnel(tunnel).finally(stopTunnel);
             });
     }
 
@@ -87,7 +87,7 @@ module.exports = function ( grunt, options ) {
             return after.then(function () {
                 return callback(value);
             });
-        }, Q.resolve());
+        }, new Q());
     }
 
     /** Executes a callback with a browser */
@@ -125,7 +125,7 @@ module.exports = function ( grunt, options ) {
 
                 return callback(browser)
                     .timeout(30000, "Timed out running tests");
-            }).fin(function () {
+            }).finally(function () {
                 return browser.quit();
             }).then(
                 function () {
