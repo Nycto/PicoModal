@@ -80,6 +80,37 @@
     }
 
 
+    /** Whether an element is hidden */
+    function isHidden ( elem ) {
+        return elem.offsetWidth === 0 && elem.offsetHeight === 0;
+    }
+
+    /** Whether an element matches a selector */
+    function matches ( elem, selector ) {
+        return elem.msMatchesSelector ?
+            elem.msMatchesSelector(selector) :
+            elem.matches(selector);
+    }
+
+    /**
+     * Returns whether an element is focusable
+     * @see http://stackoverflow.com/questions/18261595
+     */
+    function canFocus( elem ) {
+        if (
+            isHidden(elem) ||
+            matches(elem, ":disabled") ||
+            elem.hasAttribute("contenteditable")
+        ) {
+            return false;
+        }
+        else {
+            return matches(elem, "input, a[href], area[href], iframe") ||
+                elem.hasAttribute("tabindex");
+        }
+    }
+
+
     /**
      * A small interface for creating and managing a dom element
      */
@@ -87,9 +118,7 @@
         this.elem = elem;
     }
 
-    /**
-     * Creates a new div
-     */
+    /** Creates a new div */
     Elem.div = function ( parent ) {
         if ( typeof parent === "string" ) {
             parent = document.querySelector(parent);
@@ -180,6 +209,24 @@
                 }
             }
             return false;
+        },
+
+        /** Returns the first child where a predicate returns true */
+        firstChild: function ( predicate ) {
+            var items = this.elem.getElementsByTagName("*");
+            for (var i = 0; i < items.length; i++) {
+                if ( predicate(items[i]) ) {
+                    return items[i];
+                }
+            }
+        },
+
+        /** Sets focus to the first focusable element */
+        moveFocus: function () {
+            var focusable = this.firstChild(canFocus);
+            if ( focusable ) {
+                focusable.focus();
+            }
         }
     };
 
@@ -420,6 +467,25 @@
             /** Executes a callback after this modal is closed */
             afterClose: returnIface(afterCloseEvent.watch)
         };
+
+
+        // Records the currently focused element so state can be returned
+        // after the modal closes
+        if ( getOption("focus", true) ) {
+            var focused;
+
+            iface.afterShow(function focusModal() {
+                focused = document.activeElement;
+                modalElem().moveFocus();
+            });
+
+            iface.afterClose(function returnFocus() {
+                // Restore the previously focused element when the modal closes
+                focused.focus();
+                focused = null;
+            });
+        }
+
 
         return iface;
     };

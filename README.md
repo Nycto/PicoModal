@@ -276,6 +276,8 @@ The following methods are available on the object returned by `picoModal`:
 * __afterShow__: Registers a callback to invoke when the modal is shown
 * __beforeClose__: Registers a callback to invoke before the modal is closed
 * __afterClose__: Registers a callback to invoke when the modal is closed
+* __focus__: Whether to automatically set focus on the first focusable element
+  within this modal when it opens. This defaults to `true`.
 
 License
 -------

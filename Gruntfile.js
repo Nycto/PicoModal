@@ -42,7 +42,8 @@ var urls = [
     'http://localhost:8080/?customStyles',
     'http://localhost:8080/?customClasses',
     'http://localhost:8080/?prebuilt',
-    'http://localhost:8080/?alternateParent'
+    'http://localhost:8080/?alternateParent',
+    'http://localhost:8080/?moveFocus',
 ];
 
 module.exports = function(grunt) {

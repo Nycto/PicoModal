@@ -38,6 +38,10 @@
                 top: 10px;
                 left: 30%;
             }
+
+            input:focus {
+                background: blue;
+            }
         </style>
     </head>
 
@@ -57,6 +61,7 @@
         <p><a href="?destroy">Destroy</a></p>
         <p><a href="?prebuilt">Pre-built DOM</a></p>
         <p><a href="?alternateParent">Alternate Parent</a></p>
+        <p><a href="?moveFocus">Move Focus</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -84,7 +89,7 @@
                     });
 
                 if ( urlQuery === id ) {
-                    showModal();
+                    setTimeout(showModal, 10);
                 }
             }
 
@@ -215,6 +220,16 @@
                     modalStyles: forceAbsolute,
                     overlayStyles: forceAbsolute,
                     content: "Ah, the pitter patter of tiny feet in huge combat boots."
+                });
+            });
+
+            buildModal("moveFocus", function() {
+                return picoModal({
+                    content:
+                        "Ah, the pitter patter of tiny feet in huge combat boots."
+                        + "<p><input type='text'></p>"
+                        + "<p><input type='text'></p>"
+                        + "<p><input type='text'></p>"
                 });
             });
 
