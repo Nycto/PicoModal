@@ -122,11 +122,11 @@
     }
 
     /** Creates a new div */
-    Elem.div = function ( parent ) {
+    Elem.make = function ( parent, tag ) {
         if ( typeof parent === "string" ) {
             parent = document.querySelector(parent);
         }
-        var elem = document.createElement('div');
+        var elem = document.createElement(tag || 'div');
         (parent || document.body).appendChild(elem);
         return new Elem(elem);
     };
@@ -134,8 +134,8 @@
     Elem.prototype = {
 
         /** Creates a child of this node */
-        child: function () {
-            return Elem.div(this.elem);
+        child: function (tag) {
+            return Elem.make(this.elem, tag);
         },
 
         /** Applies a set of styles to an element */
@@ -251,7 +251,7 @@
 
     /** Generates the grey-out effect */
     function buildOverlay( getOption, close ) {
-        return Elem.div( getOption("parent") )
+        return Elem.make( getOption("parent") )
             .clazz("pico-overlay")
             .clazz( getOption("overlayClass", "") )
             .stylize({
@@ -281,7 +281,7 @@
             width = "" + width + "px";
         }
 
-        var elem = Elem.div( getOption("parent") )
+        var elem = Elem.make( getOption("parent") )
             .clazz("pico-content")
             .clazz( getOption("modalClass", "") )
             .stylize({
@@ -320,12 +320,14 @@
     /** Builds the close button */
     function buildClose ( elem, getOption ) {
         if ( getOption('closeButton', true) ) {
-            return elem.child()
+            return elem.child('button')
                 .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
                 .clazz( getOption("closeClass", "") )
                 .stylize( getOption('closeStyles', {
                     borderRadius: "2px",
+                    border: 0,
+                    padding: 0,
                     cursor: "pointer",
                     height: "15px",
                     width: "15px",
