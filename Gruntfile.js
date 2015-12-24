@@ -43,7 +43,7 @@ var urls = [
     'http://localhost:8080/?customClasses',
     'http://localhost:8080/?prebuilt',
     'http://localhost:8080/?alternateParent',
-    'http://localhost:8080/?moveFocus',
+    'http://localhost:8080/?keyboard',
 ];
 
 module.exports = function(grunt) {

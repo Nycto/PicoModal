@@ -211,11 +211,21 @@
             return false;
         },
 
-        /** Returns the first child where a predicate returns true */
-        firstChild: function ( predicate ) {
+        /** Returns the first descendant that can be focused */
+        firstFocusable: function () {
             var items = this.elem.getElementsByTagName("*");
             for (var i = 0; i < items.length; i++) {
-                if ( predicate(items[i]) ) {
+                if ( canFocus(items[i]) ) {
+                    return items[i];
+                }
+            }
+        },
+
+        /** Returns the last descendant that can be focused */
+        lastFocusable: function () {
+            var items = this.elem.getElementsByTagName("*");
+            for (var i = items.length; i--;) {
+                if ( canFocus(items[i]) ) {
                     return items[i];
                 }
             }
@@ -223,7 +233,7 @@
 
         /** Sets focus to the first focusable element */
         moveFocus: function () {
-            var focusable = this.firstChild(canFocus);
+            var focusable = this.firstFocusable();
             if ( focusable ) {
                 focusable.focus();
             }
@@ -338,6 +348,9 @@
     // An observable that is triggered whenever the escape key is pressed
     var escapeKey = observable();
 
+    // An observable that is triggered when the user hits the tab key
+    var tabKey = observable();
+
     /** A global event handler to detect the escape key being pressed */
     document.documentElement.addEventListener(
         'keydown',
@@ -345,8 +358,13 @@
             var keycode = event.which || event.keyCode;
 
             // If this is the escape key
-            if ( keycode === 27 /* Escape key */ ) {
+            if ( keycode === 27 ) {
                 escapeKey.trigger();
+            }
+
+            // If this is the tab key
+            else if ( keycode === 9 ) {
+                tabKey.trigger(event);
             }
         }
     );
@@ -510,6 +528,22 @@
                 focused.focus();
                 focused = null;
             });
+
+            // Capture tab key presses and loop them within the modal
+            tabKey.watch(function tabKeyPress (event) {
+                if ( !modalElem().isVisible() ) {
+                    return false;
+                }
+
+                var first = modalElem().firstFocusable();
+                var last = modalElem().lastFocusable();
+
+                var from = event.shiftKey ? first : last;
+                if ( from === document.activeElement ) {
+                    (event.shiftKey ? last : first).focus();
+                    event.preventDefault();
+                }
+            });
         }
 
 
@@ -519,13 +553,12 @@
         //       version bump as it would allow modals to be closed that
         //       previously may have been locked open.
         if ( getOption("escCloses", false) ) {
-            escapeKey.watch(function () {
+            escapeKey.watch(function escapeKeyPress () {
                 if ( iface.isVisible() ) {
                     iface.close();
                 }
             });
         }
-
 
         return iface;
     };

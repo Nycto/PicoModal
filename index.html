@@ -61,8 +61,7 @@
         <p><a href="?destroy">Destroy</a></p>
         <p><a href="?prebuilt">Pre-built DOM</a></p>
         <p><a href="?alternateParent">Alternate Parent</a></p>
-        <p><a href="?moveFocus">Move Focus</a></p>
-        <p><a href="?escapeToClose">Escape To Close</a></p>
+        <p><a href="?keyboard">Keyboard Navigation</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -224,20 +223,15 @@
                 });
             });
 
-            buildModal("moveFocus", function() {
+            buildModal("keyboard", function() {
                 return picoModal({
+                    escCloses: true,
                     content:
                         "Ah, the pitter patter of tiny feet in huge combat boots."
                         + "<p><input type='text'></p>"
                         + "<p><input type='text'></p>"
+                        + "<p><a href='javascript:void 0'>link</a></p>"
                         + "<p><input type='text'></p>"
-                });
-            });
-
-            buildModal("escapeToClose", function() {
-                return picoModal({
-                    escCloses: true,
-                    content: "Ah, the pitter patter of tiny feet in huge combat boots."
                 });
             });
 
