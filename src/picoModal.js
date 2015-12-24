@@ -105,8 +105,11 @@
             return false;
         }
         else {
-            return matches(elem, "input, a[href], area[href], iframe") ||
-                elem.hasAttribute("tabindex");
+            return elem.hasAttribute("tabindex") ||
+                matches(
+                    elem,
+                    "input,select,textarea,button,a[href],area[href],iframe"
+                );
         }
     }
 
