@@ -240,6 +240,9 @@ The following settings are available when creating a modal:
 * __parent__: By default, the modal dialog elements are attached to
   `document.body`. This options allows you to select an alternative parent
   element by specifying a node or a selector
+* __escCloses__: When `true`, pressing the escape key will close this modal.
+  This defaults to `false` to avoid breaking backwards compatibility, but will
+  eventually default to `true`
 
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This
@@ -269,6 +272,7 @@ The following methods are available on the object returned by `picoModal`:
 * __close__: Hides the modal
 * __forceClose__: Hides the modal without calling the beforeClose events
 * __destroy__: Detaches all DOM Nodes and unhooks this modal
+* __isVisible__: Whether this modal is currently being displayed
 * __options__: Updates the options for this modal. This will only let you
   change options that are re-evaluted regularly, such as `overlayClose`.
 * __afterCreate__: Registers a callback to invoke when the modal is created

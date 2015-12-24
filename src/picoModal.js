@@ -61,7 +61,7 @@
         var callbacks = [];
         return {
             watch: callbacks.push.bind(callbacks),
-            trigger: function( modal ) {
+            trigger: function( context ) {
 
                 var unprevented = true;
                 var event = {
@@ -71,7 +71,7 @@
                 };
 
                 for (var i = 0; i < callbacks.length; i++) {
-                    callbacks[i](modal, event);
+                    callbacks[i](context, event);
                 }
 
                 return unprevented;
@@ -227,6 +227,11 @@
             if ( focusable ) {
                 focusable.focus();
             }
+        },
+
+        /** Whether this element is visible */
+        isVisible: function () {
+            return !isHidden(this.elem);
         }
     };
 
@@ -330,6 +335,23 @@
     }
 
 
+    // An observable that is triggered whenever the escape key is pressed
+    var escapeKey = observable();
+
+    /** A global event handler to detect the escape key being pressed */
+    document.documentElement.addEventListener(
+        'keydown',
+        function onKeyPress (event) {
+            var keycode = event.which || event.keyCode;
+
+            // If this is the escape key
+            if ( keycode === 27 /* Escape key */ ) {
+                escapeKey.trigger();
+            }
+        }
+    );
+
+
     /**
      * Displays a modal
      */
@@ -401,7 +423,6 @@
         var shadowElem = build.bind(window, 'overlay');
         var closeElem = build.bind(window, 'close');
 
-
         var iface = {
 
             /** Returns the wrapping modal element */
@@ -415,6 +436,11 @@
 
             /** Builds the dom without showing the modal */
             buildDom: returnIface(build),
+
+            /** Returns whether this modal is currently being shown */
+            isVisible: function () {
+                return modalElem().isVisible();
+            },
 
             /** Shows this modal */
             show: function () {
@@ -483,6 +509,20 @@
                 // Restore the previously focused element when the modal closes
                 focused.focus();
                 focused = null;
+            });
+        }
+
+
+        // If a user presses the 'escape' key, close the modal.
+        // TODO: This is defaulting to false right now, but should default to
+        //       `true` in the future. However, that would require a major
+        //       version bump as it would allow modals to be closed that
+        //       previously may have been locked open.
+        if ( getOption("escCloses", false) ) {
+            escapeKey.watch(function () {
+                if ( iface.isVisible() ) {
+                    iface.close();
+                }
             });
         }
 
