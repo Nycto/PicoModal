@@ -62,6 +62,7 @@
         <p><a href="?prebuilt">Pre-built DOM</a></p>
         <p><a href="?alternateParent">Alternate Parent</a></p>
         <p><a href="?keyboard">Keyboard Navigation</a></p>
+        <p><a href="?noFocusOrEscape">Disable Escape Key and Focus</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -225,7 +226,19 @@
 
             buildModal("keyboard", function() {
                 return picoModal({
-                    escCloses: true,
+                    content:
+                        "Ah, the pitter patter of tiny feet in huge combat boots."
+                        + "<p><input type='text'></p>"
+                        + "<p><input type='text'></p>"
+                        + "<p><a href='javascript:void 0'>link</a></p>"
+                        + "<p><input type='text'></p>"
+                });
+            });
+
+            buildModal("noFocusOrEscape", function() {
+                return picoModal({
+                    focus: false,
+                    escCloses: false,
                     content:
                         "Ah, the pitter patter of tiny feet in huge combat boots."
                         + "<p><input type='text'></p>"
