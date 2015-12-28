@@ -242,6 +242,8 @@ The following settings are available when creating a modal:
   element by specifying a node or a selector
 * __escCloses__: When `false`, disables pressing the escape key to close this
   modal. This defaults to `true`.
+* __focus__: Whether to automatically set focus on the first focusable element
+  within this modal when it opens. This defaults to `true`.
 
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This
@@ -279,8 +281,6 @@ The following methods are available on the object returned by `picoModal`:
 * __afterShow__: Registers a callback to invoke when the modal is shown
 * __beforeClose__: Registers a callback to invoke before the modal is closed
 * __afterClose__: Registers a callback to invoke when the modal is closed
-* __focus__: Whether to automatically set focus on the first focusable element
-  within this modal when it opens. This defaults to `true`.
 
 License
 -------
