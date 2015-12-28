@@ -462,7 +462,7 @@
 
             /** Returns whether this modal is currently being shown */
             isVisible: function () {
-                return modalElem().isVisible();
+                return !!(built && modalElem && modalElem().isVisible());
             },
 
             /** Shows this modal */
@@ -487,9 +487,9 @@
 
             /** Destroys this modal */
             destroy: function () {
-                modalElem = modalElem().destroy();
-                shadowElem = shadowElem().destroy();
-                closeElem = undefined;
+                modalElem().destroy();
+                shadowElem().destroy();
+                shadowElem = modalElem = closeElem = undefined;
             },
 
             /**
@@ -544,7 +544,7 @@
 
             // Capture tab key presses and loop them within the modal
             tabKey.watch(function tabKeyPress (event) {
-                if ( !modalElem().isVisible() ) {
+                if ( !iface.isVisible() ) {
                     return false;
                 }
 
