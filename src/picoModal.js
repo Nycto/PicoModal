@@ -553,11 +553,7 @@
 
 
         // If a user presses the 'escape' key, close the modal.
-        // TODO: This is defaulting to false right now, but should default to
-        //       `true` in the future. However, that would require a major
-        //       version bump as it would allow modals to be closed that
-        //       previously may have been locked open.
-        if ( getOption("escCloses", false) ) {
+        if ( getOption("escCloses", true) ) {
             escapeKey.watch(function escapeKeyPress () {
                 if ( iface.isVisible() ) {
                     iface.close();
