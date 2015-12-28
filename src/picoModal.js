@@ -517,21 +517,29 @@
             afterClose: returnIface(afterCloseEvent.watch)
         };
 
-
-        // Records the currently focused element so state can be returned
-        // after the modal closes
+        // If focus management is enabled
         if ( getOption("focus", true) ) {
+
+            // The element focused before the modal opens
             var focused;
 
-            iface.afterShow(function focusModal() {
+            // Records the currently focused element so state can be returned
+            // after the modal closes
+            iface.beforeShow(function getActiveFocus() {
                 focused = document.activeElement;
+            });
+
+            // Shift focus into the modal
+            iface.afterShow(function focusModal() {
                 modalElem().moveFocus();
             });
 
+            // Restore the previously focused element when the modal closes
             iface.afterClose(function returnFocus() {
-                // Restore the previously focused element when the modal closes
-                focused.focus();
-                focused = null;
+                if ( focused ) {
+                    focused.focus();
+                    focused = null;
+                }
             });
 
             // Capture tab key presses and loop them within the modal
