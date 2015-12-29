@@ -546,7 +546,9 @@
              * `overlayClose`.
              */
             options: function ( opts ) {
-                options = opts;
+                Object.keys(opts).map(function (key) {
+                    options[key] = opts[key];
+                });
             },
 
             /** Executes after the DOM nodes are created */
