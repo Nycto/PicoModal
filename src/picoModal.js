@@ -568,13 +568,11 @@
         manageFocus(iface, getOption.bind(null, "focus", true));
 
         // If a user presses the 'escape' key, close the modal.
-        if ( getOption("escCloses", true) ) {
-            escapeKey.watch(function escapeKeyPress () {
-                if ( iface.isVisible() ) {
-                    iface.close();
-                }
-            });
-        }
+        escapeKey.watch(function escapeKeyPress () {
+            if ( getOption("escCloses", true) && iface.isVisible() ) {
+                iface.close();
+            }
+        });
 
         return iface;
     };
