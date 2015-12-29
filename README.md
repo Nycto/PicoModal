@@ -234,6 +234,8 @@ The following settings are available when creating a modal:
   overlay behind the modal
 * __modalStyles__: A hash of additional CSS properties to apply to the
   modal element
+* __modalId__: The ID to assign to the modal element. A default ID is generated
+  used if none is provided.
 * __modalClass__: A class to attach to the main modal element
 * __overlayClass__: A class to attach to the overlay element
 * __closeClass__: A class to attach to the close button
@@ -244,6 +246,12 @@ The following settings are available when creating a modal:
   modal. This defaults to `true`.
 * __focus__: Whether to automatically set focus on the first focusable element
   within this modal when it opens. This defaults to `true`.
+* __ariaDescribedBy__: The id of the element that contains the main content
+  of this modal. This sets the `[aria-describedby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute)`
+  attribute. This defaults to the ID of the modal if none is provided.
+* __ariaLabelledBy__: The id of the element that contains the general label
+  for this modal. This sets the `[aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-labelledby_attribute)`
+  attributed. It is left blank if none is provided.
 
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This

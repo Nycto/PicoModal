@@ -196,7 +196,9 @@
 
         /** Sets an attribute on this element */
         attr: function ( name, value ) {
-            this.elem.setAttribute(name, value);
+            if (value !== undefined) {
+                this.elem.setAttribute(name, value);
+            }
             return this;
         },
 
@@ -274,12 +276,17 @@
             });
     }
 
+    // An auto incrementing ID assigned to each modal
+    var autoinc = 1;
+
     /** Builds the content of a modal */
     function buildModal( getOption, close ) {
         var width = getOption('width', 'auto');
         if ( typeof width === "number" ) {
             width = "" + width + "px";
         }
+
+        var id = getOption("modalId", "pico-" + autoinc++);
 
         var elem = Elem.make( getOption("parent") )
             .clazz("pico-content")
@@ -303,7 +310,10 @@
                 borderRadius: "5px"
             }))
             .html( getOption('content') )
+            .attr("id", id)
             .attr("role", "dialog")
+            .attr("aria-labelledby", getOption("ariaLabelledBy"))
+            .attr("aria-describedby", getOption("ariaDescribedBy", id))
             .onClick(function (event) {
                 var isCloseClick = new Elem(event.target)
                     .anyAncestor(function (elem) {
@@ -338,7 +348,8 @@
                     textAlign: "center",
                     lineHeight: "15px",
                     background: "#CCC"
-                }) );
+                }) )
+                .attr("aria-label", getOption("close-label", "Close"));
         }
     }
 
