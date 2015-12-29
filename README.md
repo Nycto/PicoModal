@@ -3,7 +3,7 @@ PicoModal [![Build Status](https://secure.travis-ci.org/Nycto/PicoModal.png?bran
 
 A small, self-contained JavaScript modal library
 
-* Small: At less than 2kb minified & gzipped, it's small and easily embeddable
+* Small: At around 2kb minified & gzipped, it's small and easily embeddable
 * No Dependencies: PicoModal does not depend on any other JS libraries,
   so you can use it in places where you don't have access to one
 * Self-contained: No extra CSS or images required; just the JS
