@@ -85,34 +85,6 @@
         return elem.offsetWidth === 0 && elem.offsetHeight === 0;
     }
 
-    /** Whether an element matches a selector */
-    function matches ( elem, selector ) {
-        return elem.msMatchesSelector ?
-            elem.msMatchesSelector(selector) :
-            elem.matches(selector);
-    }
-
-    /**
-     * Returns whether an element is focusable
-     * @see http://stackoverflow.com/questions/18261595
-     */
-    function canFocus( elem ) {
-        if (
-            isHidden(elem) ||
-            matches(elem, ":disabled") ||
-            elem.hasAttribute("contenteditable")
-        ) {
-            return false;
-        }
-        else {
-            return elem.hasAttribute("tabindex") ||
-                matches(
-                    elem,
-                    "input,select,textarea,button,a[href],area[href],iframe"
-                );
-        }
-    }
-
 
     /**
      * A small interface for creating and managing a dom element
@@ -214,34 +186,6 @@
                 }
             }
             return false;
-        },
-
-        /** Returns the first descendant that can be focused */
-        firstFocusable: function () {
-            var items = this.elem.getElementsByTagName("*");
-            for (var i = 0; i < items.length; i++) {
-                if ( canFocus(items[i]) ) {
-                    return items[i];
-                }
-            }
-        },
-
-        /** Returns the last descendant that can be focused */
-        lastFocusable: function () {
-            var items = this.elem.getElementsByTagName("*");
-            for (var i = items.length; i--;) {
-                if ( canFocus(items[i]) ) {
-                    return items[i];
-                }
-            }
-        },
-
-        /** Sets focus to the first focusable element */
-        moveFocus: function () {
-            var focusable = this.firstFocusable();
-            if ( focusable ) {
-                focusable.focus();
-            }
         },
 
         /** Whether this element is visible */
@@ -386,6 +330,99 @@
     );
 
 
+    /** Attaches focus management events */
+    function manageFocus ( iface, isEnabled ) {
+
+        /** Whether an element matches a selector */
+        function matches ( elem, selector ) {
+            return elem.msMatchesSelector ?
+                elem.msMatchesSelector(selector) :
+                elem.matches(selector);
+        }
+
+        /**
+         * Returns whether an element is focusable
+         * @see http://stackoverflow.com/questions/18261595
+         */
+        function canFocus( elem ) {
+            if (
+                isHidden(elem) ||
+                matches(elem, ":disabled") ||
+                elem.hasAttribute("contenteditable")
+            ) {
+                return false;
+            }
+            else {
+                return elem.hasAttribute("tabindex") ||
+                    matches(
+                        elem,
+                        "input,select,textarea,button,a[href],area[href],iframe"
+                    );
+            }
+        }
+
+        /** Returns the first descendant that can be focused */
+        function firstFocusable ( elem ) {
+            var items = elem.getElementsByTagName("*");
+            for (var i = 0; i < items.length; i++) {
+                if ( canFocus(items[i]) ) {
+                    return items[i];
+                }
+            }
+        }
+
+        /** Returns the last descendant that can be focused */
+        function lastFocusable ( elem ) {
+            var items = elem.getElementsByTagName("*");
+            for (var i = items.length; i--;) {
+                if ( canFocus(items[i]) ) {
+                    return items[i];
+                }
+            }
+        }
+
+        // The element focused before the modal opens
+        var focused;
+
+        // Records the currently focused element so state can be returned
+        // after the modal closes
+        iface.beforeShow(function getActiveFocus() {
+            focused = document.activeElement;
+        });
+
+        // Shift focus into the modal
+        iface.afterShow(function focusModal() {
+            if ( isEnabled() ) {
+                var focusable = firstFocusable(iface.modalElem());
+                if ( focusable ) {
+                    focusable.focus();
+                }
+            }
+        });
+
+        // Restore the previously focused element when the modal closes
+        iface.afterClose(function returnFocus() {
+            if ( isEnabled() && focused ) {
+                focused.focus();
+            }
+            focused = null;
+        });
+
+        // Capture tab key presses and loop them within the modal
+        tabKey.watch(function tabKeyPress (event) {
+            if ( isEnabled() && iface.isVisible() ) {
+                var first = firstFocusable(iface.modalElem());
+                var last = lastFocusable(iface.modalElem());
+
+                var from = event.shiftKey ? first : last;
+                if ( from === document.activeElement ) {
+                    (event.shiftKey ? last : first).focus();
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
     /**
      * Displays a modal
      */
@@ -528,48 +565,7 @@
             afterClose: returnIface(afterCloseEvent.watch)
         };
 
-        // If focus management is enabled
-        if ( getOption("focus", true) ) {
-
-            // The element focused before the modal opens
-            var focused;
-
-            // Records the currently focused element so state can be returned
-            // after the modal closes
-            iface.beforeShow(function getActiveFocus() {
-                focused = document.activeElement;
-            });
-
-            // Shift focus into the modal
-            iface.afterShow(function focusModal() {
-                modalElem().moveFocus();
-            });
-
-            // Restore the previously focused element when the modal closes
-            iface.afterClose(function returnFocus() {
-                if ( focused ) {
-                    focused.focus();
-                    focused = null;
-                }
-            });
-
-            // Capture tab key presses and loop them within the modal
-            tabKey.watch(function tabKeyPress (event) {
-                if ( !iface.isVisible() ) {
-                    return false;
-                }
-
-                var first = modalElem().firstFocusable();
-                var last = modalElem().lastFocusable();
-
-                var from = event.shiftKey ? first : last;
-                if ( from === document.activeElement ) {
-                    (event.shiftKey ? last : first).focus();
-                    event.preventDefault();
-                }
-            });
-        }
-
+        manageFocus(iface, getOption.bind(null, "focus", true));
 
         // If a user presses the 'escape' key, close the modal.
         if ( getOption("escCloses", true) ) {
