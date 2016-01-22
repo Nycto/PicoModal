@@ -35,15 +35,14 @@ var browsers = [
 
 // URLs to test on saucelabs
 var urls = [
-    'http://localhost:8080/?createFromString',
-    'http://localhost:8080/?createFromNode',
-    'http://localhost:8080/?specificWidth',
-    'http://localhost:8080/?withoutClose',
-    'http://localhost:8080/?customStyles',
-    'http://localhost:8080/?customClasses',
-    'http://localhost:8080/?prebuilt',
-    'http://localhost:8080/?alternateParent',
-    'http://localhost:8080/?keyboard',
+    'http://localhost:8080/',
+    'http://localhost:9090/?specificWidth',
+    'http://localhost:9090/?withoutClose',
+    'http://localhost:9090/?customStyles',
+    'http://localhost:9090/?customClasses',
+    'http://localhost:9090/?prebuilt',
+    'http://localhost:9090/?alternateParent',
+    'http://localhost:9090/?keyboard',
 ];
 
 module.exports = function(grunt) {
@@ -89,14 +88,14 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'uglify']
+            files: ['src/**/*.js', 'test/**/*.js'],
+            tasks: ['jshint', 'uglify', 'domTest:test']
         },
 
         connect: {
             server: {
                 options: {
-                    port: 8080,
+                    port: 9090,
                     base: '.'
                 }
             }
@@ -104,6 +103,10 @@ module.exports = function(grunt) {
 
         bowerVerify: {
             build: {}
+        },
+
+        domTest: {
+            files: [ "test/*.js" ]
         }
     });
 
@@ -123,12 +126,22 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-bower-verify');
+    grunt.loadNpmTasks('grunt-dom-test');
+    grunt.loadNpmTasks('grunt-continue');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint', 'uglify', 'bowerVerify']);
+    grunt.registerTask(
+        'default',
+        ['jshint', 'uglify', 'domTest:test']);
 
-    grunt.registerTask('dev', ['jshint', 'uglify', 'connect', 'watch']);
+    grunt.registerTask( 'dev', [
+        'domTest:server', 'continue:on',
+        'jshint', 'uglify', 'domTest:test',
+        'watch'
+        ]);
 
-    grunt.registerTask('sauce', ['jshint', 'connect', 'saucelabs-run']);
+    grunt.registerTask(
+        'sauce',
+        ['default', 'connect', 'domTest:server', 'saucelabs-run']);
 };
 
