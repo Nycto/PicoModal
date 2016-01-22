@@ -1,4 +1,4 @@
-/* global module: false, require: false, process: false */
+/* global module: false, process: false */
 
 // Browsers to test on saucelabs
 var browsers = [
@@ -31,18 +31,6 @@ var browsers = [
         version: '4.4',
         deviceName: 'Google Nexus 7 HD Emulator'
     }
-];
-
-// URLs to test on saucelabs
-var urls = [
-    'http://localhost:8080/',
-    'http://localhost:9090/?specificWidth',
-    'http://localhost:9090/?withoutClose',
-    'http://localhost:9090/?customStyles',
-    'http://localhost:9090/?customClasses',
-    'http://localhost:9090/?prebuilt',
-    'http://localhost:9090/?alternateParent',
-    'http://localhost:9090/?keyboard',
 ];
 
 module.exports = function(grunt) {
@@ -89,16 +77,7 @@ module.exports = function(grunt) {
 
         watch: {
             files: ['src/**/*.js', 'test/**/*.js'],
-            tasks: ['jshint', 'uglify', 'domTest:test']
-        },
-
-        connect: {
-            server: {
-                options: {
-                    port: 9090,
-                    base: '.'
-                }
-            }
+            tasks: ['default']
         },
 
         bowerVerify: {
@@ -107,18 +86,24 @@ module.exports = function(grunt) {
 
         domTest: {
             files: [ "test/*.js" ]
+        },
+
+        'saucelabs-custom': {
+            all: {
+                options: {
+                    urls: [ 'http://localhost:8080' ],
+                    build: process.env.CI_BUILD_NUMBER || Date.now(),
+                    testname: 'PicoModal unit tests',
+                    public: "public",
+                    pollInterval: 5000,
+                    statusCheckAttempts: 48,
+                    'max-duration': 90,
+                    maxRetries: 1,
+                    browsers: browsers
+                }
+            }
         }
     });
-
-    grunt.registerTask(
-        'saucelabs-run',
-        require('./task/screenshots.js')(grunt, {
-            name: 'PicoModal',
-            build: process.env.CI_BUILD_NUMBER || Date.now(),
-            urls: urls,
-            browsers: browsers
-        })
-    );
 
     // Plugins
     grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -128,6 +113,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bower-verify');
     grunt.loadNpmTasks('grunt-dom-test');
     grunt.loadNpmTasks('grunt-continue');
+    grunt.loadNpmTasks('grunt-saucelabs');
 
     // Default task(s).
     grunt.registerTask(
@@ -137,11 +123,10 @@ module.exports = function(grunt) {
     grunt.registerTask( 'dev', [
         'domTest:server', 'continue:on',
         'jshint', 'uglify', 'domTest:test',
-        'watch'
-        ]);
+        'watch']);
 
     grunt.registerTask(
         'sauce',
-        ['default', 'connect', 'domTest:server', 'saucelabs-run']);
+        ['default', 'domTest:server', 'saucelabs-custom']);
 };
 
