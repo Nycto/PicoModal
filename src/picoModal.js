@@ -335,9 +335,10 @@
 
         /** Whether an element matches a selector */
         function matches ( elem, selector ) {
-            return elem.msMatchesSelector ?
-                elem.msMatchesSelector(selector) :
-                elem.matches(selector);
+            var fn = elem.msMatchesSelector ||
+                elem.webkitMatchesSelector ||
+                elem.matches;
+            return fn.call(elem, selector);
         }
 
         /**
