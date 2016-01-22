@@ -28,8 +28,34 @@ var browsers = [
     {
         browserName: 'android',
         platform: 'Linux',
+        version: '4.3',
+        deviceName: 'Android Emulator'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
         version: '4.4',
         deviceName: 'Google Nexus 7 HD Emulator'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
+        version: '5.0',
+        deviceName: 'Android Emulator'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
+        version: '5.1',
+        deviceName: 'Android Emulator'
+    },
+    {
+        browserName: 'Safari',
+        appiumVersion: '1.4.16',
+        deviceName: 'iPhone 6',
+        deviceOrientation: 'portrait',
+        platformVersion: '9.2',
+        platformName: 'iOS'
     }
 ];
 
