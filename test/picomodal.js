@@ -131,17 +131,6 @@ testing.a("modal")
         done();
     })
 
-    .should("Allow the close button to be disabled").in(function (done, $) {
-        $.picoModal({
-            content: "Curse your sudden but inevitable betrayal!",
-            closeButton: false
-        }).show();
-
-        $.assert.equal($.query("pico-close").count, 0);
-
-        done();
-    })
-
     .should("Be destroyable").in(function (done, $) {
         var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
         $.assert.equal($.query(".pico-content").count, 0);
@@ -158,16 +147,76 @@ testing.a("modal")
         done();
     })
 
-    .should("Allow its DOM to be prebuilt").skip(function () {
-        throw new Error();
+    .should("Allow its DOM to be prebuilt").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        $.assert.isFalse( modal.isVisible() );
+        $.assert.equal($.query(".pico-content").count, 0);
+
+        modal.buildDom();
+        $.assert.isFalse( modal.isVisible() );
+        $.assert.equal($.query(".pico-content").count, 1);
+
+        done();
     })
 
-    .should("Allow an alternate document parent").skip(function () {
-        throw new Error();
+
+    .and("The modal close button")
+
+    .should("Be disableable").in(function (done, $) {
+        $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            closeButton: false
+        }).show();
+
+        $.assert.equal($.query("pico-close").count, 0);
+
+        done();
     })
 
-    .should("Allow customizing the close button html").skip(function () {
-        throw new Error();
+    .should("Support custom html").in(function (done, $) {
+        $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            closeHtml: "Close this thing!"
+        }).show();
+
+        $.assert.equal(
+            $.query(".pico-close").one().text(),
+            "Close this thing!");
+
+        done();
+    })
+
+
+    .and("Setting an alternate modal parent")
+
+    .should("Allow an alternate parent from a selector").using(
+        "<div id='myParent'></div>"
+    ).in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            parent: "#myParent"
+        }).show();
+
+        $.assert.equal(
+            $.query("#myParent").one().elem,
+            modal.modalElem().parentNode );
+
+        done();
+    })
+
+    .should("Allow an alternate parent from an element").using(
+        "<div id='myParent'></div>"
+    ).in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            parent: $.query("#myParent").one().elem
+        }).show();
+
+        $.assert.equal(
+            $.query("#myParent").one().elem,
+            modal.modalElem().parentNode );
+
+        done();
     })
 
 
