@@ -59,8 +59,19 @@ testing.a("modal")
         done();
     })
 
-    .should("Allow custom classes to be added").skip(function (done, $) {
-        throw new Error();
+    .should("Allow custom classes to be added").in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Ah, the pitter patter of tiny feet in huge combat boots",
+            modalClass: "my-modal",
+            overlayClass: "my-overlay",
+            closeClass: "my-close"
+        }).show();
+
+        $.assert.equal($.query(".my-modal").one().elem, modal.modalElem());
+        $.assert.equal($.query(".my-overlay").one().elem, modal.overlayElem());
+        $.assert.equal($.query(".my-close").one().elem, modal.closeElem());
+
+        done();
     })
 
     .should("Allow custom styles to be set").skip(function (done, $) {
