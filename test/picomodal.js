@@ -104,13 +104,13 @@ testing.a("modal")
         }).show();
 
         $.assert.equal(modal.modalElem().style.borderColor, "red");
-        $.assert.equal(modal.modalElem().style.background, "orange");
+        $.assert.equal(modal.modalElem().style.backgroundColor, "orange");
 
         $.assert.equal(modal.overlayElem().style.borderColor, "yellow");
-        $.assert.equal(modal.overlayElem().style.background, "green");
+        $.assert.equal(modal.overlayElem().style.backgroundColor, "green");
 
         $.assert.equal(modal.closeElem().style.borderColor, "blue");
-        $.assert.equal(modal.closeElem().style.background, "purple");
+        $.assert.equal(modal.closeElem().style.backgroundColor, "purple");
 
         done();
     })
@@ -125,7 +125,7 @@ testing.a("modal")
         }).show();
 
         $.assert.equal(modal.modalElem().style.borderColor, "red");
-        $.assert.equal(modal.modalElem().style.background, "orange");
+        $.assert.equal(modal.modalElem().style.backgroundColor, "orange");
         $.assert.equal(modal.modalElem().style.padding, "20px");
 
         done();
