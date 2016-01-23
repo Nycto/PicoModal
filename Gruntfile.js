@@ -67,7 +67,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'task/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
             options: {
                 bitwise: true,
                 camelcase: true,
