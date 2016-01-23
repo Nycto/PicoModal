@@ -142,8 +142,20 @@ testing.a("modal")
         done();
     })
 
-    .should("Be destroyable").skip(function () {
-        throw new Error();
+    .should("Be destroyable").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        $.assert.equal($.query(".pico-content").count, 0);
+
+        modal.show();
+        $.assert.equal($.query(".pico-content").count, 1);
+
+        modal.close();
+        $.assert.equal($.query(".pico-content").count, 1);
+
+        modal.destroy();
+        $.assert.equal($.query(".pico-content").count, 0);
+
+        done();
     })
 
     .should("Allow its DOM to be prebuilt").skip(function () {
