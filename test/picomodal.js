@@ -142,7 +142,26 @@ testing.a("modal")
         done();
     })
 
-    .should("Close when the shadow is clicked").skip(function () {
+    .should("Be destroyable").skip(function () {
+        throw new Error();
+    })
+
+    .should("Allow its DOM to be prebuilt").skip(function () {
+        throw new Error();
+    })
+
+    .should("Allow an alternate document parent").skip(function () {
+        throw new Error();
+    })
+
+    .should("Allow customizing the close button html").skip(function () {
+        throw new Error();
+    })
+
+
+    .and("And the modal overlay")
+
+    .should("Close the modal when the shadow is clicked").skip(function () {
         throw new Error();
     })
 
@@ -150,7 +169,10 @@ testing.a("modal")
         throw new Error();
     })
 
-    .should("Trigger events").skip(function () {
+
+    .and("Modal events")
+
+    .should("be triggered").skip(function () {
         throw new Error();
     })
 
@@ -166,15 +188,18 @@ testing.a("modal")
         throw new Error();
     })
 
-    .should("Be destroyable").skip(function () {
+
+    .and("Modal accessibility")
+
+    .should("Add an ID to every modal").skip(function () {
         throw new Error();
     })
 
-    .should("Allow its DOM to be prebuilt").skip(function () {
+    .should("Allow a custom ID to be added").skip(function () {
         throw new Error();
     })
 
-    .should("Allow an alternate document parent").skip(function () {
+    .should("Allow custom aria attributes").skip(function () {
         throw new Error();
     })
 
@@ -199,22 +224,6 @@ testing.a("modal")
     })
 
     .should("Allow 'escape to close' to be disabled").skip(function () {
-        throw new Error();
-    })
-
-    .should("Allow customizing the close button html").skip(function () {
-        throw new Error();
-    })
-
-    .should("Add an ID to every modal").skip(function () {
-        throw new Error();
-    })
-
-    .should("Allow a custom ID to be added").skip(function () {
-        throw new Error();
-    })
-
-    .should("Allow custom aria attributes").skip(function () {
         throw new Error();
     })
 
