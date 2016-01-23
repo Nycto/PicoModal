@@ -131,8 +131,15 @@ testing.a("modal")
         done();
     })
 
-    .should("Allow the close button to be disabled").skip(function () {
-        throw new Error();
+    .should("Allow the close button to be disabled").in(function (done, $) {
+        $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            closeButton: false
+        }).show();
+
+        $.assert.equal($.query("pico-close").count, 0);
+
+        done();
     })
 
     .should("Close when the shadow is clicked").skip(function () {
