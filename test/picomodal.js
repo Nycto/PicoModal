@@ -220,33 +220,114 @@ testing.a("modal")
     })
 
 
-    .and("And the modal overlay")
+    .and("The modal overlay")
 
-    .should("Close the modal when the shadow is clicked").skip(function () {
-        throw new Error();
+    .should("Close the modal when clicked").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        modal.show();
+
+        $.query(".pico-overlay").one().click();
+        $.assert.isFalse( modal.isVisible() );
+
+        done();
     })
 
-    .should("Allow shadow clicks to be disabled").skip(function () {
-        throw new Error();
+    .should("Allow shadow clicks to be disabled").in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            overlayClose: false
+        });
+        modal.show();
+
+        $.query(".pico-overlay").one().click();
+        $.assert.isTrue( modal.isVisible() );
+
+        done();
     })
 
 
     .and("Modal events")
 
-    .should("be triggered").skip(function () {
-        throw new Error();
+    .should("be triggered").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+
+        var status = "new";
+
+        function checkStatus(previous, next, isVisible) {
+            return function (m) {
+                $.assert.equal(status, previous);
+                $.assert.equal(m, modal);
+                $.assert.equal( modal.isVisible(), isVisible );
+                status = next;
+            };
+        }
+
+        modal
+            .beforeShow(checkStatus("new", "beforeShow", false))
+            .afterCreate(checkStatus("beforeShow", "afterCreate", false))
+            .afterShow(checkStatus("afterCreate", "afterShow", true))
+            .beforeClose(checkStatus("open", "beforeClose", true))
+            .afterClose(checkStatus("beforeClose", "afterClose", false));
+
+        modal.show();
+        $.assert.equal(status, "afterShow");
+        status = "open";
+
+        modal.close();
+        $.assert.equal(status, "afterClose");
+
+        done();
     })
 
-    .should("Allow `beforeShow` to prevent show").skip(function () {
-        throw new Error();
+    .should("Trigger afterCreate from buildDom").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        modal
+            .afterCreate(done)
+            .beforeShow( $.assert.fail )
+            .afterShow( $.assert.fail );
+        modal.buildDom();
     })
 
-    .should("Allow `beforeClose` to prevent close").skip(function () {
-        throw new Error();
+    .should("Allow `beforeShow` to prevent show").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+
+        modal
+            .beforeShow(function (m, event) {
+                event.preventDefault();
+            })
+            .afterCreate( $.assert.fail )
+            .afterShow( $.assert.fail );
+
+        $.assert.isFalse( modal.isVisible() );
+        done();
     })
 
-    .should("Bypass `beforeClose` with `forceClose`").skip(function () {
-        throw new Error();
+    .should("Allow `beforeClose` to prevent close").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+
+        modal
+            .beforeClose(function (m, event) {
+                event.preventDefault();
+            })
+            .afterClose( $.assert.fail )
+            .show()
+            .close();
+
+        $.assert.isTrue( modal.isVisible() );
+        done();
+    })
+
+    .should("Bypass `beforeClose` with `forceClose`").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+
+        modal
+            .beforeClose( $.assert.fail )
+            .afterClose(function () {
+                $.assert.isFalse( modal.isVisible() );
+                done();
+            })
+            .show()
+            .forceClose();
     })
 
 
