@@ -32,8 +32,20 @@ testing.a("modal")
         done();
     })
 
-    .should("Be re-usable via .show and .hide").skip(function (done, $) {
-        throw new Error();
+    .should("Be re-usable via .show and .close").in(function (done, $) {
+        var modal = $.picoModal("My content");
+        $.assert.isFalse( modal.isVisible() );
+
+        modal.show();
+        $.assert.isTrue( modal.isVisible() );
+
+        modal.close();
+        $.assert.isFalse( modal.isVisible() );
+
+        modal.show();
+        $.assert.isTrue( modal.isVisible() );
+
+        done();
     })
 
     .should("Allow a specific width to be set").skip(function (done, $) {

@@ -82,7 +82,8 @@
 
     /** Whether an element is hidden */
     function isHidden ( elem ) {
-        return elem.offsetWidth === 0 && elem.offsetHeight === 0;
+        // @see http://stackoverflow.com/questions/19669786
+        return window.getComputedStyle(elem).display === 'none';
     }
 
 
