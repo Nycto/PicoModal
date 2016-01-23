@@ -48,8 +48,15 @@ testing.a("modal")
         done();
     })
 
-    .should("Allow a specific width to be set").skip(function (done, $) {
-        throw new Error();
+    .should("Allow a specific width to be set").in(function (done, $) {
+        $.picoModal({
+            content: "Ah, the pitter patter of tiny feet in huge combat boots",
+            width: 50
+        }).show();
+
+        $.assert.equal('50px', $.query(".pico-content").one().styles().width);
+
+        done();
     })
 
     .should("Allow custom classes to be added").skip(function (done, $) {
