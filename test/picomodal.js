@@ -433,24 +433,86 @@ testing.a("modal")
         done();
     })
 
-    .should("Loop the tab key back to the start").skip(function () {
-        throw new Error();
+    .should("Loop the tab key back to the start").in(function (done, $) {
+        var modal = $.picoModal({
+            content:
+                "<p>Curse your sudden but inevitable betrayal!</p>" +
+                "<button id='first'></button>" +
+                "<input type='text' id='second'>" +
+                "<a id='third' href='#'>A link</a>" +
+                "<textarea id='fourth'></textarea>"
+        });
+
+        modal.show();
+        $.query(".pico-close").one().focus();
+        $.assert.isTrue( $.query(".pico-close").one().isFocused() );
+
+        $.html.keyDown(9); // 9 == tab key
+        $.assert.isTrue( $.id("first").isFocused() );
+
+        done();
     })
 
-    .should("Loop shift-tab to the end").skip(function () {
-        throw new Error();
+    .should("Loop shift-tab to the end").in(function (done, $) {
+        var modal = $.picoModal({
+            content:
+                "<p>Curse your sudden but inevitable betrayal!</p>" +
+                "<button id='first'></button>" +
+                "<input type='text' id='second'>" +
+                "<a id='third' href='#'>A link</a>" +
+                "<textarea id='fourth'></textarea>"
+        });
+
+        modal.show();
+        $.id("first").focus();
+        $.assert.isTrue( $.id("first").isFocused() );
+
+        $.html.keyDown(9, { shift: true }); // 9 == tab key
+        $.assert.isTrue( $.query(".pico-close").one().isFocused() );
+
+        done();
     })
 
-    .should("Allow focus capture to be disabled").skip(function () {
-        throw new Error();
+    .should("Allow focus capture to be disabled").using(
+        "<a id='my-link' href='#'>This is a link on the page</a>"
+    ).in(function (done, $) {
+        var modal = $.picoModal({
+            content:
+                "<p>Curse your sudden but inevitable betrayal!</p>" +
+                "<button id='my-button'>Shiny!</button>",
+            focus: false
+        });
+
+        modal.show();
+
+        $.query(".pico-close").one().focus();
+        $.assert.isTrue( $.query(".pico-close").one().isFocused() );
+
+        $.html.keyDown(9); // 9 == tab key
+        $.assert.isFalse( $.id("my-button").isFocused() );
+
+        done();
     })
 
-    .should("Close the modal when escape is pressed").skip(function () {
-        throw new Error();
+    .should("Close the modal when escape is pressed").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        modal.show();
+
+        $.html.keyDown(27);
+        $.assert.isFalse( modal.isVisible() );
+        done();
     })
 
-    .should("Allow 'escape to close' to be disabled").skip(function () {
-        throw new Error();
+    .should("Allow 'escape to close' to be disabled").in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            escCloses: false
+        });
+        modal.show();
+
+        $.html.keyDown(27);
+        $.assert.isTrue( modal.isVisible() );
+        done();
     })
 
     ;
