@@ -230,16 +230,16 @@ The following settings are available when creating a modal:
 * __closeButton__: Boolean whether to display the close button
 * __closeHtml__: Custom HTML content for the close button
 * __closeStyles__: A hash of CSS properties to apply to the close button
+* __closeClass__: A class to attach to the close button
 * __overlayClose__: Boolean whether a click on the shadow should close the modal
 * __overlayStyles__: A hash of additional CSS properties to apply to the
   overlay behind the modal
+* __overlayClass__: A class to attach to the overlay element
 * __modalStyles__: A hash of additional CSS properties to apply to the
   modal element
+* __modalClass__: A class to attach to the main modal element
 * __modalId__: The ID to assign to the modal element. A default ID is generated
   used if none is provided.
-* __modalClass__: A class to attach to the main modal element
-* __overlayClass__: A class to attach to the overlay element
-* __closeClass__: A class to attach to the close button
 * __parent__: By default, the modal dialog elements are attached to
   `document.body`. This options allows you to select an alternative parent
   element by specifying a node or a selector
