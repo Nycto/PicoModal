@@ -6,7 +6,7 @@ before_script:
     - npm install -g grunt-cli
 env:
     global:
-        - secure: GKwpR/WClxLyT0FXkq7UAglifJ6QJdikdFCW9/vUVWh1oRNkxt71LhvOGn7VDZgEwexA1C3l9lwLEXLgFX7JCuvdkj7UqvOTPwNG63UciagSsxfQnGvi8smd6QxfZg3JGhbzrpOofA6xm4mVhGdJdNaKnf49nNzUtXcRqh8/qUU=
-        - secure: cAHuKouQZgvdG7pNcSBLo/cMXKkgZUKLOoQcigdPpluo+nTEFAFidp33G+dTJiaot23Uh2GBz//tcGIKbwoQi6yIRar4WcofbN0LIR5R3+TRvA7yEWcAIYGZEkrjjXqyMmASG9zM8kXuvzT+/3xtNba5cnhSeT51kEefx00OTI8=
+        secure: "FkP/F/2n6ZEXpiMQDrOGDUxjUf+Ai+ErHSF3QjGfZjmjfxG9wRJNP6r2KyoM58jQ6HQduE94U//wYf6KTDyYduy7HurTFfF7KlaQRRJRxEebIjy/gWSXnu8pa/pffaBiD4QKX1g5PZIoocCfkbqNRI3f1PIrNgOngScv0IPWMJc="
+        secure: "YB2woBM+GFCNhNPHYygFLzDoerEPLkETjzV1JpQf9WZG7fE3WyAfQYtwKz/XrjwhDhe0relt+KuCTDI+pnYy808KNv6r2ElAiVf5Q2EYl0Gf4F4knHY8rGX8OpVyS3hbvTbe1JNPwGazWP6hFYJ9tCAsTbOdw1co5JMytVtB4+I="
 addons:
     sauce_connect: true
