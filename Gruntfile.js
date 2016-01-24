@@ -50,12 +50,10 @@ var browsers = [
         deviceName: 'Android Emulator'
     },
     {
-        browserName: 'Safari',
-        appiumVersion: '1.4.16',
-        deviceName: 'iPhone 6',
-        deviceOrientation: 'portrait',
-        platformVersion: '9.2',
-        platformName: 'iOS'
+        browserName: 'iphone',
+        platform: 'OS X 10.10',
+        version: '9.2',
+        deviceName: 'iPhone Simulator'
     }
 ];
 
