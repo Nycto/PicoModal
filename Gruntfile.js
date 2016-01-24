@@ -54,6 +54,17 @@ var browsers = [
         platform: 'OS X 10.10',
         version: '9.2',
         deviceName: 'iPhone Simulator'
+    },
+    {
+        browserName: 'iphone',
+        platform: 'OS X 10.10',
+        version: '8.4',
+        deviceName: 'iPhone Simulator'
+    },
+    {
+        browserName: 'safari',
+        platform: 'OS X 10.11',
+        version: '9.0'
     }
 ];
 
