@@ -132,7 +132,7 @@ module.exports = function(grunt) {
                     public: "public",
                     pollInterval: 5000,
                     statusCheckAttempts: 48,
-                    'max-duration': 90,
+                    'max-duration': 180,
                     maxRetries: 1,
                     browsers: browsers
                 }
