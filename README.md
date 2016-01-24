@@ -10,6 +10,7 @@ A small, self-contained JavaScript modal library
 * Simple: The interface is straight forward and easy to use
 * Customizable: By changing a few settings you can customize or completely
   replace the default styles and behaviour
+* Accessible: Handles focus management, keyboard events and Aria tags
 
 Download
 --------
