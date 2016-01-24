@@ -20,7 +20,7 @@ The latest version of PicoModal is available here:
 Browser Support
 ---------------
 
-[![Browser Support Matrix](https://saucelabs.com/browser-matrix/picomodal.svg?auth=97d19e9c77a6980f249c9e6cf7ab78ec)](https://saucelabs.com/u/picomodal?auth=97d19e9c77a6980f249c9e6cf7ab78ec)
+![Browser Support Matrix](https://saucelabs.com/browser-matrix/picomodal.svg?auth=97d19e9c77a6980f249c9e6cf7ab78ec)
 
 Basic Example
 -------------
