@@ -55,6 +55,51 @@ testing.a("modal")
         done();
     })
 
+    .should("Allow functions as options").in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            width: function (def) {
+                $.assert.equal(def, 'auto');
+                return 200;
+            }
+        }).show();
+
+        $.assert.equal('200px', modal.modalElem().style.width);
+
+        done();
+    })
+
+    .should("Be destroyable").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        $.assert.equal($.query(".pico-content").count, 0);
+
+        modal.show();
+        $.assert.equal($.query(".pico-content").count, 1);
+
+        modal.close();
+        $.assert.equal($.query(".pico-content").count, 1);
+
+        modal.destroy();
+        $.assert.equal($.query(".pico-content").count, 0);
+
+        done();
+    })
+
+    .should("Allow its DOM to be prebuilt").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        $.assert.isFalse( modal.isVisible() );
+        $.assert.equal($.query(".pico-content").count, 0);
+
+        modal.buildDom();
+        $.assert.isFalse( modal.isVisible() );
+        $.assert.equal($.query(".pico-content").count, 1);
+
+        done();
+    })
+
+
+    .and("Modal styling")
+
     .should("Allow a specific width to be set").in(function (done, $) {
         $.picoModal({
             content: "Curse your sudden but inevitable betrayal!",
@@ -77,20 +122,6 @@ testing.a("modal")
         $.assert.equal( $.query(".my-modal").one().elem, modal.modalElem());
         $.assert.equal( $.query(".my-overlay").one().elem, modal.overlayElem());
         $.assert.equal( $.query(".my-close").one().elem, modal.closeElem());
-
-        done();
-    })
-
-    .should("Allow functions as options").in(function (done, $) {
-        var modal = $.picoModal({
-            content: "Curse your sudden but inevitable betrayal!",
-            width: function (def) {
-                $.assert.equal(def, 'auto');
-                return 200;
-            }
-        }).show();
-
-        $.assert.equal('200px', modal.modalElem().style.width);
 
         done();
     })
@@ -127,34 +158,6 @@ testing.a("modal")
         $.assert.equal(modal.modalElem().style.borderColor, "red");
         $.assert.equal(modal.modalElem().style.backgroundColor, "orange");
         $.assert.equal(modal.modalElem().style.padding, "20px");
-
-        done();
-    })
-
-    .should("Be destroyable").in(function (done, $) {
-        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
-        $.assert.equal($.query(".pico-content").count, 0);
-
-        modal.show();
-        $.assert.equal($.query(".pico-content").count, 1);
-
-        modal.close();
-        $.assert.equal($.query(".pico-content").count, 1);
-
-        modal.destroy();
-        $.assert.equal($.query(".pico-content").count, 0);
-
-        done();
-    })
-
-    .should("Allow its DOM to be prebuilt").in(function (done, $) {
-        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
-        $.assert.isFalse( modal.isVisible() );
-        $.assert.equal($.query(".pico-content").count, 0);
-
-        modal.buildDom();
-        $.assert.isFalse( modal.isVisible() );
-        $.assert.equal($.query(".pico-content").count, 1);
 
         done();
     })
@@ -333,20 +336,101 @@ testing.a("modal")
 
     .and("Modal accessibility")
 
-    .should("Add an ID to every modal").skip(function () {
-        throw new Error();
+    .should("Add an ID to every modal").in(function (done, $) {
+
+        $.assert.equal(
+            $.picoModal("Curse your sudden but inevitable betrayal!")
+                .buildDom()
+                .modalElem()
+                .id,
+            "pico-1");
+
+        $.assert.equal(
+            $.picoModal("Curse your sudden but inevitable betrayal!")
+                .buildDom()
+                .modalElem()
+                .id,
+            "pico-2");
+
+        $.assert.equal(
+            $.picoModal("Curse your sudden but inevitable betrayal!")
+                .buildDom()
+                .modalElem()
+                .id,
+            "pico-3");
+
+        done();
     })
 
-    .should("Allow a custom ID to be added").skip(function () {
-        throw new Error();
+    .should("Allow a custom ID to be added").in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            modalId: "myModal"
+        }).show();
+
+        $.assert.equal( modal.modalElem().id, "myModal");
+
+        done();
     })
 
-    .should("Allow custom aria attributes").skip(function () {
-        throw new Error();
+    .should("Set aria-describedby automatically").in(function (done, $) {
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            modalId: "myModal"
+        }).show();
+
+        $.assert.equal(
+            modal.modalElem().getAttribute("aria-describedby"),
+            "myModal");
+
+        done();
     })
 
-    .should("Set focus on the first element").skip(function () {
-        throw new Error();
+    .should("Allow custom aria attributes").in(function (done, $) {
+        var modal = $.picoModal({
+            content:
+                "<h2 id='my-title'>Firefly Quotes</h2>" +
+                "<div id='my-quote'>" +
+                    "Curse your sudden but inevitable betrayal!" +
+                "</div>",
+            ariaLabelledBy: "my-title",
+            ariaDescribedBy: "my-quote"
+        }).show();
+
+        $.assert.equal(
+            modal.modalElem().getAttribute("aria-labelledby"),
+            "my-title");
+
+        $.assert.equal(
+            modal.modalElem().getAttribute("aria-describedby"),
+            "my-quote");
+
+        done();
+    })
+
+    .should("Set focus on the first element").using(
+        "<a id='my-link' href='#'>This is a link on the page</a>"
+    ).in(function (done, $) {
+
+        $.id("my-link").focus();
+        $.assert.isTrue( $.id("my-link").isFocused() );
+
+        var modal = $.picoModal({
+            content:
+                "<p>Curse your sudden but inevitable betrayal!</p>" +
+                "<button id='first'></button>" +
+                "<input type='text' id='second'>"
+        });
+
+        $.assert.isTrue( $.id("my-link").isFocused() );
+
+        modal.show();
+        $.assert.isTrue( $.id("first").isFocused() );
+
+        modal.close();
+        $.assert.isTrue( $.id("my-link").isFocused() );
+
+        done();
     })
 
     .should("Loop the tab key back to the start").skip(function () {
