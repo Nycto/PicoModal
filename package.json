@@ -23,7 +23,7 @@
     "grunt-string-replace": "^1.2.1"
   },
   "scripts": {
-    "test": "grunt --verbose sauce"
+    "test": "grunt sauce"
   },
   "readmeFilename": "README.md"
 }
