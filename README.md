@@ -20,7 +20,7 @@ The latest version of PicoModal is available here:
 Browser Support
 ---------------
 
-IE9+, Chrome, FireFox and Safari
+[![Browser Support Matrix](https://saucelabs.com/browser-matrix/picomodal.svg?auth=33ee8f73fcef4d963df6983e8266369b5a51b2a7)](https://saucelabs.com/u/picomodal?auth=33ee8f73fcef4d963df6983e8266369b5a51b2a7)
 
 Basic Example
 -------------
