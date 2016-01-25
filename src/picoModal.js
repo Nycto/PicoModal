@@ -241,15 +241,16 @@
                 position: 'fixed',
                 zIndex: 10001,
                 left: "50%",
-                top: "50px",
-                maxHeight: 'calc(100% - 100px)',
+                top: "38.1966%",
+                maxHeight: '90%',
+                boxSizing: 'border-box',
                 overflow: 'auto',
                 width: width,
-                '-ms-transform': 'translateX(-50%)',
-                '-moz-transform': 'translateX(-50%)',
-                '-webkit-transform': 'translateX(-50%)',
-                '-o-transform': 'translateX(-50%)',
-                'transform': 'translateX(-50%)'
+                '-ms-transform': 'translate(-50%,-38.1966%)',
+                '-moz-transform': 'translate(-50%,-38.1966%)',
+                '-webkit-transform': 'translate(-50%,-38.1966%)',
+                '-o-transform': 'translate(-50%,-38.1966%)',
+                transform: 'translate(-50%,-38.1966%)'
             })
             .stylize(getOption('modalStyles', {
                 backgroundColor: "white",
