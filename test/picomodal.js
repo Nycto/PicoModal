@@ -97,6 +97,20 @@ testing.a("modal")
         done();
     })
 
+    .should("Stay on screen when really tall").in(function (done, $) {
+        var modal = $.picoModal(
+            "<div style='height: 20000px;'>" +
+                "Curse your sudden but inevitable betrayal!" +
+            "</div>"
+        ).show();
+
+        var rect = modal.modalElem().getBoundingClientRect();
+        $.assert.isAbove(rect.top, -1);
+        $.assert.isBelow(rect.bottom, $.window.innerHeight + 1);
+
+        done();
+    })
+
 
     .and("Modal styling")
 
