@@ -163,5 +163,13 @@ module.exports = function(grunt) {
     grunt.registerTask(
         'sauce',
         ['default', 'domTest:server', 'saucelabs-custom']);
+
+    // Pull requests don't have access to saucelabs, so we need
+    // to disable that
+    grunt.registerTask('travis', [
+        process.env.TRAVIS_PULL_REQUEST === "false" ?
+        'sauce' :
+        'default'
+    ]);
 };
 
