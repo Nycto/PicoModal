@@ -3,13 +3,14 @@ PicoModal [![Build Status](https://secure.travis-ci.org/Nycto/PicoModal.png?bran
 
 A small, self-contained JavaScript modal library
 
-* Small: At less than 2kb minified & gzipped, it's small and easily embeddable
+* Small: At around 2kb minified & gzipped, it's small and easily embeddable
 * No Dependencies: PicoModal does not depend on any other JS libraries,
   so you can use it in places where you don't have access to one
 * Self-contained: No extra CSS or images required; just the JS
 * Simple: The interface is straight forward and easy to use
 * Customizable: By changing a few settings you can customize or completely
   replace the default styles and behaviour
+* Accessible: Handles focus management, keyboard events and Aria tags
 
 Download
 --------
@@ -20,7 +21,7 @@ The latest version of PicoModal is available here:
 Browser Support
 ---------------
 
-IE9+, Chrome, FireFox and Safari
+![Browser Support Matrix](https://saucelabs.com/browser-matrix/picomodal.svg?auth=97d19e9c77a6980f249c9e6cf7ab78ec)
 
 Basic Example
 -------------
@@ -229,17 +230,29 @@ The following settings are available when creating a modal:
 * __closeButton__: Boolean whether to display the close button
 * __closeHtml__: Custom HTML content for the close button
 * __closeStyles__: A hash of CSS properties to apply to the close button
+* __closeClass__: A class to attach to the close button
 * __overlayClose__: Boolean whether a click on the shadow should close the modal
 * __overlayStyles__: A hash of additional CSS properties to apply to the
   overlay behind the modal
+* __overlayClass__: A class to attach to the overlay element
 * __modalStyles__: A hash of additional CSS properties to apply to the
   modal element
 * __modalClass__: A class to attach to the main modal element
-* __overlayClass__: A class to attach to the overlay element
-* __closeClass__: A class to attach to the close button
+* __modalId__: The ID to assign to the modal element. A default ID is generated
+  used if none is provided.
 * __parent__: By default, the modal dialog elements are attached to
   `document.body`. This options allows you to select an alternative parent
   element by specifying a node or a selector
+* __escCloses__: When `false`, disables pressing the escape key to close this
+  modal. This defaults to `true`.
+* __focus__: Whether to automatically set focus on the first focusable element
+  within this modal when it opens. This defaults to `true`.
+* __ariaDescribedBy__: The id of the element that contains the main content
+  of this modal. This sets the `[aria-describedby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute)`
+  attribute. This defaults to the ID of the modal if none is provided.
+* __ariaLabelledBy__: The id of the element that contains the general label
+  for this modal. This sets the `[aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-labelledby_attribute)`
+  attributed. It is left blank if none is provided.
 
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This
@@ -269,6 +282,7 @@ The following methods are available on the object returned by `picoModal`:
 * __close__: Hides the modal
 * __forceClose__: Hides the modal without calling the beforeClose events
 * __destroy__: Detaches all DOM Nodes and unhooks this modal
+* __isVisible__: Whether this modal is currently being displayed
 * __options__: Updates the options for this modal. This will only let you
   change options that are re-evaluted regularly, such as `overlayClose`.
 * __afterCreate__: Registers a callback to invoke when the modal is created

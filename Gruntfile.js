@@ -1,4 +1,4 @@
-/* global module: false, require: false, process: false */
+/* global module: false, process: false */
 
 // Browsers to test on saucelabs
 var browsers = [
@@ -28,21 +28,44 @@ var browsers = [
     {
         browserName: 'android',
         platform: 'Linux',
+        version: '4.3',
+        deviceName: 'Android Emulator'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
         version: '4.4',
         deviceName: 'Google Nexus 7 HD Emulator'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
+        version: '5.0',
+        deviceName: 'Android Emulator'
+    },
+    {
+        browserName: 'android',
+        platform: 'Linux',
+        version: '5.1',
+        deviceName: 'Android Emulator'
+    },
+    {
+        browserName: 'iphone',
+        platform: 'OS X 10.10',
+        version: '9.2',
+        deviceName: 'iPhone Simulator'
+    },
+    {
+        browserName: 'iphone',
+        platform: 'OS X 10.10',
+        version: '8.4',
+        deviceName: 'iPhone Simulator'
+    },
+    {
+        browserName: 'safari',
+        platform: 'OS X 10.11',
+        version: '9.0'
     }
-];
-
-// URLs to test on saucelabs
-var urls = [
-    'http://localhost:8080/?createFromString',
-    'http://localhost:8080/?createFromNode',
-    'http://localhost:8080/?specificWidth',
-    'http://localhost:8080/?withoutClose',
-    'http://localhost:8080/?customStyles',
-    'http://localhost:8080/?customClasses',
-    'http://localhost:8080/?prebuilt',
-    'http://localhost:8080/?alternateParent'
 ];
 
 module.exports = function(grunt) {
@@ -53,7 +76,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'task/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
             options: {
                 bitwise: true,
                 camelcase: true,
@@ -88,33 +111,34 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'uglify']
-        },
-
-        connect: {
-            server: {
-                options: {
-                    port: 8080,
-                    base: '.'
-                }
-            }
+            files: ['src/**/*.js', 'test/**/*.js'],
+            tasks: ['default']
         },
 
         bowerVerify: {
             build: {}
+        },
+
+        domTest: {
+            files: [ "test/*.js" ]
+        },
+
+        'saucelabs-custom': {
+            all: {
+                options: {
+                    urls: [ 'http://localhost:8080' ],
+                    build: process.env.CI_BUILD_NUMBER || Date.now(),
+                    testname: 'PicoModal unit tests',
+                    public: "public",
+                    pollInterval: 5000,
+                    statusCheckAttempts: 48,
+                    'max-duration': 180,
+                    maxRetries: 1,
+                    browsers: browsers
+                }
+            }
         }
     });
-
-    grunt.registerTask(
-        'saucelabs-run',
-        require('./task/screenshots.js')(grunt, {
-            name: 'PicoModal',
-            build: process.env.CI_BUILD_NUMBER || Date.now(),
-            urls: urls,
-            browsers: browsers
-        })
-    );
 
     // Plugins
     grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -122,12 +146,30 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-bower-verify');
+    grunt.loadNpmTasks('grunt-dom-test');
+    grunt.loadNpmTasks('grunt-continue');
+    grunt.loadNpmTasks('grunt-saucelabs');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint', 'uglify', 'bowerVerify']);
+    grunt.registerTask(
+        'default',
+        ['jshint', 'uglify', 'domTest:test']);
 
-    grunt.registerTask('dev', ['jshint', 'uglify', 'connect', 'watch']);
+    grunt.registerTask( 'dev', [
+        'domTest:server', 'continue:on',
+        'jshint', 'uglify', 'domTest:test',
+        'watch']);
 
-    grunt.registerTask('sauce', ['jshint', 'connect', 'saucelabs-run']);
+    grunt.registerTask(
+        'sauce',
+        ['default', 'domTest:server', 'saucelabs-custom']);
+
+    // Pull requests don't have access to saucelabs, so we need
+    // to disable that
+    grunt.registerTask('travis', [
+        process.env.TRAVIS_PULL_REQUEST === "false" ?
+        'sauce' :
+        'default'
+    ]);
 };
 

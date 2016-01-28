@@ -61,7 +61,7 @@
         var callbacks = [];
         return {
             watch: callbacks.push.bind(callbacks),
-            trigger: function( modal ) {
+            trigger: function( context ) {
 
                 var unprevented = true;
                 var event = {
@@ -71,12 +71,19 @@
                 };
 
                 for (var i = 0; i < callbacks.length; i++) {
-                    callbacks[i](modal, event);
+                    callbacks[i](context, event);
                 }
 
                 return unprevented;
             }
         };
+    }
+
+
+    /** Whether an element is hidden */
+    function isHidden ( elem ) {
+        // @see http://stackoverflow.com/questions/19669786
+        return window.getComputedStyle(elem).display === 'none';
     }
 
 
@@ -87,14 +94,12 @@
         this.elem = elem;
     }
 
-    /**
-     * Creates a new div
-     */
-    Elem.div = function ( parent ) {
+    /** Creates a new div */
+    Elem.make = function ( parent, tag ) {
         if ( typeof parent === "string" ) {
             parent = document.querySelector(parent);
         }
-        var elem = document.createElement('div');
+        var elem = document.createElement(tag || 'div');
         (parent || document.body).appendChild(elem);
         return new Elem(elem);
     };
@@ -102,8 +107,8 @@
     Elem.prototype = {
 
         /** Creates a child of this node */
-        child: function () {
-            return Elem.div(this.elem);
+        child: function (tag) {
+            return Elem.make(this.elem, tag);
         },
 
         /** Applies a set of styles to an element */
@@ -164,7 +169,9 @@
 
         /** Sets an attribute on this element */
         attr: function ( name, value ) {
-            this.elem.setAttribute(name, value);
+            if (value !== undefined) {
+                this.elem.setAttribute(name, value);
+            }
             return this;
         },
 
@@ -180,13 +187,18 @@
                 }
             }
             return false;
+        },
+
+        /** Whether this element is visible */
+        isVisible: function () {
+            return !isHidden(this.elem);
         }
     };
 
 
     /** Generates the grey-out effect */
     function buildOverlay( getOption, close ) {
-        return Elem.div( getOption("parent") )
+        return Elem.make( getOption("parent") )
             .clazz("pico-overlay")
             .clazz( getOption("overlayClass", "") )
             .stylize({
@@ -209,6 +221,9 @@
             });
     }
 
+    // An auto incrementing ID assigned to each modal
+    var autoinc = 1;
+
     /** Builds the content of a modal */
     function buildModal( getOption, close ) {
         var width = getOption('width', 'auto');
@@ -216,7 +231,9 @@
             width = "" + width + "px";
         }
 
-        var elem = Elem.div( getOption("parent") )
+        var id = getOption("modalId", "pico-" + autoinc++);
+
+        var elem = Elem.make( getOption("parent") )
             .clazz("pico-content")
             .clazz( getOption("modalClass", "") )
             .stylize({
@@ -224,13 +241,16 @@
                 position: 'fixed',
                 zIndex: 10001,
                 left: "50%",
-                top: "50px",
+                top: "38.1966%",
+                maxHeight: '75%',
+                boxSizing: 'border-box',
+                overflow: 'auto',
                 width: width,
-                '-ms-transform': 'translateX(-50%)',
-                '-moz-transform': 'translateX(-50%)',
-                '-webkit-transform': 'translateX(-50%)',
-                '-o-transform': 'translateX(-50%)',
-                'transform': 'translateX(-50%)'
+                '-ms-transform': 'translate(-50%,-50%)',
+                '-moz-transform': 'translate(-50%,-50%)',
+                '-webkit-transform': 'translate(-50%,-50%)',
+                '-o-transform': 'translate(-50%,-50%)',
+                'transform': 'translate(-50%,-50%)'
             })
             .stylize(getOption('modalStyles', {
                 backgroundColor: "white",
@@ -238,7 +258,10 @@
                 borderRadius: "5px"
             }))
             .html( getOption('content') )
+            .attr("id", id)
             .attr("role", "dialog")
+            .attr("aria-labelledby", getOption("ariaLabelledBy"))
+            .attr("aria-describedby", getOption("ariaDescribedBy", id))
             .onClick(function (event) {
                 var isCloseClick = new Elem(event.target)
                     .anyAncestor(function (elem) {
@@ -255,12 +278,14 @@
     /** Builds the close button */
     function buildClose ( elem, getOption ) {
         if ( getOption('closeButton', true) ) {
-            return elem.child()
+            return elem.child('button')
                 .html( getOption('closeHtml', "&#xD7;") )
                 .clazz("pico-close")
                 .clazz( getOption("closeClass", "") )
                 .stylize( getOption('closeStyles', {
                     borderRadius: "2px",
+                    border: 0,
+                    padding: 0,
                     cursor: "pointer",
                     height: "15px",
                     width: "15px",
@@ -271,7 +296,8 @@
                     textAlign: "center",
                     lineHeight: "15px",
                     background: "#CCC"
-                }) );
+                }) )
+                .attr("aria-label", getOption("close-label", "Close"));
         }
     }
 
@@ -282,6 +308,125 @@
         };
     }
 
+
+    // An observable that is triggered whenever the escape key is pressed
+    var escapeKey = observable();
+
+    // An observable that is triggered when the user hits the tab key
+    var tabKey = observable();
+
+    /** A global event handler to detect the escape key being pressed */
+    document.documentElement.addEventListener(
+        'keydown',
+        function onKeyPress (event) {
+            var keycode = event.which || event.keyCode;
+
+            // If this is the escape key
+            if ( keycode === 27 ) {
+                escapeKey.trigger();
+            }
+
+            // If this is the tab key
+            else if ( keycode === 9 ) {
+                tabKey.trigger(event);
+            }
+        }
+    );
+
+
+    /** Attaches focus management events */
+    function manageFocus ( iface, isEnabled ) {
+
+        /** Whether an element matches a selector */
+        function matches ( elem, selector ) {
+            var fn = elem.msMatchesSelector ||
+                elem.webkitMatchesSelector ||
+                elem.matches;
+            return fn.call(elem, selector);
+        }
+
+        /**
+         * Returns whether an element is focusable
+         * @see http://stackoverflow.com/questions/18261595
+         */
+        function canFocus( elem ) {
+            if (
+                isHidden(elem) ||
+                matches(elem, ":disabled") ||
+                elem.hasAttribute("contenteditable")
+            ) {
+                return false;
+            }
+            else {
+                return elem.hasAttribute("tabindex") ||
+                    matches(
+                        elem,
+                        "input,select,textarea,button,a[href],area[href],iframe"
+                    );
+            }
+        }
+
+        /** Returns the first descendant that can be focused */
+        function firstFocusable ( elem ) {
+            var items = elem.getElementsByTagName("*");
+            for (var i = 0; i < items.length; i++) {
+                if ( canFocus(items[i]) ) {
+                    return items[i];
+                }
+            }
+        }
+
+        /** Returns the last descendant that can be focused */
+        function lastFocusable ( elem ) {
+            var items = elem.getElementsByTagName("*");
+            for (var i = items.length; i--;) {
+                if ( canFocus(items[i]) ) {
+                    return items[i];
+                }
+            }
+        }
+
+        // The element focused before the modal opens
+        var focused;
+
+        // Records the currently focused element so state can be returned
+        // after the modal closes
+        iface.beforeShow(function getActiveFocus() {
+            focused = document.activeElement;
+        });
+
+        // Shift focus into the modal
+        iface.afterShow(function focusModal() {
+            if ( isEnabled() ) {
+                var focusable = firstFocusable(iface.modalElem());
+                if ( focusable ) {
+                    focusable.focus();
+                }
+            }
+        });
+
+        // Restore the previously focused element when the modal closes
+        iface.afterClose(function returnFocus() {
+            if ( isEnabled() && focused ) {
+                focused.focus();
+            }
+            focused = null;
+        });
+
+        // Capture tab key presses and loop them within the modal
+        tabKey.watch(function tabKeyPress (event) {
+            if ( isEnabled() && iface.isVisible() ) {
+                var first = firstFocusable(iface.modalElem());
+                var last = lastFocusable(iface.modalElem());
+
+                var from = event.shiftKey ? first : last;
+                if ( from === document.activeElement ) {
+                    (event.shiftKey ? last : first).focus();
+                    event.preventDefault();
+                }
+            }
+        });
+    }
 
     /**
      * Displays a modal
@@ -354,7 +499,6 @@
         var shadowElem = build.bind(window, 'overlay');
         var closeElem = build.bind(window, 'close');
 
-
         var iface = {
 
             /** Returns the wrapping modal element */
@@ -368,6 +512,11 @@
 
             /** Builds the dom without showing the modal */
             buildDom: returnIface(build),
+
+            /** Returns whether this modal is currently being shown */
+            isVisible: function () {
+                return !!(built && modalElem && modalElem().isVisible());
+            },
 
             /** Shows this modal */
             show: function () {
@@ -391,9 +540,9 @@
 
             /** Destroys this modal */
             destroy: function () {
-                modalElem = modalElem().destroy();
-                shadowElem = shadowElem().destroy();
-                closeElem = undefined;
+                modalElem().destroy();
+                shadowElem().destroy();
+                shadowElem = modalElem = closeElem = undefined;
             },
 
             /**
@@ -402,7 +551,9 @@
              * `overlayClose`.
              */
             options: function ( opts ) {
-                options = opts;
+                Object.keys(opts).map(function (key) {
+                    options[key] = opts[key];
+                });
             },
 
             /** Executes after the DOM nodes are created */
@@ -420,6 +571,15 @@
             /** Executes a callback after this modal is closed */
             afterClose: returnIface(afterCloseEvent.watch)
         };
+
+        manageFocus(iface, getOption.bind(null, "focus", true));
+
+        // If a user presses the 'escape' key, close the modal.
+        escapeKey.watch(function escapeKeyPress () {
+            if ( getOption("escCloses", true) && iface.isVisible() ) {
+                iface.close();
+            }
+        });
 
         return iface;
     };
