@@ -42,7 +42,7 @@ var browsers = {
             browserName: 'android',
             platform: 'Linux',
             version: '4.4',
-            deviceName: 'Google Nexus 7 HD Emulator'
+            deviceName: 'Android Emulator'
         },
         {
             browserName: 'android',
@@ -137,31 +137,16 @@ module.exports = function(grunt) {
 
         // Register saucelabs configuration for each browser group. This allows
         // them to be run individually instead of all or nothing
-        'saucelabs-custom': Object.keys(browsers).reduce(
-            function (conf, key) {
-                var clone = Object.create(conf.all.options);
-                clone.browsers = browsers[key];
-                conf[key] = { options: clone };
-                return conf;
-            },
-            {
-                all: {
-                    options: {
-                        urls: [ 'http://localhost:8080' ],
-                        build: process.env.CI_BUILD_NUMBER || Date.now(),
-                        testname: 'PicoModal unit tests',
-                        public: "public",
-                        pollInterval: 5000,
-                        statusCheckAttempts: 48,
-                        'max-duration': 180,
-                        maxRetries: 1,
-                        browsers: Object.keys(browsers)
-                            .map(function (key) { return browsers[key]; })
-                            .reduce(function (a, b) { return a.concat(b); }, [])
-                    }
-                }
-            }
-        )
+        'sauce-load': {
+            urls: [ 'http://localhost:8080' ],
+            build: process.env.CI_BUILD_NUMBER || Date.now(),
+            name: 'PicoModal unit tests',
+            public: "public",
+            mode: "followup",
+            concurrent: 5,
+            browsers: browsers,
+            testTimeout: 90000
+        }
     });
 
     // Plugins
@@ -172,7 +157,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bower-verify');
     grunt.loadNpmTasks('grunt-dom-test');
     grunt.loadNpmTasks('grunt-continue');
-    grunt.loadNpmTasks('grunt-saucelabs');
+    grunt.loadNpmTasks('grunt-sauce-load');
 
     // Default task(s).
     grunt.registerTask(
@@ -186,13 +171,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask(
         'sauce',
-        ['default', 'domTest:server', 'saucelabs-custom:all']);
+        ['default', 'domTest:server', 'sauce-load']);
 
     // Register a grunt target for testing individual browser groups
     Object.keys(browsers).forEach(function (browser) {
         grunt.registerTask(
             browser,
-            ['default', 'domTest:server', 'saucelabs-custom:' + browser]);
+            ['default', 'domTest:server', 'sauce-load:' + browser]);
     });
 
     // Pull requests don't have access to saucelabs, so we need
