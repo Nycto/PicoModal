@@ -35,12 +35,6 @@ var browsers = {
         {
             browserName: 'android',
             platform: 'Linux',
-            version: '4.3',
-            deviceName: 'Android Emulator'
-        },
-        {
-            browserName: 'android',
-            platform: 'Linux',
             version: '4.4',
             deviceName: 'Android Emulator'
         },
