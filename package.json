@@ -20,7 +20,6 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-dom-test": "github:nycto/grunt-dom-test#release",
     "grunt-sauce-load": "github:nycto/grunt-sauce-load#release",
-    "grunt-saucelabs": "^8.6.2",
     "grunt-string-replace": "^1.2.1"
   },
   "scripts": {
