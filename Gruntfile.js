@@ -139,7 +139,8 @@ module.exports = function(grunt) {
             mode: "followup",
             concurrent: 5,
             browsers: browsers,
-            testTimeout: 90000
+            testTimeout: 90000,
+            setupTimeout: 90000
         }
     });
 
