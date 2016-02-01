@@ -115,12 +115,16 @@ testing.a("modal")
     .and("Modal styling")
 
     .should("Allow a specific width to be set").in(function (done, $) {
-        $.picoModal({
+        var modal = $.picoModal({
             content: "Curse your sudden but inevitable betrayal!",
-            width: 50
+            width: 150
         }).show();
 
-        $.assert.equal( '50px', $.query(".pico-content").one().styles().width );
+        var width =
+            modal.modalElem().getBoundingClientRect().width ||
+            modal.modalElem().style.width.replace(/[^0-9]/g, "");
+
+        $.assert.equal( width, 150 );
 
         done();
     })
