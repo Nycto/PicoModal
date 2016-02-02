@@ -1,4 +1,4 @@
-/* global module: false, process: false */
+/* global module: false, process: false, __dirname: false, require: false */
 
 // Browsers to test on saucelabs
 var browsers = {
@@ -132,7 +132,10 @@ module.exports = function(grunt) {
         // Register saucelabs configuration for each browser group. This allows
         // them to be run individually instead of all or nothing
         'sauce-load': {
-            urls: [ 'http://localhost:8080' ],
+            //mockTunnel: true,
+            //seleniumHost: 'localhost',
+            //seleniumPort: 4444,
+            urls: [ 'http://localhost:8080', 'http://localhost:9090' ],
             build: process.env.CI_BUILD_NUMBER || Date.now(),
             name: 'PicoModal unit tests',
             public: "public",
@@ -142,6 +145,20 @@ module.exports = function(grunt) {
             testTimeout: 90000,
             setupTimeout: 90000
         }
+    });
+
+    grunt.registerTask('server', function () {
+        var app = require('express')();
+
+        app.get('/', function (req, res) {
+            res.sendFile(__dirname + "/test/index.html");
+        });
+
+        app.get('/picoModal.js', function (req, res) {
+            res.sendFile(__dirname + "/src/picoModal.js");
+        });
+
+        app.listen(9090);
     });
 
     // Plugins
@@ -160,19 +177,19 @@ module.exports = function(grunt) {
         ['jshint', 'uglify', 'domTest:test']);
 
     grunt.registerTask( 'dev', [
-        'domTest:server', 'continue:on',
+        'server', 'domTest:server', 'continue:on',
         'jshint', 'uglify', 'domTest:test',
         'watch']);
 
     grunt.registerTask(
         'sauce',
-        ['default', 'domTest:server', 'sauce-load']);
+        ['default', 'server', 'domTest:server', 'sauce-load']);
 
     // Register a grunt target for testing individual browser groups
     Object.keys(browsers).forEach(function (browser) {
         grunt.registerTask(
             browser,
-            ['default', 'domTest:server', 'sauce-load:' + browser]);
+            ['default', 'server', 'domTest:server', 'sauce-load:' + browser]);
     });
 
     // Pull requests don't have access to saucelabs, so we need

@@ -244,7 +244,6 @@
                 top: "38.1966%",
                 maxHeight: '90%',
                 boxSizing: 'border-box',
-                overflow: 'auto',
                 width: width,
                 '-ms-transform': 'translate(-50%,-38.1966%)',
                 '-moz-transform': 'translate(-50%,-38.1966%)',
@@ -253,6 +252,7 @@
                 transform: 'translate(-50%,-38.1966%)'
             })
             .stylize(getOption('modalStyles', {
+                overflow: 'auto',
                 backgroundColor: "white",
                 padding: "20px",
                 borderRadius: "5px"
