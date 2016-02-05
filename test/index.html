@@ -51,6 +51,7 @@
 
         <p><a href="?createFromString">Simple Create</a></p>
         <p><a href="?specificWidth">Specific Width</a></p>
+        <p><a href="?tall">Really Tall</a></p>
         <p><a href="?withoutClose">Without a close button</a></p>
         <p><a href="?customStyles">Custom Styles</a></p>
         <p><a href="?customClasses">Custom Classes</a></p>
@@ -103,6 +104,12 @@
             buildModal("specificWidth", {
                 content: "Ah, the pitter patter of tiny feet in huge combat boots.",
                 width: 100
+            });
+
+            buildModal("tall", {
+                content: "<div style='height: 20000px'>" +
+                    "Ah, the pitter patter of tiny feet in huge combat boots."
+                    + "</div>",
             });
 
             buildModal("withoutClose", {
