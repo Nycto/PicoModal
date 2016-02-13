@@ -69,13 +69,6 @@ var browsers = {
             deviceName: 'iPhone Simulator',
             setupTimeout: 180000
         }
-    ],
-    safari: [
-        {
-            browserName: 'safari',
-            platform: 'OS X 10.11',
-            version: '9.0'
-        }
     ]
 };
 
