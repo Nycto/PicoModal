@@ -36,19 +36,22 @@ var browsers = {
             browserName: 'android',
             platform: 'Linux',
             version: '4.4',
-            deviceName: 'Android Emulator'
+            deviceName: 'Android Emulator',
+            setupTimeout: 180000
         },
         {
             browserName: 'android',
             platform: 'Linux',
             version: '5.0',
-            deviceName: 'Android Emulator'
+            deviceName: 'Android Emulator',
+            setupTimeout: 180000
         },
         {
             browserName: 'android',
             platform: 'Linux',
             version: '5.1',
-            deviceName: 'Android Emulator'
+            deviceName: 'Android Emulator',
+            setupTimeout: 180000
         }
     ],
     ios: [
