@@ -89,7 +89,7 @@ module.exports = function(grunt) {
                 forin: true,
                 immed: true,
                 indent: 4,
-                latedef: true,
+                latedef: "nofunc",
                 newcap: true,
                 noarg: true,
                 nonew: true,

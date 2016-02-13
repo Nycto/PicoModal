@@ -455,6 +455,16 @@
             return value === undefined ? defaultValue : value;
         }
 
+
+        // The various DOM elements that constitute the modal
+        var modalElem = build.bind(window, 'modal');
+        var shadowElem = build.bind(window, 'overlay');
+        var closeElem = build.bind(window, 'close');
+
+        // This will eventually contain the modal API returned to the user
+        var iface;
+
+
         /** Hides this modal */
         function forceClose () {
             shadowElem().hide();
@@ -495,11 +505,7 @@
             return built[name];
         }
 
-        var modalElem = build.bind(window, 'modal');
-        var shadowElem = build.bind(window, 'overlay');
-        var closeElem = build.bind(window, 'close');
-
-        var iface = {
+        iface = {
 
             /** Returns the wrapping modal element */
             modalElem: buildElemAccessor(modalElem),
