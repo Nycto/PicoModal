@@ -61,13 +61,6 @@ var browsers = {
             version: '9.2',
             deviceName: 'iPhone Simulator',
             setupTimeout: 180000
-        },
-        {
-            browserName: 'iphone',
-            platform: 'OS X 10.10',
-            version: '8.4',
-            deviceName: 'iPhone Simulator',
-            setupTimeout: 180000
         }
     ]
 };
