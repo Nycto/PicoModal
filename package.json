@@ -16,7 +16,7 @@
     "grunt-bower-verify": "^2.0.1",
     "grunt-continue": "^0.1.0",
     "grunt-contrib-connect": "^0.11.2",
-    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-jshint": "^0.12.0",
     "grunt-contrib-uglify": "^0.11.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-dom-test": "github:nycto/grunt-dom-test#release",
