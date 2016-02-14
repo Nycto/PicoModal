@@ -1,6 +1,6 @@
 {
   "name": "picomodal",
-  "version": "2.3.0",
+  "version": "3.0.0-Alpha",
   "author": "James Frasca <james@roundeights.com>",
   "description": "A small, self-contained JavaScript modal library",
   "license": "MIT",
