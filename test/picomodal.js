@@ -112,6 +112,46 @@ testing.a("modal")
     })
 
 
+    .and("A modal on a tall page")
+
+    .should("Prevent the page from scrolling").using(
+        "<div style='height: 20000px;'>Content!</div>"
+    ).in(function (done, $) {
+
+        // Note: I don't love this test. It feels like it is testing the
+        // implementation versus that actual intention. However, I can't find
+        // a good way to determine whether a page is "scrollable"
+
+        $.assert.isFalse( !!$.document.body.style.overflow );
+
+        var modal = $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!"
+        }).show();
+
+        $.assert.equal( $.document.body.style.overflow, "hidden" );
+
+        modal.close();
+
+        $.assert.isFalse( !!$.document.body.style.overflow );
+
+        done();
+    })
+
+    .should("Not change the body overflow when disabled").using(
+        "<div style='height: 20000px;'>Content!</div>"
+    ).in(function (done, $) {
+
+        $.picoModal({
+            content: "Curse your sudden but inevitable betrayal!",
+            bodyOverflow: false
+        }).show();
+
+        $.assert.isFalse( !!$.document.body.style.overflow );
+
+        done();
+    })
+
+
     .and("Modal styling")
 
     .should("Allow a specific width to be set").in(function (done, $) {

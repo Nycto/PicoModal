@@ -12,8 +12,8 @@ Version Changelog
 * Full unit test support
 * Vertically position at 38.1966% of the viewport height
 * Max height of 90% of viewport height
-* Set `box-sizing: border-box`
-* Set `overflow: auto`
+* Set `box-sizing: border-box` and `overflow: auto` on the modal
+* Set `overflow: hidden` on body to prevent scrolling
 * Use a button tag for the close element
 * Add the isVisible API method
 * Automatically attach an ID to all modals

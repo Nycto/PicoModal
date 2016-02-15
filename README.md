@@ -253,6 +253,8 @@ The following settings are available when creating a modal:
 * __ariaLabelledBy__: The id of the element that contains the general label
   for this modal. This sets the `[aria-labelledby](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-labelledby_attribute)`
   attributed. It is left blank if none is provided.
+* __bodyOverflow__: Whether to set `overflow: hidden` on the body when the modal
+  is displayed. This prevents the main page from scrolling when a modal is open
 
 If a method is passed as an argument for any of the settings, it will be
 called. The first argument passed in is the default value for that setting. This

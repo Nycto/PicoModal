@@ -428,6 +428,25 @@
         });
     }
 
+    /** Manages setting the 'overflow: hidden' on the body tag */
+    function manageBodyOverflow(iface, isEnabled) {
+        var origOverflow;
+        var body = new Elem(document.body);
+
+        iface.beforeShow(function () {
+            // Capture the current values so they can be restored
+            origOverflow = body.elem.style.overflow;
+
+            if (isEnabled()) {
+                body.stylize({ overflow: "hidden" });
+            }
+        });
+
+        iface.afterClose(function () {
+            body.stylize({ overflow: origOverflow });
+        });
+    }
+
     /**
      * Displays a modal
      */
@@ -579,6 +598,8 @@
         };
 
         manageFocus(iface, getOption.bind(null, "focus", true));
+
+        manageBodyOverflow(iface, getOption.bind(null, "bodyOverflow", true));
 
         // If a user presses the 'escape' key, close the modal.
         escapeKey.watch(function escapeKeyPress () {
