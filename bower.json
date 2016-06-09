@@ -1,5 +1,5 @@
 {
-    "name": "PicoModal",
+    "name": "picoModal",
     "version": "3.0.0-Alpha",
     "homepage": "https://github.com/Nycto/PicoModal",
     "authors": [
@@ -12,7 +12,7 @@
     "dependencies": {},
     "description": "A self-contained modal library",
     "main": "src/picoModal.js",
-    "keywords": [ "modal" ],
+    "keywords": [ "modal", "popup", "vanilla" ],
     "license": "MIT",
     "ignore": [
         "**/.*",
