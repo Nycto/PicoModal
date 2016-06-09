@@ -36,22 +36,19 @@ var browsers = {
             browserName: 'android',
             platform: 'Linux',
             version: '4.4',
-            deviceName: 'Android Emulator',
-            setupTimeout: 180000
+            deviceName: 'Android Emulator'
         },
         {
             browserName: 'android',
             platform: 'Linux',
             version: '5.0',
-            deviceName: 'Android Emulator',
-            setupTimeout: 180000
+            deviceName: 'Android Emulator'
         },
         {
             browserName: 'android',
             platform: 'Linux',
             version: '5.1',
-            deviceName: 'Android Emulator',
-            setupTimeout: 180000
+            deviceName: 'Android Emulator'
         }
     ],
     ios: [
@@ -59,8 +56,7 @@ var browsers = {
             browserName: 'iphone',
             platform: 'OS X 10.10',
             version: '9.2',
-            deviceName: 'iPhone Simulator',
-            setupTimeout: 180000
+            deviceName: 'iPhone Simulator'
         }
     ]
 };
@@ -133,8 +129,8 @@ module.exports = function(grunt) {
             mode: "followup",
             concurrent: 5,
             browsers: browsers,
-            testTimeout: 90000,
-            setupTimeout: 90000
+            testTimeout: 180000,
+            setupTimeout: 180000
         }
     });
 
