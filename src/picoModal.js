@@ -43,9 +43,7 @@
             return value instanceof Node;
         }
         else {
-            return value &&
-                typeof value === "object" &&
-                typeof value.nodeType === "number";
+            return value && typeof value === "object" && typeof value.nodeType === "number";
         }
     }
 
@@ -116,8 +114,7 @@
             styles = styles || {};
 
             if ( typeof styles.opacity !== "undefined" ) {
-                styles.filter =
-                    "alpha(opacity=" + (styles.opacity * 100) + ")";
+                styles.filter = "alpha(opacity=" + (styles.opacity * 100) + ")";
             }
 
             for (var prop in styles) {
@@ -263,10 +260,9 @@
             .attr("aria-labelledby", getOption("ariaLabelledBy"))
             .attr("aria-describedby", getOption("ariaDescribedBy", id))
             .onClick(function (event) {
-                var isCloseClick = new Elem(event.target)
-                    .anyAncestor(function (elem) {
-                        return /\bpico-close\b/.test(elem.elem.className);
-                    });
+                var isCloseClick = new Elem(event.target).anyAncestor(function (elem) {
+                    return /\bpico-close\b/.test(elem.elem.className);
+                });
                 if ( isCloseClick ) {
                     close();
                 }
@@ -316,22 +312,19 @@
     var tabKey = observable();
 
     /** A global event handler to detect the escape key being pressed */
-    document.documentElement.addEventListener(
-        'keydown',
-        function onKeyPress (event) {
-            var keycode = event.which || event.keyCode;
+    document.documentElement.addEventListener('keydown', function onKeyPress (event) {
+        var keycode = event.which || event.keyCode;
 
-            // If this is the escape key
-            if ( keycode === 27 ) {
-                escapeKey.trigger();
-            }
-
-            // If this is the tab key
-            else if ( keycode === 9 ) {
-                tabKey.trigger(event);
-            }
+        // If this is the escape key
+        if ( keycode === 27 ) {
+            escapeKey.trigger();
         }
-    );
+
+        // If this is the tab key
+        else if ( keycode === 9 ) {
+            tabKey.trigger(event);
+        }
+    });
 
 
     /** Attaches focus management events */
@@ -339,9 +332,7 @@
 
         /** Whether an element matches a selector */
         function matches ( elem, selector ) {
-            var fn = elem.msMatchesSelector ||
-                elem.webkitMatchesSelector ||
-                elem.matches;
+            var fn = elem.msMatchesSelector || elem.webkitMatchesSelector || elem.matches;
             return fn.call(elem, selector);
         }
 
@@ -359,10 +350,7 @@
             }
             else {
                 return elem.hasAttribute("tabindex") ||
-                    matches(
-                        elem,
-                        "input,select,textarea,button,a[href],area[href],iframe"
-                    );
+                    matches(elem, "input,select,textarea,button,a[href],area[href],iframe");
             }
         }
 

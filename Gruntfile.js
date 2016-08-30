@@ -87,7 +87,7 @@ module.exports = function(grunt) {
                 unused: true,
                 strict: true,
                 trailing: true,
-                maxlen: 80,
+                maxlen: 100,
                 browser: true,
                 globals: {
                     "define": true,
