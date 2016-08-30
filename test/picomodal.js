@@ -391,6 +391,92 @@ testing.a("modal")
             .forceClose();
     })
 
+    .should("Pass arguments from `modal.buildDom` to afterCreate").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        var data = { data: "memo" };
+        var count = 0;
+
+        modal
+            .afterCreate(function (iface, event) {
+                count++;
+                $.assert.isFunction(event.preventDefault);
+                $.assert.strictEqual(event.detail, data);
+                $.assert.strictEqual(iface, modal);
+            })
+            .buildDom(data);
+
+        $.assert.strictEqual(count, 1);
+        done();
+    })
+
+    .should("Pass arguments from `modal.show` to event handlers").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        var data = { data: "memo" };
+        var count = 0;
+
+        modal
+            .beforeShow(function (iface, event) {
+                count++;
+                $.assert.isFunction(event.preventDefault);
+                $.assert.strictEqual(event.detail, data);
+                $.assert.strictEqual(iface, modal);
+            })
+            .afterShow(function (iface, event) {
+                count++;
+                $.assert.isFunction(event.preventDefault);
+                $.assert.strictEqual(event.detail, data);
+                $.assert.strictEqual(iface, modal);
+            })
+            .show(data);
+
+        $.assert.strictEqual(count, 2);
+        done();
+    })
+
+    .should("Pass arguments from `modal.close` to event handlers").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        var data = { data: "memo" };
+        var count = 0;
+
+        modal
+            .beforeClose(function (iface, event) {
+                count++;
+                $.assert.isFunction(event.preventDefault);
+                $.assert.strictEqual(event.detail, data);
+                $.assert.strictEqual(iface, modal);
+            })
+            .afterClose(function (iface, event) {
+                count++;
+                $.assert.isFunction(event.preventDefault);
+                $.assert.strictEqual(event.detail, data);
+                $.assert.strictEqual(iface, modal);
+            })
+            .show()
+            .close(data);
+
+        $.assert.strictEqual(count, 2);
+        done();
+    })
+
+    .should("Pass arguments from `modal.forceClose` to afterClose").in(function (done, $) {
+        var modal = $.picoModal("Curse your sudden but inevitable betrayal!");
+        var data = { data: "memo" };
+        var count = 0;
+
+        modal
+            .afterClose(function (iface, event) {
+                count++;
+                $.assert.isFunction(event.preventDefault);
+                $.assert.strictEqual(event.detail, data);
+                $.assert.strictEqual(iface, modal);
+            })
+            .show()
+            .forceClose(data);
+
+        $.assert.strictEqual(count, 1);
+        done();
+    })
+
 
     .and("Modal accessibility")
 

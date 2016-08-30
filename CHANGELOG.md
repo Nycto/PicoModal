@@ -17,6 +17,7 @@ Version Changelog
 * Use a button tag for the close element
 * Add the isVisible API method
 * Automatically attach an ID to all modals
+* Allow data to be passed to event handlers when triggering events
 
 2.3.0
 -----

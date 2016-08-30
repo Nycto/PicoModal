@@ -59,10 +59,11 @@
         var callbacks = [];
         return {
             watch: callbacks.push.bind(callbacks),
-            trigger: function( context ) {
+            trigger: function(context, detail) {
 
                 var unprevented = true;
                 var event = {
+                    detail: detail,
                     preventDefault: function preventDefault () {
                         unprevented = false;
                     }
@@ -473,16 +474,16 @@
 
 
         /** Hides this modal */
-        function forceClose () {
+        function forceClose (detail) {
             shadowElem().hide();
             modalElem().hide();
-            afterCloseEvent.trigger(iface);
+            afterCloseEvent.trigger(iface, detail);
         }
 
         /** Gracefully hides this modal */
-        function close () {
-            if ( beforeCloseEvent.trigger(iface) ) {
-                forceClose();
+        function close (detail) {
+            if ( beforeCloseEvent.trigger(iface, detail) ) {
+                forceClose(detail);
             }
         }
 
@@ -499,7 +500,7 @@
         var built;
 
         /** Builds a method that calls a method and returns an element */
-        function build ( name ) {
+        function build (name, detail) {
             if ( !built ) {
                 var modal = buildModal(getOption, close);
                 built = {
@@ -507,7 +508,7 @@
                     overlay: buildOverlay(getOption, close),
                     close: buildClose(modal, getOption)
                 };
-                afterCreateEvent.trigger(iface);
+                afterCreateEvent.trigger(iface, detail);
             }
             return built[name];
         }
@@ -524,7 +525,7 @@
             overlayElem: buildElemAccessor(shadowElem),
 
             /** Builds the dom without showing the modal */
-            buildDom: returnIface(build),
+            buildDom: returnIface(build.bind(null, null)),
 
             /** Returns whether this modal is currently being shown */
             isVisible: function () {
@@ -532,12 +533,12 @@
             },
 
             /** Shows this modal */
-            show: function () {
-                if ( beforeShowEvent.trigger(iface) ) {
+            show: function (detail) {
+                if ( beforeShowEvent.trigger(iface, detail) ) {
                     shadowElem().show();
                     closeElem();
                     modalElem().show();
-                    afterShowEvent.trigger(iface);
+                    afterShowEvent.trigger(iface, detail);
                 }
                 return this;
             },
