@@ -43,6 +43,18 @@
             input:focus {
                 background: blue;
             }
+
+            .footer {
+                position: absolute;
+                bottom: 0;
+                background: #efefef;
+                width: 100%;
+                left: 0;
+                padding: 10px;
+                box-sizing: border-box;
+                margin: 0;
+                text-align: right;
+            }
         </style>
     </head>
 
@@ -57,6 +69,7 @@
         <p><a href="?customClasses">Custom Classes</a></p>
         <p><a href="?animate">With Animation</a></p>
         <p><a href="?keyboard">Keyboard Navigation</a></p>
+        <p><a href="?dialog">Dialog</a></p>
 
         <div style="display: none">
             <div id="contentFromNode">
@@ -172,6 +185,31 @@
                         + "<p><input type='text'></p>"
                         + "<p><a href='javascript:void 0'>link</a></p>"
                         + "<p><input type='text'></p>"
+                });
+            });
+
+            buildModal("dialog", function() {
+                return picoModal({
+                    content:
+                        "<p>Ah, the pitter patter of tiny feet in huge combat boots.</p>" +
+                        "<p class='footer'>" +
+                        "<button class='cancel'>Cancel</button> <button class='ok'>Ok</button>" +
+                        "</p>",
+                    modalStyles: function (styles) {
+                        styles.paddingBottom = "50px";
+                        return styles;
+                    }
+                }).afterCreate(modal => {
+                    modal.modalElem().addEventListener("click", evt => {
+                        if (evt.target && evt.target.matches(".ok")) {
+                            modal.close(true);
+                        } else if (evt.target && evt.target.matches(".cancel")) {
+                            modal.close();
+                        }
+                    });
+                })
+                .afterClose((modal, evt) => {
+                    console.log(evt.detail ? "Ok!" : "Cancelled");
                 });
             });
 
