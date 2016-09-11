@@ -53,10 +53,11 @@ var browsers = {
     ],
     ios: [
         {
-            browserName: 'iphone',
-            platform: 'OS X 10.10',
-            version: '9.2',
-            deviceName: 'iPhone Simulator'
+            browserName: 'Safari',
+            deviceName: 'iPhone Simulator',
+            deviceOrientation: 'portrait',
+            platformVersion: '9.3',
+            platformName: 'iOS'
         }
     ]
 };
