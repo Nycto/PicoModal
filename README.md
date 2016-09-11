@@ -192,6 +192,38 @@ that will clean up after itself when it is closed, like this:
       .show();
 ```
 
+Dialog
+------
+
+There is no built in dialog option, but there are tools to make it easy to
+implement one yourself. If you think about it, dialogs are really just modals
+that have some sort of 'result'. To achieve this, add click handlers that send
+data to the `afterClose` function indicating the result:
+([Run this code](http://jsfiddle.net/sLrkdjhL/))
+
+```javascript
+picoModal({
+    content: "<p>Ah, the pitter patter of tiny feet in huge combat boots.</p>" +
+        "<p class='footer'>" +
+        "<button class='cancel'>Cancel</button> " +
+        "<button class='ok'>Ok</button>" +
+        "</p>"
+}).afterCreate(modal => {
+    modal.modalElem().addEventListener("click", evt => {
+        if (evt.target && evt.target.matches(".ok")) {
+            modal.close(true);
+        } else if (evt.target && evt.target.matches(".cancel")) {
+            modal.close();
+        }
+    });
+}).afterClose((modal, event) => {
+    alert(event.detail ? "Ok" : "Cancelled");
+}).show();
+```
+
+In the example above, notice the argument passed to `modal.close()` above, and
+then accessing it by reading `event.detail`.
+
 Animation
 ---------
 
