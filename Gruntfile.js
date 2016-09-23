@@ -53,11 +53,13 @@ var browsers = {
     ],
     ios: [
         {
+            appiumVersion: '1.5.3',
             browserName: 'Safari',
-            deviceName: 'iPhone Simulator',
+            deviceName: 'iPhone 6 Simulator',
             deviceOrientation: 'portrait',
             platformVersion: '9.3',
-            platformName: 'iOS'
+            platformName: 'iOS',
+            setupTimeout: 180000
         }
     ]
 };
