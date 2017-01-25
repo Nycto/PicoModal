@@ -9,6 +9,7 @@
     "url": "https://github.com/Nycto/PicoModal.git"
   },
   "main": "src/picoModal.js",
+  "types": "typings/picoModal.d.ts",
   "devDependencies": {
     "chai": "^3.4.1",
     "express": "^4.13.4",
